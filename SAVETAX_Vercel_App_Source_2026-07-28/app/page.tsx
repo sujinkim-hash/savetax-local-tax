@@ -3,10 +3,11 @@
 import { useMemo, useState } from "react";
 import "./globals.css";
 import contactData from "./contacts.json";
+import missingContactData from "./contacts-missing.json";
 
 type Contact = { sido: string; local: string; scope: string; phone: string; checked: string; status: "확인" | "검토필요" };
 
-const contacts = contactData as Contact[];
+const contacts = [...(contactData as Contact[]), ...(missingContactData as Contact[])];
 
 export default function Home() {
   const [query, setQuery] = useState("");
