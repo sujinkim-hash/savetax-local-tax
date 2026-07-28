@@ -1,20 +1,9 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
 export const metadata: Metadata = {
-  title: "Starter Project",
-  description: "A clean starting point for building your site.",
+  title: "지방소득세 담당자 조회",
+  description: "전국 시·군·구의 종합소득세 관련 지방소득세 담당 연락처 조회 서비스",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
@@ -27,12 +16,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+    <html lang="ko">
+      <body>{children}</body>
     </html>
   );
 }
