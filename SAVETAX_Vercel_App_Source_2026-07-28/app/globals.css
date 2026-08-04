@@ -31,3 +31,6 @@ h1{margin:0;color:var(--ink);font-size:48px;line-height:1.14;letter-spacing:-.05
 
 .dialogBackdrop{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:20px;background:rgba(16,33,63,.36)}.dialog{width:min(100%,480px);padding:28px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 48px rgba(16,33,63,.2)}.dialog h2{font-size:23px}.dialog p{margin:9px 0 20px;color:var(--muted);font-size:14px;line-height:1.65}.dialog label{display:block;margin:14px 0 6px;color:var(--ink);font-size:14px;font-weight:800}.dialog input{width:100%;border:1px solid #c8d6ec;border-radius:8px;padding:12px 13px;color:var(--ink);font:inherit;outline:none}.dialog input:focus{border-color:#175cd3;box-shadow:0 0 0 3px #e9f1ff}.dialogActions{display:flex;justify-content:flex-end;gap:8px;margin-top:23px}.dialogActions button{border:0;border-radius:8px;padding:11px 16px;background:var(--ink);color:#fff;font:inherit;font-size:14px;font-weight:800;cursor:pointer}.dialogActions .dialogCancel{border:1px solid #c8d6ec;background:#fff;color:#28579e}
 
+/* 지역 펼침 표시를 제목 행 중앙에 고정 */
+.sourceRegion summary{min-height:56px;align-items:center}.sourceRegion summary::marker{content:""}.sourceRegion summary::before{flex:0 0 22px;align-self:center;line-height:1;transform:translateY(0)}
+
