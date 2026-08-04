@@ -11,6 +11,5 @@ export async function GET() {
     FROM source_pages
     ORDER BY created_at DESC
   `;
-  return Response.json({ sources });
+  return Response.json({ sources }, { headers: { "cache-control": "no-store" } });
 }
-
