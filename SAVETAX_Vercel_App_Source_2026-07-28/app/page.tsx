@@ -100,7 +100,7 @@ export default function Home() {
   }
 
   return <main>
-    <header><div><p className="eyebrow">LOCAL INCOME TAX DIRECTORY</p><h1>전국 지방소득세<br />담당자 연락처</h1><p className="lead">종합소득세와 관련된 담당 주무관 기준으로 전국 시·군·구 연락처를 한 곳에서 확인합니다.</p></div><button className="admin" onClick={isAdmin ? () => { setIsAdmin(false); setReviews([]); setNotice("관리자 모드를 종료했습니다."); } : authenticateAdmin}>{isAdmin ? "관리자 모드 종료" : "관리자"} {!isAdmin && <span>🔒</span>}</button></header>
+      <header><div><p className="eyebrow">LOCAL INCOME TAX DIRECTORY</p><h1>전국 지방소득세 담당자 연락처</h1><p className="lead">종합소득세와 관련된 담당 주무관 기준으로 전국 시·군·구 연락처를 한 곳에서 확인합니다.</p></div><button className="admin" onClick={isAdmin ? () => { setIsAdmin(false); setReviews([]); setNotice("관리자 모드를 종료했습니다."); } : authenticateAdmin}>{isAdmin ? "관리자 모드 종료" : "관리자"} {!isAdmin && <span>🔒</span>}</button></header>
     <section className="stats"><article><b>{contacts.length}</b><span>등록 연락처</span></article><article><b>{new Set(contacts.map((item) => item.sido)).size}</b><span>시도</span></article><article><b>256</b><span>시·군·구 지자체</span></article>{isAdmin && <article><b>{reviews.length}</b><span>검토 대기 변경</span></article>}</section>
     <section className="toolbar"><input aria-label="검색" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="시도, 시·군·구, 담당 업무 또는 번호 검색" /><select value={region} onChange={(event) => setRegion(event.target.value)}>{regions.map((item) => <option key={item}>{item}</option>)}</select><button className="download" onClick={downloadCsv}>자료 내려받기</button></section>
     {notice && <p className="notice" role="status">{notice}</p>}
