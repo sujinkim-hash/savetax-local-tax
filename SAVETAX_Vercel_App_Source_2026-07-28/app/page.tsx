@@ -18,6 +18,7 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [region, setRegion] = useState("전체");
   const [notice, setNotice] = useState("");
+  const [copiedPhone, setCopiedPhone] = useState("");
 
   async function loadFromDatabase() {
     const response = await fetch("/api/contacts", { cache: "no-store" });
@@ -99,12 +100,22 @@ export default function Home() {
     const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "전국_지방소득세_담당연락처.csv"; link.click(); URL.revokeObjectURL(link.href);
   }
 
+  async function copyPhone(phone: string) {
+    try {
+      await navigator.clipboard.writeText(phone);
+      setCopiedPhone(phone);
+      window.setTimeout(() => setCopiedPhone((current) => current === phone ? "" : current), 1600);
+    } catch {
+      setNotice("번호 복사에 실패했습니다. 번호를 길게 눌러 직접 복사해 주세요.");
+    }
+  }
+
   return <main>
       <header><div><p className="eyebrow">LOCAL INCOME TAX DIRECTORY</p><h1>전국 지방소득세 담당자 연락처</h1><p className="lead">종합소득세와 관련된 담당 주무관 기준으로 전국 시·군·구 연락처를 한 곳에서 확인합니다.</p></div><button className="admin" onClick={isAdmin ? () => { setIsAdmin(false); setReviews([]); setNotice("관리자 모드를 종료했습니다."); } : authenticateAdmin}>{isAdmin ? "관리자 모드 종료" : "관리자"} {!isAdmin && <span>🔒</span>}</button></header>
     <section className="stats"><article><b>{contacts.length}</b><span>등록 연락처</span></article><article><b>{new Set(contacts.map((item) => item.sido)).size}</b><span>시도</span></article><article><b>256</b><span>시·군·구 지자체</span></article>{isAdmin && <article><b>{reviews.length}</b><span>검토 대기 변경</span></article>}</section>
     <section className="toolbar"><input aria-label="검색" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="시도, 시·군·구, 담당 업무 또는 번호 검색" /><select value={region} onChange={(event) => setRegion(event.target.value)}>{regions.map((item) => <option key={item}>{item}</option>)}</select><button className="download" onClick={downloadCsv}>자료 내려받기</button></section>
     {notice && <p className="notice" role="status">{notice}</p>}
-    <section className="panel"><div className="panelHead"><div><p className="eyebrow">DIRECT CONTACT DIRECTORY</p><h2>담당자 연락처</h2></div><p>{rows.length}건 표시</p></div><div className="table"><div className="tr th"><span>시도</span><span>자치구</span><span>담당 업무</span><span>직통번호</span><span>확인일</span><span>상태</span></div>{rows.map((item, index) => <div className="tr" key={`${item.sido}-${item.local}-${item.phone}-${index}`}><span>{item.sido}</span><strong>{item.local}</strong><span>{item.scope}</span><a href={`tel:${item.phone}`}>{item.phone}</a><span>{item.checked}</span><i>{item.status}</i></div>)}</div></section>
+    <section className="panel"><div className="panelHead"><div><p className="eyebrow">DIRECT CONTACT DIRECTORY</p><h2>담당자 연락처</h2></div><p>{rows.length}건 표시</p></div><div className="table"><div className="tr th"><span>시도</span><span>자치구</span><span>담당 업무</span><span>직통번호</span><span>확인일</span><span>상태</span></div>{rows.map((item, index) => <div className="tr" key={`${item.sido}-${item.local}-${item.phone}-${index}`}><span>{item.sido}</span><strong>{item.local}</strong><span>{item.scope}</span><span className="phoneCell"><a href={`tel:${item.phone}`}>{item.phone}</a><button type="button" className="copyPhone" onClick={() => void copyPhone(item.phone)} aria-label={`${item.phone} 복사`}>{copiedPhone === item.phone ? "복사됨" : "복사"}</button></span><span>{item.checked}</span><i>{item.status}</i></div>)}</div></section>
     {isAdmin && <section className="review"><div><p className="eyebrow">ADMINISTRATION</p><h2>관리자 검토 및 자동화</h2><p>이 영역은 관리자 키 인증 후에만 보입니다. 승인한 변경만 공개 연락처에 반영됩니다.</p>{reviews.length > 0 && <details className="reviewList"><summary>검토 대상 {reviews.length}건 보기</summary><ul>{reviews.map((review) => <li key={review.id}><b>{review.sido} {review.local}</b> · {review.field}: {review.previous_value} → {review.source_url ? <a href={review.source_url} target="_blank" rel="noreferrer">공식 페이지 열기</a> : review.proposed_value}<button onClick={() => approveReview(review.id)}>승인</button></li>)}</ul></details>}</div><div className="reviewActions"><button onClick={initializeDatabase}>연락처 DB 시작하기</button><button onClick={importMoisSources}>행안부 주소 일괄 수집</button><button className="secondary" onClick={addSource}>공식 주소 직접 등록</button></div></section>}
   </main>;
 }
