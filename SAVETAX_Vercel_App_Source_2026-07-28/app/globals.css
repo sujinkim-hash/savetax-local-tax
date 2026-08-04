@@ -11,7 +11,7 @@ h1{margin:0;color:var(--ink);font-size:48px;line-height:1.14;letter-spacing:-.05
 .lead{margin:15px 0 0;color:var(--muted);font-size:16px;line-height:1.8;white-space:nowrap}
 .admin,.download,.review button{border:0;border-radius:9px;padding:13px 17px;background:var(--ink);color:#fff;font-size:15px;font-weight:800;cursor:pointer}.admin{min-width:130px}.admin span{margin-left:6px;padding:2px 7px;border-radius:99px;background:#ef6d48;font-size:12px}.download{background:var(--blue)}
 
-.stats{order:3;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0 34px}.stats article,.panel,.toolbar,.review{background:var(--surface);border:1px solid var(--line);border-radius:12px}.stats article{padding:20px}.stats b{display:block;color:var(--ink);font-size:29px;line-height:1.15}.stats span{display:block;margin-top:6px;color:var(--muted);font-size:14px}
+.stats{order:3;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0 34px}.stats article,.panel,.toolbar,.review{background:var(--surface);border:1px solid var(--line);border-radius:12px}.stats article{padding:20px}.stats b{display:block;margin-top:6px;color:var(--ink);font-size:29px;line-height:1.15}.stats span{display:block;color:var(--muted);font-size:14px;font-weight:700}
 
 .toolbar{order:4;display:flex;gap:10px;padding:11px}.toolbar input{flex:1;min-width:0;border:1px solid transparent;background:#f3f6fa;border-radius:8px;padding:13px 14px;color:var(--ink);font-size:15px;outline:none}.toolbar input:focus{border-color:#89afea;background:#fff;box-shadow:0 0 0 3px #e9f1ff}.toolbar select{order:-1;min-width:142px;border:1px solid var(--line);border-radius:8px;padding:0 12px;background:#fff;color:var(--ink);font-size:15px}
 
