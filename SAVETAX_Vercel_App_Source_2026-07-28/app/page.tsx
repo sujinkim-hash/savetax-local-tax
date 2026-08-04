@@ -6,7 +6,7 @@ import contactData from "./contacts.json";
 import missingContactData from "./contacts-missing.json";
 
 type Contact = { id?: number; sido: string; local: string; scope: string; phone: string; checked: string; status: "확인" | "검토중" };
-type Review = { id: number; sido: string; local: string; field: string; previous_value: string; proposed_value: string; reason: string; created_at: string };
+type Review = { id: number; sido: string; local: string; field: string; previous_value: string; proposed_value: string; reason: string; source_url?: string; created_at: string };
 
 const fallbackContacts = [...(contactData as Contact[]), ...(missingContactData as Contact[])];
 
@@ -14,6 +14,7 @@ export default function Home() {
   const [contacts, setContacts] = useState<Contact[]>(fallbackContacts);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [adminKey, setAdminKey] = useState("");
+  const [isAdmin, setIsAdmin] = useState(false);
   const [query, setQuery] = useState("");
   const [region, setRegion] = useState("전체");
   const [notice, setNotice] = useState("");
@@ -31,15 +32,20 @@ export default function Home() {
   ), [contacts, query, region]);
   const regions = ["전체", ...Array.from(new Set(contacts.map((item) => item.sido)))];
 
-  async function openReviewInbox() {
-    const key = adminKey || window.prompt("관리자 키를 입력하세요.");
-    if (!key) return;
-    setAdminKey(key);
+  async function loadReviews(key: string) {
     const response = await fetch("/api/admin/reviews", { headers: { "x-admin-key": key } });
     const data = (await response.json()) as { reviews?: Review[]; error?: string };
-    if (!response.ok) { setNotice(data.error ?? "검토함을 열 수 없습니다."); return; }
+    if (!response.ok) { setNotice(data.error ?? "관리자 인증에 실패했습니다."); return false; }
+    setAdminKey(key);
+    setIsAdmin(true);
     setReviews(data.reviews ?? []);
-    setNotice(`검토 대기 ${data.reviews?.length ?? 0}건을 불러왔습니다.`);
+    return true;
+  }
+
+  async function authenticateAdmin() {
+    const key = window.prompt("관리자 키를 입력하세요.");
+    if (!key) return;
+    if (await loadReviews(key)) setNotice("관리자 인증이 완료되었습니다.");
   }
 
   async function initializeDatabase() {
@@ -74,6 +80,18 @@ export default function Home() {
     setNotice(response.ok ? "공식 홈페이지 점검 목록에 추가했습니다." : (data.error ?? "주소 등록에 실패했습니다."));
   }
 
+  async function importMoisSources() {
+    const key = adminKey || window.prompt("관리자 키를 입력하세요.");
+    if (!key) return;
+    setAdminKey(key);
+    setNotice("행정안전부의 지자체 공식 홈페이지 목록을 수집하고 있습니다.");
+    const response = await fetch("/api/admin/sources/import-mois", { method: "POST", headers: { "x-admin-key": key } });
+    const data = (await response.json()) as { found?: number; added?: number; error?: string };
+    if (!response.ok) { setNotice(data.error ?? "공식 주소 수집에 실패했습니다."); return; }
+    setNotice(`공식 홈페이지 후보 ${data.found ?? 0}건을 찾았고, 새 후보 ${data.added ?? 0}건을 검토함에 추가했습니다.`);
+    await loadReviews(key);
+  }
+
   function downloadCsv() {
     const header = "시도,자치구,담당 업무,직통번호,확인일,상태";
     const lines = rows.map((item) => [item.sido, item.local, item.scope, item.phone, item.checked, item.status].map((value) => `\"${String(value).replaceAll('\"', '\"\"')}\"`).join(","));
@@ -82,11 +100,11 @@ export default function Home() {
   }
 
   return <main>
-    <header><div><p className="eyebrow">LOCAL INCOME TAX DIRECTORY</p><h1>전국 지방소득세<br />담당자 연락처</h1><p className="lead">종합소득세와 관련된 담당 주무관 기준으로 전국 시·군·구 연락처를 한 곳에서 확인합니다.</p></div><button className="admin" onClick={openReviewInbox}>관리자 검토함 <span>{reviews.length}</span></button></header>
-    <section className="stats"><article><b>{contacts.length}</b><span>등록 연락처</span></article><article><b>{new Set(contacts.map((item) => item.sido)).size}</b><span>시도</span></article><article><b>256</b><span>시·군·구 지자체</span></article><article><b>{reviews.length}</b><span>검토 대기 변경</span></article></section>
+    <header><div><p className="eyebrow">LOCAL INCOME TAX DIRECTORY</p><h1>전국 지방소득세<br />담당자 연락처</h1><p className="lead">종합소득세와 관련된 담당 주무관 기준으로 전국 시·군·구 연락처를 한 곳에서 확인합니다.</p></div><button className="admin" onClick={isAdmin ? () => { setIsAdmin(false); setReviews([]); setNotice("관리자 모드를 종료했습니다."); } : authenticateAdmin}>{isAdmin ? "관리자 모드 종료" : "관리자"} {!isAdmin && <span>🔒</span>}</button></header>
+    <section className="stats"><article><b>{contacts.length}</b><span>등록 연락처</span></article><article><b>{new Set(contacts.map((item) => item.sido)).size}</b><span>시도</span></article><article><b>256</b><span>시·군·구 지자체</span></article>{isAdmin && <article><b>{reviews.length}</b><span>검토 대기 변경</span></article>}</section>
     <section className="toolbar"><input aria-label="검색" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="시도, 시·군·구, 담당 업무 또는 번호 검색" /><select value={region} onChange={(event) => setRegion(event.target.value)}>{regions.map((item) => <option key={item}>{item}</option>)}</select><button className="download" onClick={downloadCsv}>자료 내려받기</button></section>
     {notice && <p className="notice" role="status">{notice}</p>}
     <section className="panel"><div className="panelHead"><div><p className="eyebrow">DIRECT CONTACT DIRECTORY</p><h2>담당자 연락처</h2></div><p>{rows.length}건 표시</p></div><div className="table"><div className="tr th"><span>시도</span><span>자치구</span><span>담당 업무</span><span>직통번호</span><span>확인일</span><span>상태</span></div>{rows.map((item, index) => <div className="tr" key={`${item.sido}-${item.local}-${item.phone}-${index}`}><span>{item.sido}</span><strong>{item.local}</strong><span>{item.scope}</span><a href={`tel:${item.phone}`}>{item.phone}</a><span>{item.checked}</span><i>{item.status}</i></div>)}</div></section>
-    <section className="review"><div><p className="eyebrow">CHANGE REVIEW</p><h2>공식 홈페이지 변경 검토</h2><p>자동 점검 결과는 바로 반영하지 않습니다. 관리자가 확인·승인한 연락처만 공개 목록에 적용됩니다.</p>{reviews.length > 0 && <ul className="reviewList">{reviews.map((review) => <li key={review.id}><b>{review.sido} {review.local}</b> · {review.field}: {review.previous_value} → {review.proposed_value}<button onClick={() => approveReview(review.id)}>승인</button></li>)}</ul>}</div><div className="reviewActions"><button onClick={initializeDatabase}>연락처 DB 시작하기</button><button className="secondary" onClick={addSource}>공식 주소 등록</button></div></section>
+    {isAdmin && <section className="review"><div><p className="eyebrow">ADMINISTRATION</p><h2>관리자 검토 및 자동화</h2><p>이 영역은 관리자 키 인증 후에만 보입니다. 승인한 변경만 공개 연락처에 반영됩니다.</p>{reviews.length > 0 && <ul className="reviewList">{reviews.map((review) => <li key={review.id}><b>{review.sido} {review.local}</b> · {review.field}: {review.previous_value} → {review.source_url ? <a href={review.source_url} target="_blank" rel="noreferrer">공식 페이지 열기</a> : review.proposed_value}<button onClick={() => approveReview(review.id)}>승인</button></li>)}</ul>}</div><div className="reviewActions"><button onClick={initializeDatabase}>연락처 DB 시작하기</button><button onClick={importMoisSources}>행안부 주소 일괄 수집</button><button className="secondary" onClick={addSource}>공식 주소 직접 등록</button></div></section>}
   </main>;
 }

@@ -13,6 +13,9 @@ export async function POST(request: Request, context: { params: Promise<{ id: st
     if (column === "phone") await sql`UPDATE contacts SET phone = ${candidate.proposed_value}, updated_at = NOW() WHERE id = ${candidate.contact_id}`;
     if (column === "scope") await sql`UPDATE contacts SET scope = ${candidate.proposed_value}, updated_at = NOW() WHERE id = ${candidate.contact_id}`;
   }
+  if (candidate.field === "공식 홈페이지" && candidate.source_url) {
+    await sql`UPDATE source_pages SET is_active = TRUE WHERE sido = ${candidate.sido} AND local_name = ${candidate.local_name} AND source_url = ${candidate.source_url}`;
+  }
   await sql`UPDATE review_candidates SET status = 'approved', reviewed_at = NOW() WHERE id = ${id}`;
   return Response.json({ ok: true });
 }
