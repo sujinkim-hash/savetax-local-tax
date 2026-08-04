@@ -34,3 +34,5 @@ h1{margin:0;color:var(--ink);font-size:48px;line-height:1.14;letter-spacing:-.05
 /* 지역 펼침 표시를 제목 행 중앙에 고정 */
 .sourceRegion summary{min-height:56px;align-items:center}.sourceRegion summary::marker{content:""}.sourceRegion summary::before{flex:0 0 22px;align-self:center;line-height:1;transform:translateY(0)}
 
+/* 검토 페이지의 큰 영역은 필요할 때만 펼쳐 봅니다. */
+.sectionAccordion>summary{position:relative;cursor:pointer;list-style:none}.sectionAccordion>summary::-webkit-details-marker{display:none}.sectionAccordion>summary::marker{content:""}.sectionAccordion>summary>i{display:inline-grid;flex:0 0 30px;place-items:center;width:30px;height:30px;border:1px solid #c8d6ec;border-radius:50%;color:#28579e;font-size:20px;font-style:normal;line-height:1}.sectionAccordion>summary>i::before{content:"+"}.sectionAccordion[open]>summary>i::before{content:"−"}.sectionAccordion[open]>summary{border-bottom:1px solid var(--line)}
