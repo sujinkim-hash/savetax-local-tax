@@ -1,0 +1,26 @@
+import { neon } from "@neondatabase/serverless";
+
+let sqlClient: ReturnType<typeof neon> | null = null;
+
+export function getSql() {
+  const connectionString = process.env.DATABASE_URL;
+  if (!connectionString) return null;
+  if (!sqlClient) sqlClient = neon(connectionString);
+  return sqlClient;
+}
+
+export async function ensureSchema() {
+  const sql = getSql();
+  if (!sql) return null;
+  await sql`CREATE TABLE IF NOT EXISTS contacts (id BIGSERIAL PRIMARY KEY, sido TEXT NOT NULL, local_name TEXT NOT NULL, scope TEXT NOT NULL, phone TEXT NOT NULL, checked_on TEXT NOT NULL, status TEXT NOT NULL DEFAULT '확인', source_url TEXT, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`;
+  await sql`CREATE UNIQUE INDEX IF NOT EXISTS contacts_unique_row ON contacts (sido, local_name, scope, phone)`;
+  await sql`CREATE TABLE IF NOT EXISTS source_pages (id BIGSERIAL PRIMARY KEY, sido TEXT NOT NULL, local_name TEXT NOT NULL, source_url TEXT NOT NULL UNIQUE, is_active BOOLEAN NOT NULL DEFAULT TRUE, last_checked_at TIMESTAMPTZ, last_result TEXT)`;
+  await sql`CREATE TABLE IF NOT EXISTS review_candidates (id BIGSERIAL PRIMARY KEY, contact_id BIGINT REFERENCES contacts(id), sido TEXT NOT NULL, local_name TEXT NOT NULL, field TEXT NOT NULL, previous_value TEXT NOT NULL, proposed_value TEXT NOT NULL, reason TEXT NOT NULL, source_url TEXT, status TEXT NOT NULL DEFAULT 'pending', created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), reviewed_at TIMESTAMPTZ)`;
+  await sql`CREATE TABLE IF NOT EXISTS review_runs (id BIGSERIAL PRIMARY KEY, started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), finished_at TIMESTAMPTZ, checked_count INTEGER NOT NULL DEFAULT 0, note TEXT)`;
+  return sql;
+}
+
+export function requireAdmin(request: Request) {
+  const expected = process.env.ADMIN_KEY;
+  return Boolean(expected && request.headers.get("x-admin-key") === expected);
+}

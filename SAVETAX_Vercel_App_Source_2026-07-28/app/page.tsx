@@ -1,86 +1,92 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import "./globals.css";
 import contactData from "./contacts.json";
 import missingContactData from "./contacts-missing.json";
 
-type Contact = {
-  sido: string;
-  local: string;
-  scope: string;
-  phone: string;
-  checked: string;
-  status: "확인" | "검토중";
-};
+type Contact = { id?: number; sido: string; local: string; scope: string; phone: string; checked: string; status: "확인" | "검토중" };
+type Review = { id: number; sido: string; local: string; field: string; previous_value: string; proposed_value: string; reason: string; created_at: string };
 
-const contacts = [
-  ...(contactData as Contact[]),
-  ...(missingContactData as Contact[]),
-];
+const fallbackContacts = [...(contactData as Contact[]), ...(missingContactData as Contact[])];
 
 export default function Home() {
+  const [contacts, setContacts] = useState<Contact[]>(fallbackContacts);
+  const [reviews, setReviews] = useState<Review[]>([]);
+  const [adminKey, setAdminKey] = useState("");
   const [query, setQuery] = useState("");
   const [region, setRegion] = useState("전체");
+  const [notice, setNotice] = useState("");
 
-  const rows = useMemo(
-    () =>
-      contacts.filter(
-        (item) =>
-          (region === "전체" || item.sido === region) &&
-          `${item.sido} ${item.local} ${item.scope} ${item.phone}`.includes(query),
-      ),
-    [query, region],
-  );
+  async function loadFromDatabase() {
+    const response = await fetch("/api/contacts", { cache: "no-store" });
+    if (!response.ok) return;
+    const data = (await response.json()) as { contacts?: Contact[] };
+    if (data.contacts?.length) setContacts(data.contacts);
+  }
+  useEffect(() => { void loadFromDatabase(); }, []);
 
+  const rows = useMemo(() => contacts.filter((item) =>
+    (region === "전체" || item.sido === region) && `${item.sido} ${item.local} ${item.scope} ${item.phone}`.toLowerCase().includes(query.toLowerCase()),
+  ), [contacts, query, region]);
   const regions = ["전체", ...Array.from(new Set(contacts.map((item) => item.sido)))];
 
-  return (
-    <main>
-      <header>
-        <div>
-          <p className="eyebrow">LOCAL INCOME TAX DIRECTORY</p>
-          <h1>전국 지방소득세<br />담당자 연락처</h1>
-          <p className="lead">종합소득세 관련 담당 주무관 기준의 전국 시·군·구 연락처를 한 곳에서 확인합니다.</p>
-        </div>
-        <button className="admin">관리자 검토함 <span>3</span></button>
-      </header>
+  async function openReviewInbox() {
+    const key = adminKey || window.prompt("관리자 키를 입력하세요.");
+    if (!key) return;
+    setAdminKey(key);
+    const response = await fetch("/api/admin/reviews", { headers: { "x-admin-key": key } });
+    const data = (await response.json()) as { reviews?: Review[]; error?: string };
+    if (!response.ok) { setNotice(data.error ?? "검토함을 열 수 없습니다."); return; }
+    setReviews(data.reviews ?? []);
+    setNotice(`검토 대기 ${data.reviews?.length ?? 0}건을 불러왔습니다.`);
+  }
 
-      <section className="stats">
-        <article><b>{contacts.length}</b><span>등록 연락처</span></article>
-        <article><b>{new Set(contacts.map((item) => item.sido)).size}</b><span>시·도</span></article>
-        <article><b>256</b><span>점검 대상 지자체</span></article>
-        <article><b>3</b><span>승인 대기 변경</span></article>
-      </section>
+  async function initializeDatabase() {
+    const key = adminKey || window.prompt("처음 한 번만 관리자 키를 입력하세요.");
+    if (!key) return;
+    setAdminKey(key);
+    const response = await fetch("/api/admin/bootstrap", { method: "POST", headers: { "x-admin-key": key } });
+    const data = (await response.json()) as { count?: number; error?: string };
+    if (!response.ok) { setNotice(data.error ?? "DB 초기화에 실패했습니다."); return; }
+    setNotice(`${data.count ?? 0}건을 DB에 저장했습니다. 이후 변경은 검토함에서 승인합니다.`);
+    await loadFromDatabase();
+  }
 
-      <section className="toolbar">
-        <input aria-label="검색" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="시·도, 시군구, 담당 업무 또는 번호 검색" />
-        <select value={region} onChange={(event) => setRegion(event.target.value)}>
-          {regions.map((item) => <option key={item}>{item}</option>)}
-        </select>
-        <button className="download">엑셀 내려받기</button>
-      </section>
+  async function approveReview(id: number) {
+    const response = await fetch(`/api/admin/reviews/${id}/approve`, { method: "POST", headers: { "x-admin-key": adminKey } });
+    if (!response.ok) { setNotice("승인 처리에 실패했습니다."); return; }
+    setReviews((current) => current.filter((review) => review.id !== id));
+    setNotice("승인한 변경을 반영했습니다.");
+    await loadFromDatabase();
+  }
 
-      <section className="panel">
-        <div className="panelHead">
-          <div><p className="eyebrow">DIRECT CONTACT DIRECTORY</p><h2>담당자 연락처</h2></div>
-          <p>{rows.length}건 표시</p>
-        </div>
-        <div className="table">
-          <div className="tr th"><span>시·도</span><span>자치구</span><span>담당 업무</span><span>직통번호</span><span>확인일</span><span>상태</span></div>
-          {rows.map((item, index) => (
-            <div className="tr" key={`${item.sido}-${item.local}-${item.phone}-${index}`}>
-              <span>{item.sido}</span><strong>{item.local}</strong><span>{item.scope}</span>
-              <a href={`tel:${item.phone}`}>{item.phone}</a><span>{item.checked}</span><i>{item.status}</i>
-            </div>
-          ))}
-        </div>
-      </section>
+  async function addSource() {
+    const key = adminKey || window.prompt("관리자 키를 입력하세요.");
+    if (!key) return;
+    const sido = window.prompt("시도명을 입력하세요. 예: 경기도");
+    const local = window.prompt("시·군·구명을 입력하세요. 예: 성남시");
+    const sourceUrl = window.prompt("공식 직원·조직도 페이지 주소를 붙여 넣으세요.");
+    if (!sido || !local || !sourceUrl) return;
+    setAdminKey(key);
+    const response = await fetch("/api/admin/sources", { method: "POST", headers: { "content-type": "application/json", "x-admin-key": key }, body: JSON.stringify({ sido, local, sourceUrl }) });
+    const data = (await response.json()) as { error?: string };
+    setNotice(response.ok ? "공식 홈페이지 점검 목록에 추가했습니다." : (data.error ?? "주소 등록에 실패했습니다."));
+  }
 
-      <section className="review">
-        <div><p className="eyebrow">CHANGE REVIEW</p><h2>최근 변경 후보</h2><p>공식 조직도에서 감지한 번호는 관리자 승인 전까지 기존 DB를 변경하지 않습니다.</p></div>
-        <button>검토함 열기 →</button>
-      </section>
-    </main>
-  );
+  function downloadCsv() {
+    const header = "시도,자치구,담당 업무,직통번호,확인일,상태";
+    const lines = rows.map((item) => [item.sido, item.local, item.scope, item.phone, item.checked, item.status].map((value) => `\"${String(value).replaceAll('\"', '\"\"')}\"`).join(","));
+    const blob = new Blob([["\ufeff", header, "\n", lines.join("\n")].join("")], { type: "text/csv;charset=utf-8" });
+    const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "전국_지방소득세_담당연락처.csv"; link.click(); URL.revokeObjectURL(link.href);
+  }
+
+  return <main>
+    <header><div><p className="eyebrow">LOCAL INCOME TAX DIRECTORY</p><h1>전국 지방소득세<br />담당자 연락처</h1><p className="lead">종합소득세와 관련된 담당 주무관 기준으로 전국 시·군·구 연락처를 한 곳에서 확인합니다.</p></div><button className="admin" onClick={openReviewInbox}>관리자 검토함 <span>{reviews.length}</span></button></header>
+    <section className="stats"><article><b>{contacts.length}</b><span>등록 연락처</span></article><article><b>{new Set(contacts.map((item) => item.sido)).size}</b><span>시도</span></article><article><b>256</b><span>시·군·구 지자체</span></article><article><b>{reviews.length}</b><span>검토 대기 변경</span></article></section>
+    <section className="toolbar"><input aria-label="검색" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="시도, 시·군·구, 담당 업무 또는 번호 검색" /><select value={region} onChange={(event) => setRegion(event.target.value)}>{regions.map((item) => <option key={item}>{item}</option>)}</select><button className="download" onClick={downloadCsv}>자료 내려받기</button></section>
+    {notice && <p className="notice" role="status">{notice}</p>}
+    <section className="panel"><div className="panelHead"><div><p className="eyebrow">DIRECT CONTACT DIRECTORY</p><h2>담당자 연락처</h2></div><p>{rows.length}건 표시</p></div><div className="table"><div className="tr th"><span>시도</span><span>자치구</span><span>담당 업무</span><span>직통번호</span><span>확인일</span><span>상태</span></div>{rows.map((item, index) => <div className="tr" key={`${item.sido}-${item.local}-${item.phone}-${index}`}><span>{item.sido}</span><strong>{item.local}</strong><span>{item.scope}</span><a href={`tel:${item.phone}`}>{item.phone}</a><span>{item.checked}</span><i>{item.status}</i></div>)}</div></section>
+    <section className="review"><div><p className="eyebrow">CHANGE REVIEW</p><h2>공식 홈페이지 변경 검토</h2><p>자동 점검 결과는 바로 반영하지 않습니다. 관리자가 확인·승인한 연락처만 공개 목록에 적용됩니다.</p>{reviews.length > 0 && <ul className="reviewList">{reviews.map((review) => <li key={review.id}><b>{review.sido} {review.local}</b> · {review.field}: {review.previous_value} → {review.proposed_value}<button onClick={() => approveReview(review.id)}>승인</button></li>)}</ul>}</div><div className="reviewActions"><button onClick={initializeDatabase}>연락처 DB 시작하기</button><button className="secondary" onClick={addSource}>공식 주소 등록</button></div></section>
+  </main>;
 }

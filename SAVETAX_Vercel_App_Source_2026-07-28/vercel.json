@@ -1,4 +1,5 @@
 {
-  "framework": "nextjs",
-  "buildCommand": "npx next build"
+  "crons": [
+    { "path": "/api/cron/daily-check", "schedule": "0 0 * * *" }
+  ]
 }
