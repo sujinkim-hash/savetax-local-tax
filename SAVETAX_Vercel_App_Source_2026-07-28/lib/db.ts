@@ -15,6 +15,7 @@ export async function ensureSchema() {
   await sql`CREATE TABLE IF NOT EXISTS contacts (id BIGSERIAL PRIMARY KEY, sido TEXT NOT NULL, local_name TEXT NOT NULL, scope TEXT NOT NULL, phone TEXT NOT NULL, checked_on TEXT NOT NULL, status TEXT NOT NULL DEFAULT '확인', source_url TEXT, created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS contacts_unique_row ON contacts (sido, local_name, scope, phone)`;
   await sql`CREATE TABLE IF NOT EXISTS source_pages (id BIGSERIAL PRIMARY KEY, sido TEXT NOT NULL, local_name TEXT NOT NULL, source_url TEXT NOT NULL, is_active BOOLEAN NOT NULL DEFAULT TRUE, last_checked_at TIMESTAMPTZ, last_result TEXT)`;
+  await sql`ALTER TABLE source_pages ADD COLUMN IF NOT EXISTS created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()`;
   await sql`ALTER TABLE source_pages DROP CONSTRAINT IF EXISTS source_pages_source_url_key`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS source_pages_unique_office_url ON source_pages (sido, local_name, source_url)`;
   await sql`CREATE TABLE IF NOT EXISTS review_candidates (id BIGSERIAL PRIMARY KEY, contact_id BIGINT REFERENCES contacts(id), sido TEXT NOT NULL, local_name TEXT NOT NULL, field TEXT NOT NULL, previous_value TEXT NOT NULL, proposed_value TEXT NOT NULL, reason TEXT NOT NULL, source_url TEXT, status TEXT NOT NULL DEFAULT 'pending', created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), reviewed_at TIMESTAMPTZ)`;
@@ -26,3 +27,4 @@ export function requireAdmin(request: Request) {
   const expected = process.env.ADMIN_KEY;
   return Boolean(expected && request.headers.get("x-admin-key") === expected);
 }
+
