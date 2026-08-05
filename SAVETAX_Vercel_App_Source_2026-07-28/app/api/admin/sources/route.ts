@@ -13,6 +13,7 @@ async function syncSourceReviews(sql: NonNullable<Awaited<ReturnType<typeof ensu
         WHERE s.sido = review_candidates.sido
           AND s.local_name = review_candidates.local_name
           AND s.source_url = review_candidates.source_url
+          AND s.is_manual = TRUE
       )`;
 
   await sql`UPDATE review_candidates
@@ -26,13 +27,14 @@ async function syncSourceReviews(sql: NonNullable<Awaited<ReturnType<typeof ensu
         WHERE s.sido = review_candidates.sido
           AND s.local_name = review_candidates.local_name
           AND s.source_url = review_candidates.source_url
+          AND s.is_manual = TRUE
       )`;
 
   await sql`INSERT INTO review_candidates (contact_id, sido, local_name, field, previous_value, proposed_value, reason, source_url, status)
     SELECT NULL, s.sido, s.local_name, '공식 주소', '미등록', '등록',
       '등록된 공식 직원검색·조직도 주소입니다. 주소와 지자체를 확인한 뒤 반영하세요.', s.source_url, 'pending'
     FROM source_pages s
-    WHERE NOT EXISTS (
+    WHERE s.is_manual = TRUE AND NOT EXISTS (
       SELECT 1 FROM review_candidates r
       WHERE r.sido = s.sido AND r.local_name = s.local_name
         AND r.field = '공식 주소' AND r.source_url = s.source_url
@@ -52,7 +54,7 @@ export async function GET(request: Request) {
   const sql = await ensureSchema();
   if (!sql) return Response.json({ error: "DATABASE_URL 연결을 확인하세요." }, { status: 503 });
   await syncSourceReviews(sql);
-  const sources = await sql`SELECT id, sido, local_name AS local, source_url, created_at FROM source_pages ORDER BY created_at DESC LIMIT 8`;
+  const sources = await sql`SELECT id, sido, local_name AS local, source_url, created_at FROM source_pages WHERE is_active = TRUE AND is_manual = TRUE ORDER BY created_at DESC`;
   return Response.json({ sources });
 }
 
@@ -67,7 +69,7 @@ export async function POST(request: Request) {
   await sql`DELETE FROM review_candidates
     WHERE sido = ${body.sido} AND local_name = ${body.local}
       AND field IN ('공식 홈페이지', '공식 주소') AND status = 'pending'`;
-  const [source] = await sql`INSERT INTO source_pages (sido, local_name, source_url, is_active) VALUES (${body.sido}, ${body.local}, ${body.sourceUrl}, TRUE) RETURNING id, sido, local_name AS local, source_url, created_at`;
+  const [source] = await sql`INSERT INTO source_pages (sido, local_name, source_url, is_active, is_manual) VALUES (${body.sido}, ${body.local}, ${body.sourceUrl}, TRUE, TRUE) RETURNING id, sido, local_name AS local, source_url, created_at`;
   await sql`INSERT INTO review_candidates (contact_id, sido, local_name, field, previous_value, proposed_value, reason, source_url, status)
     VALUES (NULL, ${body.sido}, ${body.local}, '공식 주소', '미등록', '등록', '관리자가 등록한 공식 직원검색·조직도 주소입니다. 주소와 지자체를 확인한 뒤 반영하세요.', ${body.sourceUrl}, 'pending')`;
   return Response.json({ ok: true, source });
