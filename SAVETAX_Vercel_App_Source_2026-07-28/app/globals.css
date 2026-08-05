@@ -214,3 +214,5 @@ h1{margin:0;color:var(--ink);font-size:48px;line-height:1.14;letter-spacing:-.05
 
 /* 지역 펼침 표시를 제목 행 중앙에 고정 */
 .sourceRegion summary{min-height:56px;align-items:center}.sourceRegion summary::marker{content:""}.sourceRegion summary::before{flex:0 0 22px;align-self:center;line-height:1;transform:translateY(0)}
+/* 관리자 영역은 설명과 작업을 두 칸으로 고정하고, 등록 현황은 다음 줄 전체 폭으로 표시 */
+.review{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:start}.review>div:first-child{min-width:0}.review .sourceList{grid-column:1/-1}.reviewActions{align-items:flex-start;justify-content:flex-end}.contactEdit{margin-left:4px;border:1px solid #c8d6ec;border-radius:6px;padding:4px 7px;background:#fff;color:#28579e;font:inherit;font-size:12px;font-weight:800;line-height:1.2;cursor:pointer}.contactEdit:hover{border-color:#7ca5e2;background:#edf4ff}@media(max-width:760px){.review{display:flex;flex-direction:column}.reviewActions{flex-wrap:wrap}.review .sourceList{width:100%}}
