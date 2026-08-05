@@ -7,10 +7,26 @@
 
 
 
+
+
+
+
+
+
+
+
 :root{--ink:#10213f;--muted:#667085;--line:#e3e8ef;--blue:#175cd3;--blue-pale:#edf4ff;--page:#f7f9fc;--surface:#fff}
 *{box-sizing:border-box}
 body{margin:0;background:var(--page);color:var(--ink);font-family:"Malgun Gothic","Noto Sans KR",Arial,sans-serif;font-size:16px;line-height:1.65}
 main{max-width:1240px;margin:auto;padding:48px 28px 76px;display:flex;flex-direction:column}
+
+
+
+
+
+
+
+
 
 
 
@@ -32,7 +48,23 @@ h1{margin:0;color:var(--ink);font-size:48px;line-height:1.14;letter-spacing:-.05
 
 
 
+
+
+
+
+
+
+
+
 .stats{order:3;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0 34px}.stats article,.panel,.toolbar,.review{background:var(--surface);border:1px solid var(--line);border-radius:12px}.stats article{padding:20px}.stats b{display:block;margin-top:6px;color:var(--ink);font-size:29px;line-height:1.15}.stats span{display:block;color:var(--muted);font-size:14px;font-weight:700}
+
+
+
+
+
+
+
+
 
 
 
@@ -50,7 +82,15 @@ h1{margin:0;color:var(--ink);font-size:48px;line-height:1.14;letter-spacing:-.05
 
 
 
-.notice{order:5;margin:14px 0 0;padding:12px 14px;border:1px solid #cfe0ff;border-radius:9px;background:#f2f7ff;color:#2258a6;font-size:14px}.panel{order:6;margin-top:18px;overflow:hidden}.panelHead{display:flex;align-items:end;justify-content:space-between;gap:20px;padding:25px}.panelHead>p{margin:0;color:var(--muted);font-size:14px}.table{border-top:1px solid var(--line)}
+
+
+
+
+
+
+
+
+.notice{order:5;margin:14px 0 0;padding:12px 14px;border:1px solid #cfe0ff;border-radius:9px;background:#f2f7ff;color:#2258a6;font-size:14px}.panel{order:6;margin-top:18px;overflow:hidden}.panelHead{display:flex;align-items:end;justify-content:space-between;gap:20px;padding:25px}.panelHead>p{margin:0;color:var(--muted);font-size:14px}.table{width:100%;border-top:1px solid var(--line)}
 .tr{display:grid;grid-template-columns:1.15fr .95fr 2.55fr 1.55fr;gap:18px;align-items:center;padding:17px 25px;border-bottom:1px solid var(--line);font-size:15px;line-height:1.55}.tr:hover:not(.th){background:#f8fbff}.tr strong{font-weight:800}.tr span:nth-child(3){letter-spacing:-.02em;word-break:keep-all;overflow-wrap:break-word}.th{padding-top:14px;padding-bottom:14px;background:#f3f6fa;color:#536177;font-size:13px;font-weight:800}.th:hover{background:#f3f6fa}.tr a{color:var(--blue);font-weight:800;text-decoration:none;white-space:nowrap}.tr a:hover{text-decoration:underline}.tr i{width:max-content;border-radius:99px;background:#edf8f4;color:#12715b;padding:5px 8px;font-size:12px;font-style:normal;font-weight:700}
 
 
@@ -60,7 +100,23 @@ h1{margin:0;color:var(--ink);font-size:48px;line-height:1.14;letter-spacing:-.05
 
 
 
+
+
+
+
+
+
+
+
 .review{order:2;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin:26px 0 0;padding:26px;border-left:4px solid var(--blue)}.review>div:first-child{flex:1;min-width:0}.review p:last-child{margin:8px 0 0;color:var(--muted);font-size:15px;line-height:1.65}.reviewActions{display:flex;flex:0 0 auto;flex-wrap:nowrap;gap:8px;padding-top:4px}.reviewActions button{white-space:nowrap;padding:13px 14px;font-size:14px}.secondary{background:var(--blue-pale)!important;color:var(--blue)!important}.reviewList{margin:16px 0 0;color:var(--muted);font-size:14px;line-height:1.7}.reviewList summary{cursor:pointer;color:var(--blue);font-weight:800;list-style:none}.reviewList summary::-webkit-details-marker{display:none}.reviewList summary::before{content:"+";display:inline-grid;place-items:center;width:19px;height:19px;margin-right:8px;border-radius:50%;background:var(--blue-pale)}.reviewList[open] summary::before{content:"-"}.reviewList ul{max-height:360px;margin:12px 0 0;padding:12px 0 12px 19px;overflow:auto;border-top:1px solid var(--line)}.reviewList li{padding:7px 0;border-bottom:1px solid #edf1f5}.reviewList button{margin-left:10px;padding:6px 9px;font-size:12px}
+
+
+
+
+
+
+
+
 
 
 
@@ -79,6 +135,14 @@ h1{margin:0;color:var(--ink);font-size:48px;line-height:1.14;letter-spacing:-.05
 
 
 
+
+
+
+
+
+
+
+
 .phoneCell{display:flex;align-items:center;justify-content:space-between;gap:12px;white-space:nowrap}.copyPhone{border:1px solid #c8d6ec;border-radius:6px;padding:4px 7px;background:#fff;color:#28579e;font:inherit;font-size:12px;font-weight:800;line-height:1.2;cursor:pointer}.copyPhone:hover{border-color:#7ca5e2;background:#edf4ff}
 
 
@@ -88,7 +152,23 @@ h1{margin:0;color:var(--ink);font-size:48px;line-height:1.14;letter-spacing:-.05
 
 
 
+
+
+
+
+
+
+
+
 .sourceList{flex-basis:100%;margin-top:4px;padding-top:18px;border-top:1px solid var(--line)}.sourceList .eyebrow{margin-bottom:5px}.sourceList h3{margin:0;font-size:17px;letter-spacing:-.02em}.sourceList ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px;margin:12px 0 0;padding:0;list-style:none}.sourceList li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 10px;border:1px solid #e5ebf3;border-radius:8px;font-size:14px}.sourceList a{color:var(--blue);font-size:13px;font-weight:800;text-decoration:none;white-space:nowrap}.sourceList a:hover{text-decoration:underline}
+
+
+
+
+
+
+
+
 
 
 
@@ -107,7 +187,23 @@ h1{margin:0;color:var(--ink);font-size:48px;line-height:1.14;letter-spacing:-.05
 
 
 
+
+
+
+
+
+
+
+
 .dialogBackdrop{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:20px;background:rgba(16,33,63,.36)}.dialog{width:min(100%,480px);padding:28px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 48px rgba(16,33,63,.2)}.dialog h2{font-size:23px}.dialog p{margin:9px 0 20px;color:var(--muted);font-size:14px;line-height:1.65}.dialog label{display:block;margin:14px 0 6px;color:var(--ink);font-size:14px;font-weight:800}.dialog input{width:100%;border:1px solid #c8d6ec;border-radius:8px;padding:12px 13px;color:var(--ink);font:inherit;outline:none}.dialog input:focus{border-color:#175cd3;box-shadow:0 0 0 3px #e9f1ff}.dialogActions{display:flex;justify-content:flex-end;gap:8px;margin-top:23px}.dialogActions button{border:0;border-radius:8px;padding:11px 16px;background:var(--ink);color:#fff;font:inherit;font-size:14px;font-weight:800;cursor:pointer}.dialogActions .dialogCancel{border:1px solid #c8d6ec;background:#fff;color:#28579e}
+
+
+
+
+
+
+
+
 
 
 
@@ -118,27 +214,3 @@ h1{margin:0;color:var(--ink);font-size:48px;line-height:1.14;letter-spacing:-.05
 
 /* 지역 펼침 표시를 제목 행 중앙에 고정 */
 .sourceRegion summary{min-height:56px;align-items:center}.sourceRegion summary::marker{content:""}.sourceRegion summary::before{flex:0 0 22px;align-self:center;line-height:1;transform:translateY(0)}
-
-
-
-
-
-
-
-
-/* 검토 페이지의 큰 영역은 필요할 때만 펼쳐 봅니다. */
-.sectionAccordion>summary{position:relative;cursor:pointer;list-style:none}.sectionAccordion>summary::-webkit-details-marker{display:none}.sectionAccordion>summary::marker{content:""}.sectionAccordion>summary>i{display:inline-grid;flex:0 0 30px;place-items:center;width:30px;height:30px;border:1px solid #c8d6ec;border-radius:50%;color:#28579e;font-size:20px;font-style:normal;line-height:1}.sectionAccordion>summary>i::before{content:"+"}.sectionAccordion[open]>summary>i::before{content:"−"}.sectionAccordion[open]>summary{border-bottom:1px solid var(--line)}
-
-
-
-
-
-
-
-
-/* 공식 주소는 관리자 인증 뒤에만 해당 카드에서 수정할 수 있습니다. */
-.sourceAdminBar{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:14px 22px 0}.sourceAdminBar span{color:#28579e;font-size:14px;font-weight:800}.sourceAdminBar button,.sourceActions button{border:1px solid #c8d6ec;border-radius:7px;padding:7px 10px;background:#fff;color:#28579e;font:inherit;font-size:13px;font-weight:800;cursor:pointer}.sourceAdminBar button:hover,.sourceActions button:hover{border-color:#7ca5e2;background:#edf4ff}.sourceActions .deleteSource{border-color:#f0c4c4;color:#b42318}.sourceActions .deleteSource:hover{border-color:#e49b9b;background:#fff4f2}.sourceNotice{margin:12px 22px 0;padding:10px 12px;border:1px solid #cfe0ff;border-radius:8px;background:#f2f7ff;color:#2258a6;font-size:14px}.sourceActions{display:flex;align-items:center;gap:8px;white-space:nowrap}@media(max-width:640px){.sourceAdminBar{justify-content:stretch;padding:12px 18px 0}.sourceAdminBar button{width:100%}.sourceActions{align-items:flex-end;flex-direction:column;gap:6px}.sourceReviewList li{align-items:flex-start}}
-
-.panel .table{display:grid;width:100% !important;min-width:0}
-.panel .table .tr{width:100%;grid-template-columns:1.05fr .9fr 2.35fr 1.4fr}
-@media(max-width:760px){.panel .table .tr{grid-template-columns:1fr 1fr}}
