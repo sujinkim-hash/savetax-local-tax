@@ -1,9 +1,11 @@
 @import "tailwindcss";
 
+
 :root{--ink:#10213f;--muted:#667085;--line:#e3e8ef;--blue:#175cd3;--blue-pale:#edf4ff;--page:#f7f9fc;--surface:#fff}
 *{box-sizing:border-box}
 body{margin:0;background:var(--page);color:var(--ink);font-family:"Malgun Gothic","Noto Sans KR",Arial,sans-serif;font-size:16px;line-height:1.65}
 main{max-width:1240px;margin:auto;padding:48px 28px 76px;display:flex;flex-direction:column}
+
 
 header{order:1;display:flex;align-items:flex-start;justify-content:space-between;gap:32px;padding:8px 0 30px;border-bottom:2px solid var(--ink)}
 .eyebrow{margin:0 0 10px;color:var(--blue);font-size:12px;font-weight:800;letter-spacing:.13em}
@@ -11,32 +13,74 @@ h1{margin:0;color:var(--ink);font-size:48px;line-height:1.14;letter-spacing:-.05
 .lead{margin:15px 0 0;color:var(--muted);font-size:16px;line-height:1.8;white-space:nowrap}
 .admin,.download,.review button{border:0;border-radius:9px;padding:13px 17px;background:var(--ink);color:#fff;font-size:15px;font-weight:800;cursor:pointer}.admin{min-width:130px}.admin span{margin-left:6px;padding:2px 7px;border-radius:99px;background:#ef6d48;font-size:12px}.download{background:var(--blue)}
 
+
 .stats{order:3;display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0 34px}.stats article,.panel,.toolbar,.review{background:var(--surface);border:1px solid var(--line);border-radius:12px}.stats article{padding:20px}.stats b{display:block;margin-top:6px;color:var(--ink);font-size:29px;line-height:1.15}.stats span{display:block;color:var(--muted);font-size:14px;font-weight:700}
 
+
 .toolbar{order:4;display:flex;gap:10px;padding:11px}.toolbar input{flex:1;min-width:0;border:1px solid transparent;background:#f3f6fa;border-radius:8px;padding:13px 14px;color:var(--ink);font-size:15px;outline:none}.toolbar input:focus{border-color:#89afea;background:#fff;box-shadow:0 0 0 3px #e9f1ff}.toolbar select{order:-1;min-width:142px;border:1px solid var(--line);border-radius:8px;padding:0 12px;background:#fff;color:var(--ink);font-size:15px}
+
 
 .notice{order:5;margin:14px 0 0;padding:12px 14px;border:1px solid #cfe0ff;border-radius:9px;background:#f2f7ff;color:#2258a6;font-size:14px}.panel{order:6;margin-top:18px;overflow:hidden}.panelHead{display:flex;align-items:end;justify-content:space-between;gap:20px;padding:25px}.panelHead>p{margin:0;color:var(--muted);font-size:14px}.table{border-top:1px solid var(--line)}
 .tr{display:grid;grid-template-columns:1.15fr .95fr 2.55fr 1.55fr;gap:18px;align-items:center;padding:17px 25px;border-bottom:1px solid var(--line);font-size:15px;line-height:1.55}.tr:hover:not(.th){background:#f8fbff}.tr strong{font-weight:800}.tr span:nth-child(3){letter-spacing:-.02em;word-break:keep-all;overflow-wrap:break-word}.th{padding-top:14px;padding-bottom:14px;background:#f3f6fa;color:#536177;font-size:13px;font-weight:800}.th:hover{background:#f3f6fa}.tr a{color:var(--blue);font-weight:800;text-decoration:none;white-space:nowrap}.tr a:hover{text-decoration:underline}.tr i{width:max-content;border-radius:99px;background:#edf8f4;color:#12715b;padding:5px 8px;font-size:12px;font-style:normal;font-weight:700}
 
+
 .review{order:2;display:flex;align-items:flex-start;justify-content:space-between;gap:24px;margin:26px 0 0;padding:26px;border-left:4px solid var(--blue)}.review>div:first-child{flex:1;min-width:0}.review p:last-child{margin:8px 0 0;color:var(--muted);font-size:15px;line-height:1.65}.reviewActions{display:flex;flex:0 0 auto;flex-wrap:nowrap;gap:8px;padding-top:4px}.reviewActions button{white-space:nowrap;padding:13px 14px;font-size:14px}.secondary{background:var(--blue-pale)!important;color:var(--blue)!important}.reviewList{margin:16px 0 0;color:var(--muted);font-size:14px;line-height:1.7}.reviewList summary{cursor:pointer;color:var(--blue);font-weight:800;list-style:none}.reviewList summary::-webkit-details-marker{display:none}.reviewList summary::before{content:"+";display:inline-grid;place-items:center;width:19px;height:19px;margin-right:8px;border-radius:50%;background:var(--blue-pale)}.reviewList[open] summary::before{content:"-"}.reviewList ul{max-height:360px;margin:12px 0 0;padding:12px 0 12px 19px;overflow:auto;border-top:1px solid var(--line)}.reviewList li{padding:7px 0;border-bottom:1px solid #edf1f5}.reviewList button{margin-left:10px;padding:6px 9px;font-size:12px}
+
 
 @media(max-width:900px){main{padding:40px 22px 66px}.stats{grid-template-columns:repeat(2,1fr)}.review{display:block}.reviewActions{margin-top:18px;flex-wrap:wrap}.tr{grid-template-columns:1.1fr .8fr 2.25fr 1.1fr}.tr span:nth-child(5),.tr i,.th span:nth-child(5),.th span:nth-child(6){display:none}}
 @media(max-width:640px){main{padding:28px 16px 52px}header{display:block;padding-bottom:25px}h1{font-size:40px;line-height:1.16}.lead{font-size:15px;line-height:1.75;white-space:normal}.admin{margin-top:20px}.stats{gap:10px;margin:22px 0 28px}.stats article{padding:17px}.stats b{font-size:26px}.stats span{font-size:13px}.toolbar{flex-wrap:wrap}.toolbar input{min-width:100%}.toolbar select{flex:1;min-height:46px}.download{flex:1}.panelHead{padding:21px 19px}.panelHead>p{font-size:13px}.tr{grid-template-columns:1fr 1fr;gap:7px 14px;padding:15px 19px;font-size:14px}.tr span:nth-child(3),.th span:nth-child(3){display:none}.th{font-size:12px}.review{padding:21px}.review h2{font-size:22px}.reviewActions button{font-size:13px}.reviewList{font-size:14px}}
 
+
 .phoneCell{display:flex;align-items:center;justify-content:space-between;gap:12px;white-space:nowrap}.copyPhone{border:1px solid #c8d6ec;border-radius:6px;padding:4px 7px;background:#fff;color:#28579e;font:inherit;font-size:12px;font-weight:800;line-height:1.2;cursor:pointer}.copyPhone:hover{border-color:#7ca5e2;background:#edf4ff}
 
+
 .sourceList{flex-basis:100%;margin-top:4px;padding-top:18px;border-top:1px solid var(--line)}.sourceList .eyebrow{margin-bottom:5px}.sourceList h3{margin:0;font-size:17px;letter-spacing:-.02em}.sourceList ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 18px;margin:12px 0 0;padding:0;list-style:none}.sourceList li{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:9px 10px;border:1px solid #e5ebf3;border-radius:8px;font-size:14px}.sourceList a{color:var(--blue);font-size:13px;font-weight:800;text-decoration:none;white-space:nowrap}.sourceList a:hover{text-decoration:underline}
+
 
 .headerActions{display:flex;align-items:center;gap:9px}.headerActions .reviewLink,.headerActions .admin{display:inline-flex;align-items:center;justify-content:center;min-width:128px;min-height:48px;padding:0 17px}.reviewLink,.backLink{display:inline-flex;align-items:center;justify-content:center;min-height:46px;border:1px solid #c8d6ec;border-radius:9px;padding:0 15px;color:#28579e;background:#fff;font-size:15px;font-weight:800;text-decoration:none;white-space:nowrap}.reviewLink:hover,.backLink:hover{background:#edf4ff}.pageHeader{display:flex;align-items:flex-start;justify-content:space-between;gap:32px;padding:8px 0 30px;border-bottom:2px solid var(--ink)}.reviewOverview{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:28px 0 34px}.reviewOverview article{padding:20px;background:var(--surface);border:1px solid var(--line);border-radius:12px}.reviewOverview b{display:block;font-size:29px;line-height:1.15}.reviewOverview span{display:block;margin-top:6px;color:var(--muted);font-size:14px}.reviewPanel,.sourceReviewPanel{overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:12px}.reviewGrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;padding:22px}.reviewCard{display:flex;align-items:center;justify-content:space-between;gap:18px;padding:18px;border:1px solid var(--line);border-radius:10px;color:var(--ink);text-decoration:none}.reviewCard:hover{border-color:#9ebce8;background:#f8fbff}.reviewCard b,.reviewCard span{display:block}.reviewCard b{font-size:17px}.reviewCard span{margin-top:4px;color:var(--muted);font-size:14px}.reviewCard>div:last-child{text-align:right}.reviewCard strong{display:block;color:#536177;font-size:13px}.reviewCard i{display:inline-block;margin-top:7px;border-radius:99px;padding:4px 8px;font-size:12px;font-style:normal;font-weight:800}.confirmed{background:#edf8f4;color:#12715b}.pending{background:#fff4e8;color:#a04d10}.sourceReviewPanel{margin-top:20px}.sourceRegionGroups{padding:12px 22px}.sourceRegion+.sourceRegion{border-top:1px solid var(--line)}.sourceRegion summary{display:flex;align-items:center;gap:9px;padding:17px 2px;cursor:pointer;font-size:18px;font-weight:800;letter-spacing:-.02em;list-style:none}.sourceRegion summary::-webkit-details-marker{display:none}.sourceRegion summary::before{content:"+";display:inline-grid;place-items:center;width:22px;height:22px;border:1px solid #c8d6ec;border-radius:50%;color:#28579e;font-size:17px;font-weight:500}.sourceRegion[open] summary::before{content:"−"}.sourceRegion summary span{border-radius:99px;padding:3px 8px;background:#edf4ff;color:#28579e;font-size:12px;font-weight:800}.sourceReviewList{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0 0 20px;padding:0;list-style:none}.sourceReviewList li{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:16px 17px;border:1px solid var(--line);border-radius:10px}.sourceReviewList b,.sourceReviewList span{display:block}.sourceReviewList b{font-size:16px}.sourceReviewList span{margin-top:5px;color:var(--muted);font-size:13px}.sourceReviewList a{color:var(--blue);font-size:14px;font-weight:800;text-decoration:none;white-space:nowrap}.sourceReviewList a:hover{text-decoration:underline}.sourceReviewEmpty{margin:0;padding:24px;color:var(--muted);font-size:15px}@media(max-width:640px){.sourceReviewList{grid-template-columns:1fr}.sourceRegionGroups{padding:8px 18px}.sourceRegion summary{padding:15px 0;font-size:17px}}
 .reviewTopActions{display:flex;justify-content:flex-end;margin-bottom:2px}
 
+
 .dialogBackdrop{position:fixed;inset:0;z-index:20;display:grid;place-items:center;padding:20px;background:rgba(16,33,63,.36)}.dialog{width:min(100%,480px);padding:28px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 18px 48px rgba(16,33,63,.2)}.dialog h2{font-size:23px}.dialog p{margin:9px 0 20px;color:var(--muted);font-size:14px;line-height:1.65}.dialog label{display:block;margin:14px 0 6px;color:var(--ink);font-size:14px;font-weight:800}.dialog input{width:100%;border:1px solid #c8d6ec;border-radius:8px;padding:12px 13px;color:var(--ink);font:inherit;outline:none}.dialog input:focus{border-color:#175cd3;box-shadow:0 0 0 3px #e9f1ff}.dialogActions{display:flex;justify-content:flex-end;gap:8px;margin-top:23px}.dialogActions button{border:0;border-radius:8px;padding:11px 16px;background:var(--ink);color:#fff;font:inherit;font-size:14px;font-weight:800;cursor:pointer}.dialogActions .dialogCancel{border:1px solid #c8d6ec;background:#fff;color:#28579e}
+
 
 /* 지역 펼침 표시를 제목 행 중앙에 고정 */
 .sourceRegion summary{min-height:56px;align-items:center}.sourceRegion summary::marker{content:""}.sourceRegion summary::before{flex:0 0 22px;align-self:center;line-height:1;transform:translateY(0)}
 
+
 /* 검토 페이지의 큰 영역은 필요할 때만 펼쳐 봅니다. */
 .sectionAccordion>summary{position:relative;cursor:pointer;list-style:none}.sectionAccordion>summary::-webkit-details-marker{display:none}.sectionAccordion>summary::marker{content:""}.sectionAccordion>summary>i{display:inline-grid;flex:0 0 30px;place-items:center;width:30px;height:30px;border:1px solid #c8d6ec;border-radius:50%;color:#28579e;font-size:20px;font-style:normal;line-height:1}.sectionAccordion>summary>i::before{content:"+"}.sectionAccordion[open]>summary>i::before{content:"−"}.sectionAccordion[open]>summary{border-bottom:1px solid var(--line)}
 
+
 /* 공식 주소는 관리자 인증 뒤에만 해당 카드에서 수정할 수 있습니다. */
 .sourceAdminBar{display:flex;align-items:center;justify-content:flex-end;gap:10px;padding:14px 22px 0}.sourceAdminBar span{color:#28579e;font-size:14px;font-weight:800}.sourceAdminBar button,.sourceActions button{border:1px solid #c8d6ec;border-radius:7px;padding:7px 10px;background:#fff;color:#28579e;font:inherit;font-size:13px;font-weight:800;cursor:pointer}.sourceAdminBar button:hover,.sourceActions button:hover{border-color:#7ca5e2;background:#edf4ff}.sourceActions .deleteSource{border-color:#f0c4c4;color:#b42318}.sourceActions .deleteSource:hover{border-color:#e49b9b;background:#fff4f2}.sourceNotice{margin:12px 22px 0;padding:10px 12px;border:1px solid #cfe0ff;border-radius:8px;background:#f2f7ff;color:#2258a6;font-size:14px}.sourceActions{display:flex;align-items:center;gap:8px;white-space:nowrap}@media(max-width:640px){.sourceAdminBar{justify-content:stretch;padding:12px 18px 0}.sourceAdminBar button{width:100%}.sourceActions{align-items:flex-end;flex-direction:column;gap:6px}.sourceReviewList li{align-items:flex-start}}
+Footer
+© 2026 GitHub, Inc.
+Footer navigation
+Terms
+Privacy
+Security
+Status
+Community
+Docs
+Contact
+Manage cookies
+Do not share my personal information
+
+.changeReviewBody{padding:0 26px 26px}
+.reviewAdminButton{border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:8px;padding:11px 14px;font-weight:700;cursor:pointer}
+.changeReviewList{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.changeReviewList li{border:1px solid var(--line);border-radius:10px;padding:18px;background:#fff}
+.changeReviewTitle{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:13px}
+.changeReviewTitle b{font-size:16px;color:var(--ink)}
+.changeReviewTitle span{font-size:13px;color:var(--muted)}
+.changeCompare{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:12px;background:#f8fafc;border-radius:8px;padding:12px}
+.changeCompare div{display:grid;gap:4px}
+.changeCompare small{font-size:12px;color:var(--muted)}
+.changeCompare strong{font-size:15px;word-break:break-word}
+.changeCompare i{font-style:normal;color:var(--blue);font-weight:700}
+.changeReviewList li>p{font-size:14px;color:var(--muted);line-height:1.55;margin:13px 0}
+.changeReviewActions{display:flex;justify-content:flex-end;align-items:center;gap:10px}
+.changeReviewActions a{font-size:14px;color:var(--blue);text-decoration:none}
+.changeReviewActions button{border:0;border-radius:7px;background:var(--ink);color:#fff;padding:8px 14px;font-weight:700;cursor:pointer}
+@media(max-width:640px){.changeReviewBody{padding:0 16px 16px}.changeReviewTitle{align-items:flex-start;flex-direction:column}.changeCompare{grid-template-columns:1fr}.changeCompare i{transform:rotate(90deg)}}
