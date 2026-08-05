@@ -2,13 +2,31 @@ import { ensureSchema, requireAdmin } from "@/lib/db";
 export const dynamic = "force-dynamic";
 
 async function syncSourceReviews(sql: NonNullable<Awaited<ReturnType<typeof ensureSchema>>>) {
-  // 기존 주소 검토 이력을 현재의 등록 상태 표현으로 보정합니다.
+  // 실제로 등록된 주소와 일치하는 항목만 등록 상태로 표시합니다.
+  await sql`UPDATE review_candidates
+    SET previous_value = '미등록',
+        proposed_value = '미등록',
+        reason = '공식 주소 등록 여부를 확인해 주세요.'
+    WHERE status = 'pending' AND field = '공식 주소'
+      AND NOT EXISTS (
+        SELECT 1 FROM source_pages s
+        WHERE s.sido = review_candidates.sido
+          AND s.local_name = review_candidates.local_name
+          AND s.source_url = review_candidates.source_url
+      )`;
+
   await sql`UPDATE review_candidates
     SET field = '공식 주소',
         previous_value = '미등록',
         proposed_value = '등록',
         reason = '등록된 공식 직원검색·조직도 주소입니다. 주소와 지자체를 확인한 뒤 반영하세요.'
-    WHERE field = '공식 홈페이지' AND source_url IS NOT NULL`;
+    WHERE status = 'pending' AND source_url IS NOT NULL
+      AND EXISTS (
+        SELECT 1 FROM source_pages s
+        WHERE s.sido = review_candidates.sido
+          AND s.local_name = review_candidates.local_name
+          AND s.source_url = review_candidates.source_url
+      )`;
 
   await sql`INSERT INTO review_candidates (contact_id, sido, local_name, field, previous_value, proposed_value, reason, source_url, status)
     SELECT NULL, s.sido, s.local_name, '공식 주소', '미등록', '등록',
