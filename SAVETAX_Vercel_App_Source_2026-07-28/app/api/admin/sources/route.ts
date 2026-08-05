@@ -19,6 +19,14 @@ async function syncSourceReviews(sql: NonNullable<Awaited<ReturnType<typeof ensu
       WHERE r.sido = s.sido AND r.local_name = s.local_name
         AND r.field = '공식 주소' AND r.source_url = s.source_url
     )`;
+
+  // 같은 시·군·구의 공식 주소 검토 건은 최신 등록 1건만 유지합니다.
+  await sql`DELETE FROM review_candidates older
+    USING review_candidates newer
+    WHERE older.id < newer.id
+      AND older.status = 'pending' AND newer.status = 'pending'
+      AND older.field = '공식 주소' AND newer.field = '공식 주소'
+      AND older.sido = newer.sido AND older.local_name = newer.local_name`;
 }
 
 export async function GET(request: Request) {
