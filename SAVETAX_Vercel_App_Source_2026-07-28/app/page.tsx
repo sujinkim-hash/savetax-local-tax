@@ -25,6 +25,8 @@ export default function Home() {
   const [sourceSidoDraft, setSourceSidoDraft] = useState("");
   const [sourceLocalDraft, setSourceLocalDraft] = useState("");
   const [editingSourceId, setEditingSourceId] = useState<number | null>(null);
+  const [editingContact, setEditingContact] = useState<Contact | null>(null);
+  const [contactPhoneDraft, setContactPhoneDraft] = useState("");
   const [query, setQuery] = useState("");
   const [region, setRegion] = useState("전체");
   const [notice, setNotice] = useState("");
@@ -126,6 +128,23 @@ export default function Home() {
     setNotice("공식 주소를 삭제했습니다.");
   }
 
+  function openContactEdit(contact: Contact) {
+    if (!contact.id) { setNotice("저장된 연락처만 수정할 수 있습니다. 먼저 연락처 DB 시작하기를 실행하세요."); return; }
+    setEditingContact(contact);
+    setContactPhoneDraft(contact.phone);
+  }
+
+  async function saveContactPhone() {
+    if (!editingContact?.id || !contactPhoneDraft.trim()) return;
+    const response = await fetch("/api/contacts", { method: "PATCH", headers: { "content-type": "application/json", "x-admin-key": adminKey }, body: JSON.stringify({ id: editingContact.id, phone: contactPhoneDraft.trim() }) });
+    const data = (await response.json()) as { error?: string };
+    if (!response.ok) { setNotice(data.error ?? "직통번호 수정에 실패했습니다."); return; }
+    const newPhone = contactPhoneDraft.trim();
+    setContacts((current) => current.map((item) => item.id === editingContact.id ? { ...item, phone: newPhone, checked: new Date().toISOString().slice(0, 10), status: "확인" } : item));
+    setEditingContact(null);
+    setNotice("직통번호를 수정했습니다.");
+  }
+
   async function importMoisSources() {
     const key = adminKey || window.prompt("관리자 키를 입력하세요.");
     if (!key) return;
@@ -182,9 +201,10 @@ export default function Home() {
     <section className="stats"><article><span>등록 연락처</span><b>{contacts.length}</b></article><article><span>시도</span><b>{new Set(contacts.map((item) => item.sido)).size}</b></article><article><span>시·군·구 지자체</span><b>256</b></article>{isAdmin && <article><span>검토 대기 변경</span><b>{reviews.length}</b></article>}</section>
     <section className="toolbar"><select aria-label="지역 선택" value={region} onChange={(event) => setRegion(event.target.value)}>{regions.map((item) => <option key={item}>{item}</option>)}</select><input aria-label="검색" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="시도, 시·군·구, 담당 업무 또는 번호 검색" /><button className="download" onClick={downloadCsv}>자료 내려받기</button></section>
     {notice && <p className="notice" role="status">{notice}</p>}
-    <section className="panel"><div className="panelHead"><div><p className="eyebrow">DIRECT CONTACT DIRECTORY</p><h2>담당자 연락처</h2></div><p>{rows.length}건 표시</p></div><div className="table"><div className="tr th"><span>시도</span><span>자치구</span><span>담당 업무</span><span>직통번호</span></div>{rows.map((item, index) => <div className="tr" key={`${item.sido}-${item.local}-${item.phone}-${index}`}><span>{item.sido}</span><strong>{item.local}</strong><span>{item.scope}</span><span className="phoneCell"><a href={`tel:${item.phone}`}>{item.phone}</a><button type="button" className="copyPhone" onClick={() => void copyPhone(item.phone)} aria-label={`${item.phone} 복사`}>{copiedPhone === item.phone ? "복사됨" : "복사"}</button></span></div>)}</div></section>
+    <section className="panel"><div className="panelHead"><div><p className="eyebrow">DIRECT CONTACT DIRECTORY</p><h2>담당자 연락처</h2></div><p>{rows.length}건 표시</p></div><div className="table"><div className="tr th"><span>시도</span><span>자치구</span><span>담당 업무</span><span>직통번호</span></div>{rows.map((item, index) => <div className="tr" key={`${item.sido}-${item.local}-${item.phone}-${index}`}><span>{item.sido}</span><strong>{item.local}</strong><span>{item.scope}</span><span className="phoneCell"><a href={`tel:${item.phone}`}>{item.phone}</a><button type="button" className="copyPhone" onClick={() => void copyPhone(item.phone)} aria-label={`${item.phone} 복사`}>{copiedPhone === item.phone ? "복사됨" : "복사"}</button>{isAdmin && <button type="button" className="contactEdit" onClick={() => openContactEdit(item)}>수정</button>}</span></div>)}</div></section>
     {isAdmin && <section className="review"><div><p className="eyebrow">ADMINISTRATION</p><h2>관리자 검토 및 자동화</h2><p>이 영역은 관리자 키 인증 후에만 보입니다. 승인한 변경만 공개 연락처에 반영됩니다.</p>{reviews.length > 0 && <details className="reviewList"><summary>검토 대상 {reviews.length}건 보기</summary><ul>{reviews.map((review) => <li key={review.id}><b>{review.sido} {review.local}</b> · {review.field}: {review.previous_value} → {review.source_url ? <a href={review.source_url} target="_blank" rel="noreferrer">공식 페이지 열기</a> : review.proposed_value}<button onClick={() => approveReview(review.id)}>승인</button></li>)}</ul></details>}</div><div className="reviewActions"><button onClick={initializeDatabase}>연락처 DB 시작하기</button><button onClick={importMoisSources}>행안부 주소 일괄 수집</button><button className="secondary" onClick={() => { setEditingSourceId(null); setSourceUrlDraft(""); setSourceSidoDraft(""); setSourceLocalDraft(""); setSourceDialogOpen(true); }}>공식 주소 직접 등록</button></div>{sources.length > 0 && <div className="sourceList"><p className="eyebrow">OFFICIAL ADDRESS STATUS</p><h3>공식 주소 등록 현황</h3><ul>{sources.map((source) => <li key={source.id}><div className="sourceMeta"><b>{source.sido} {source.local}</b><span>등록일 {String(source.created_at).slice(0, 10)}</span></div><div className="sourceActions"><a href={source.source_url} target="_blank" rel="noreferrer">공식 페이지 열기</a><button type="button" onClick={() => editSource(source)}>수정</button><button type="button" className="sourceDelete" onClick={() => void deleteSource(source)}>삭제</button></div></li>)}</ul></div>}</section>}
     {adminDialogOpen && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={authenticateAdmin}><h2>관리자 인증</h2><p>관리자 키를 입력한 뒤 Enter를 누르거나 인증 버튼을 선택하세요.</p><label htmlFor="admin-key">관리자 키</label><input id="admin-key" type="password" autoFocus value={adminKeyDraft} onChange={(event) => setAdminKeyDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); void authenticateAdmin(); } }} /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setAdminDialogOpen(false); setAdminKeyDraft(""); }}>취소</button><button type="submit">인증</button></div></form></div>}
+    {editingContact && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={(event) => { event.preventDefault(); void saveContactPhone(); }}><h2>직통번호 수정</h2><p>{editingContact.sido} {editingContact.local} · {editingContact.scope}</p><label htmlFor="contact-phone">직통번호</label><input id="contact-phone" type="tel" autoFocus required value={contactPhoneDraft} onChange={(event) => setContactPhoneDraft(event.target.value)} placeholder="예: 02-0000-0000" /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => setEditingContact(null)}>취소</button><button type="submit">저장</button></div></form></div>}
     {sourceDialogOpen && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={(event) => { event.preventDefault(); void addSource(); }}><h2>{editingSourceId !== null ? "공식 주소 수정" : "공식 주소 직접 등록"}</h2><p>주소와 시·도, 시·군·구를 입력하세요. 마지막 칸에서 Enter를 누르면 저장됩니다.</p><label htmlFor="source-url">공식 직원검색·조직도 주소</label><input id="source-url" type="url" autoFocus required value={sourceUrlDraft} onChange={(event) => setSourceUrlDraft(event.target.value)} placeholder="https://" /><label htmlFor="source-sido">시·도</label><input id="source-sido" required value={sourceSidoDraft} onChange={(event) => setSourceSidoDraft(event.target.value)} placeholder="예: 경기도" /><label htmlFor="source-local">시·군·구</label><input id="source-local" required value={sourceLocalDraft} onChange={(event) => setSourceLocalDraft(event.target.value)} placeholder="예: 성남시" /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setSourceDialogOpen(false); setEditingSourceId(null); }}>취소</button><button type="submit">{editingSourceId !== null ? "저장" : "등록"}</button></div></form></div>}
   </main>;
 }
