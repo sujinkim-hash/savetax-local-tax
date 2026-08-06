@@ -222,3 +222,43 @@ h1{margin:0;color:var(--ink);font-size:48px;line-height:1.14;letter-spacing:-.05
 .sourceAdminBar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin:18px 0 0;padding:15px 17px;border:1px solid #dce6f4;border-radius:10px;background:#f8fbff}.adminModeStatus{display:grid;gap:4px;min-width:0}.adminModeStatus b{font-size:15px;color:var(--ink)}.adminModeStatus span{color:var(--muted);font-size:14px;line-height:1.45}.sourceAdminBar button{display:inline-flex;align-items:center;justify-content:center;flex:0 0 auto;min-height:40px;border:1px solid var(--blue);border-radius:8px;padding:0 14px;background:var(--blue);color:#fff;font:inherit;font-size:14px;font-weight:800;cursor:pointer;white-space:nowrap}.sourceAdminBar button:hover{background:#104bb4;border-color:#104bb4}.sourceAdminBar .exitAdminMode{border-color:#c8d6ec;background:#fff;color:#28579e}.sourceAdminBar .exitAdminMode:hover{border-color:#7ca5e2;background:#edf4ff}@media(max-width:760px){.sourceAdminBar{align-items:flex-start;flex-direction:column}.sourceAdminBar button{width:100%}}
 /* 수정 검토 상태별 목록 */
 .reviewStatusTabs{display:flex;gap:8px;margin:0 0 14px}.reviewStatusTabs button{display:inline-flex;align-items:center;gap:7px;min-height:38px;border:1px solid #c8d6ec;border-radius:8px;padding:0 13px;background:#fff;color:#28579e;font:inherit;font-size:14px;font-weight:800;cursor:pointer}.reviewStatusTabs button:hover{background:#edf4ff;border-color:#7ca5e2}.reviewStatusTabs button.active{border-color:var(--blue);background:var(--blue);color:#fff}.reviewStatusTabs span{display:inline-grid;place-items:center;min-width:20px;height:20px;border-radius:99px;background:#edf4ff;color:#28579e;font-size:12px;line-height:1}.reviewStatusTabs button.active span{background:rgba(255,255,255,.18);color:#fff}@media(max-width:640px){.reviewStatusTabs{width:100%}.reviewStatusTabs button{flex:1;justify-content:center}}
+
+
+/* 공식 주소 등록 현황: 2단 아코디언 */
+.sourceStatusAccordion{margin-top:20px;overflow:hidden;background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.sourceStatusAccordion>summary{list-style:none;cursor:pointer}
+.sourceStatusAccordion>summary::-webkit-details-marker{display:none}
+.sourceStatusSummary{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 25px}
+.sourceStatusSummary h2{font-size:24px}
+.sourceStatusSummaryMeta{display:flex;align-items:center;gap:12px;color:#28579e;font-size:14px;font-weight:800}
+.sourceStatusSummaryMeta>span{border:1px solid #c8d6ec;border-radius:99px;padding:4px 9px;background:#fff}
+.sourceStatusSummaryMeta>i{display:grid;place-items:center;width:25px;height:25px;border:1px solid #c8d6ec;border-radius:50%;font-style:normal}
+.sourceStatusSummaryMeta>i::before{content:"+";font-size:19px;font-weight:400;line-height:1}
+.sourceStatusAccordion[open] .sourceStatusSummaryMeta>i::before{content:"−"}
+.sourceStatusBody{display:none;padding:0 25px 24px;border-top:1px solid var(--line)}
+.sourceStatusAccordion[open]>.sourceStatusBody{display:block}
+.sourceStatusGuide{margin:17px 0 0;color:var(--muted);font-size:14px}
+.sourceStatusBody .sourceAdminBar{margin-top:14px}
+.sourceStatusBody .sourceNotice{margin:12px 0 0}
+.sourceRegionGroups{display:grid;gap:10px;margin-top:16px;padding:0}
+.sourceRegion{overflow:hidden;border:1px solid var(--line);border-radius:9px;background:#fff}
+.sourceRegion+.sourceRegion{border-top:1px solid var(--line)}
+.sourceRegion>summary{display:flex;align-items:center;gap:10px;min-height:54px;padding:0 16px;list-style:none;cursor:pointer}
+.sourceRegion>summary::-webkit-details-marker{display:none}
+.sourceRegion>summary::before{content:"+";display:grid;place-items:center;width:22px;height:22px;flex:0 0 22px;border:1px solid #c8d6ec;border-radius:50%;color:#28579e;font-size:17px;font-weight:500;line-height:1}
+.sourceRegion[open]>summary::before{content:"−"}
+.sourceRegionName{font-size:16px;font-weight:800;letter-spacing:-.02em}
+.sourceRegionCount{margin-left:auto;border-radius:99px;padding:4px 9px;background:#edf4ff;color:#28579e;font-size:12px;font-weight:800}
+.sourceRegion>.sourceReviewList{display:none}
+.sourceRegion[open]>.sourceReviewList{display:grid}
+.sourceReviewList{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:0;padding:0 16px 16px;list-style:none}
+.sourceReviewList li{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 16px;border:1px solid var(--line);border-radius:8px}
+.sourceActions .deleteSource{border-color:#f0c5c8;color:#b42318}
+.sourceActions .deleteSource:hover{background:#fff2f2;border-color:#e39a9f}
+@media(max-width:640px){
+  .sourceStatusSummary{padding:19px}
+  .sourceStatusSummary h2{font-size:22px}
+  .sourceStatusBody{padding:0 19px 19px}
+  .sourceReviewList{grid-template-columns:1fr;padding:0 12px 12px}
+  .sourceRegion>summary{padding:0 13px}
+}
