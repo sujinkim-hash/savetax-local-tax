@@ -42,6 +42,7 @@ export default function Home() {
   }
   useEffect(() => { setPage(1); }, [query, region]);
   useEffect(() => { void loadFromDatabase(); }, []);
+  useEffect(() => { const savedKey = window.localStorage.getItem("savetax_admin_key"); if (savedKey) void loadReviews(savedKey); }, []);
   useEffect(() => { const selected = new URLSearchParams(window.location.search).get("region"); if (selected) setRegion(selected); }, []);
 
   const rows = useMemo(() => contacts.filter((item) =>
@@ -65,6 +66,7 @@ export default function Home() {
     if (!response.ok) { setNotice(data.error ?? "관리자 인증에 실패했습니다."); return false; }
     setAdminKey(key);
     setIsAdmin(true);
+    window.localStorage.setItem("savetax_admin_key", key);
     setReviews(data.reviews ?? []);
     await loadSources(key);
     return true;
