@@ -136,12 +136,22 @@ export default function ReviewPage() {
   });
 
 
-  return <main>
-    <div className="reviewTopActions"><Link className="backLink" href="/">담당자 번호 확인</Link></div>
+  return <main className="reviewShell">
+    <aside className="sideRail reviewRail" aria-label="주요 메뉴">
+      <div className="railBrand"><span>LOCAL TAX</span><strong>지방소득세<br />담당자 조회</strong></div>
+      <nav><Link href="/">연락처 조회</Link><a className="active" href="#review-home">검토 현황</a><a href="#source-status">공식 주소 관리</a></nav>
+      <p>종합소득세 관련<br />담당 주무관 연락처</p>
+    </aside>
+    <div className="reviewContent">
+      <header className="reviewBanner" id="review-home">
+        <div><p className="eyebrow">REVIEW & ADMINISTRATION</p><h1>검토·관리자 센터</h1><p className="lead">공식 주소와 담당 연락처의 변경 사항을 한 곳에서 검토하고 관리합니다.</p></div>
+        <Link className="reviewLink" href="/">연락처 조회</Link>
+      </header>
+      <div className="reviewWorkspace">
     <section className="reviewOverview"><article><b>{contacts.length}</b><span>등록 연락처</span></article><article><b>{areas.length}</b><span>검토 지역</span></article><article><b>{summary.reduce((total, item) => total + item.pending, 0)}</b><span>재검토 대상</span></article><article><b>{sourcesLoaded ? sources.length : "-"}</b><span>등록 공식 주소</span></article></section>
     <details className="reviewPanel sectionAccordion"><summary className="panelHead"><div><p className="eyebrow">REGIONAL REVIEW</p><h2>시·도별 확인 상태</h2></div><p>지역을 선택하면 연락처 목록으로 돌아갈 수 있습니다.</p><i aria-hidden="true" /></summary><div className="reviewGrid">{summary.map((item) => <Link href={`/?region=${encodeURIComponent(item.sido)}`} className="reviewCard" key={item.sido}><div><b>{item.sido}</b><span>{item.locals}개 시·군·구 · {item.count}건</span></div><div><strong>{item.checked}</strong><i className={item.pending ? "pending" : "confirmed"}>{item.pending ? `재검토 ${item.pending}건` : "확인 완료"}</i></div></Link>)}</div></details>
     <details className="reviewPanel sectionAccordion"><summary className="panelHead"><div><p className="eyebrow">CHANGE REVIEW</p><h2>수정 내용 검토</h2></div><p>공식 주소와 담당 연락처의 변경 사항을 검토합니다.</p><i aria-hidden="true" /></summary><div className="changeReviewBody">{!isAdmin ? <button type="button" className="reviewAdminButton" onClick={() => setAdminDialogOpen(true)}>관리자 인증 후 변경 검토</button> : (registeredReviews.length + unregisteredReviews.length) > 0 ? <><div className="reviewStatusTabs" role="group" aria-label="검토 상태 선택"><button type="button" className={reviewStatusFilter === "registered" ? "active" : ""} onClick={() => setReviewStatusFilter("registered")}>등록 <span>{registeredReviews.length}</span></button><button type="button" className={reviewStatusFilter === "unregistered" ? "active" : ""} onClick={() => setReviewStatusFilter("unregistered")}>미등록 <span>{unregisteredReviews.length}</span></button></div>{visibleReviews.length > 0 ? <ul className="changeReviewList">{visibleReviews.map((review) => <li key={review.id} className="reviewCandidateRow"><b>{review.sido} {review.local}</b><div className="changeReviewActions">{review.source_url && <a href={review.source_url} target="_blank" rel="noreferrer">공식 페이지 확인</a>}<button type="button" onClick={() => void approveReview(review)}>반영</button></div></li>)}</ul> : <p className="sourceReviewEmpty">{reviewStatusFilter === "registered" ? "등록 상태의 검토 항목이 없습니다." : "미등록 상태의 검토 항목이 없습니다."}</p>}</> : <p className="sourceReviewEmpty">현재 반영 대기 중인 수정 내용이 없습니다.</p>}</div></details>
-    <details className="sourceReviewPanel sourceStatusAccordion">
+    <details className="sourceReviewPanel sourceStatusAccordion" id="source-status">
       <summary className="sourceStatusSummary">
         <div>
           <p className="eyebrow">OFFICIAL SOURCES</p>
@@ -161,5 +171,7 @@ export default function ReviewPage() {
     </details>
     {adminDialogOpen && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={authenticateAdmin}><h2>관리자 인증</h2><p>관리자 키를 입력하면 공식 주소를 바로 수정할 수 있습니다.</p><label htmlFor="review-admin-key">관리자 키</label><input id="review-admin-key" type="password" autoFocus value={adminKeyDraft} onChange={(event) => setAdminKeyDraft(event.target.value)} /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setAdminDialogOpen(false); setAdminKeyDraft(""); }}>취소</button><button type="submit">인증</button></div></form></div>}
     {editingSource && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={saveSource}><h2>공식 주소 수정</h2><p>지역 이름과 직원검색·조직도 주소를 함께 수정할 수 있습니다.</p><label htmlFor="source-edit-sido">시·도</label><input id="source-edit-sido" autoFocus required value={sourceSidoDraft} onChange={(event) => setSourceSidoDraft(event.target.value)} placeholder="예: 경기도" /><label htmlFor="source-edit-local">시·군·구</label><input id="source-edit-local" required value={sourceLocalDraft} onChange={(event) => setSourceLocalDraft(event.target.value)} placeholder="예: 성남시" /><label htmlFor="source-edit-url">공식 직원검색·조직도 주소</label><input id="source-edit-url" type="url" required value={sourceUrlDraft} onChange={(event) => setSourceUrlDraft(event.target.value)} placeholder="https://" /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setEditingSource(null); setSourceUrlDraft(""); setSourceSidoDraft(""); setSourceLocalDraft(""); }}>취소</button><button type="submit">저장</button></div></form></div>}
+      </div>
+    </div>
   </main>;
 }
