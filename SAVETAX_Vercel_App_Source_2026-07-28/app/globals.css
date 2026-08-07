@@ -365,7 +365,19 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   gap: 10px;
 }
 
-.topBanner .headerActions .reviewLink,
+.topBanner .headerActions .reviewLink {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  padding: 10px 14px;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 600;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
 .topBanner .headerActions .admin {
   display: inline-flex;
   align-items: center;
@@ -373,6 +385,9 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   white-space: nowrap;
   min-height: 42px;
   padding: 0 15px;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 600;
   box-sizing: border-box;
   text-decoration: none;
 }
