@@ -380,15 +380,19 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 .reviewBanner .headerAdminButton {
   min-height: 42px;
   padding: 0 15px;
-  border: 1px solid #3f5f80;
+  border: 1px solid #ffb238;
   border-radius: 7px;
-  background: #3f5f80;
-  color: #fff;
+  background: #ffb238;
+  color: #2b3c56;
   font: inherit;
   font-size: 14px;
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
+}
+.reviewBanner .headerAdminButton:hover {
+  background: #ffc35e;
+  border-color: #ffc35e;
 }
 
 .reviewContent .changeReviewList {
