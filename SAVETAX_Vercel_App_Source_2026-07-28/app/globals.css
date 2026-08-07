@@ -32,7 +32,7 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 .panelHead { display:flex; justify-content:space-between; align-items:flex-end; gap:20px; padding:25px 26px 20px; border-bottom:1px solid var(--line); }
 .panelHead p:last-child { margin:0; color:var(--muted); font-size:14px; }
 .table { width:100%; }
-.tr { display:grid; grid-template-columns:1.1fr .8fr 2.35fr 1.1fr; align-items:center; min-height:64px; padding:0 26px; border-bottom:1px solid #edf0f4; }
+.tr { display:grid; grid-template-columns:130px 160px minmax(0,1fr) 190px; align-items:center; min-height:64px; padding:0 26px; border-bottom:1px solid #edf0f4; }
 .tr:last-child { border-bottom:0; }
 .tr > span,.tr > strong { padding:12px 0; font-size:14px; overflow-wrap:anywhere; }
 .tr > span:first-child { color:#627189; }
@@ -167,9 +167,14 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   color: #345979;
 }
 .topBanner .headerActions .admin {
-  background: #3f5f80;
-  border-color: #3f5f80;
-  color: #fff;
+  background: #ffb238;
+  border-color: #ffb238;
+  color: #2b3c56;
+  font-weight: 600;
+}
+.topBanner .headerActions .admin:hover {
+  background: #ffc35e;
+  border-color: #ffc35e;
 }
 
 .appContent > .stats { margin: 0; }
@@ -514,4 +519,17 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   .reviewContent .regionalTableHead { display: none; }
   .reviewContent .regionalTableRow { grid-template-columns: 1fr 1fr; gap: 7px 12px; }
   .reviewContent .regionalTableRow b { grid-column: 1 / -1; }
+}
+
+/* 담당 업무 컬럼 말줄임 처리 + 페이지네이션 (추가 반영) */
+.scopeCell { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:help; }
+
+.pager { display:flex; align-items:center; justify-content:center; gap:14px; padding:18px 26px; border-top:1px solid #edf0f4; }
+.pager button { padding:8px 16px; border:1px solid #d7e0ea; border-radius:7px; background:#fff; color:#415874; font-weight:500; }
+.pager button:disabled { opacity:.4; cursor:not-allowed; }
+.pager span { color:#5e7084; font-size:14px; }
+
+@media (max-width:760px) {
+  .tr { grid-template-columns: 1fr 2.1fr; }
+  .scopeCell { white-space:normal; overflow:visible; text-overflow:clip; }
 }
