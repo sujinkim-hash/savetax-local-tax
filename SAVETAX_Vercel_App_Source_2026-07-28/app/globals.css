@@ -211,11 +211,14 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 }
 
 .reviewShell {
-  max-width: none;
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 0;
   width: 100%;
+  max-width: none;
   margin: 0;
   padding: 0 0 72px;
-  gap: 0;   /* 추가 */
+  background: #fff;
 }
 
 .reviewContent {
