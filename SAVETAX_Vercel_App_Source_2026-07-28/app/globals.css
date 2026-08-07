@@ -263,8 +263,8 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 }
 
 .reviewContent .reviewOverview article {
-  min-height: 104px;
-  padding: 19px 20px;
+  min-height: 92px;
+  padding: 16px 20px;
   border: 1px solid #dbe3eb;
   border-radius: 9px;
   background: #fff;
@@ -272,7 +272,7 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   flex-direction: column-reverse;
   align-items: flex-start;
   justify-content: flex-end;
-  gap: 6px;
+  gap: 3px;
 }
 
 .reviewContent .reviewOverview b {
