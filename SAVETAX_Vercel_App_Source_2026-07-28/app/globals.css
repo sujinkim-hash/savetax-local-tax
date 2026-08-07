@@ -333,3 +333,135 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   .reviewContent .sourceStatusAccordion > summary { align-items: flex-start; flex-direction: column; gap: 10px; }
   .reviewContent .panelHead > p { margin: 0; }
 }
+
+/* Final width, header actions and review list readability */
+.reviewShell {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0 0 72px;
+}
+
+.topBanner .headerActions {
+  position: static !important;
+  display: flex !important;
+  flex: 0 0 auto;
+  width: auto !important;
+  min-width: max-content;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.topBanner .headerActions .reviewLink,
+.topBanner .headerActions .admin {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  min-height: 42px;
+  padding: 0 15px;
+  box-sizing: border-box;
+  text-decoration: none;
+}
+
+.reviewHeaderActions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 0 0 auto;
+}
+
+.reviewBanner .headerAdminButton {
+  min-height: 42px;
+  padding: 0 15px;
+  border: 1px solid #3f5f80;
+  border-radius: 7px;
+  background: #3f5f80;
+  color: #fff;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.reviewContent .changeReviewList {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.reviewContent .reviewCandidateRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  padding: 15px 16px;
+  border: 1px solid #e0e7ef;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.reviewContent .reviewCandidateRow b {
+  color: #263a54;
+  font-size: 15px;
+}
+
+.reviewContent .changeReviewActions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.reviewContent .changeReviewActions a,
+.reviewContent .changeReviewActions button {
+  padding: 8px 11px;
+  border: 1px solid #cbd9e7;
+  border-radius: 6px;
+  background: #fff;
+  color: #345979;
+  font: inherit;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.reviewContent .changeReviewActions button {
+  border-color: #3f5f80;
+  background: #3f5f80;
+  color: #fff;
+}
+
+.reviewContent .reviewStatusTabs {
+  display: flex;
+  gap: 8px;
+  margin: 0 0 16px;
+}
+
+.reviewContent .reviewStatusTabs button {
+  min-width: 92px;
+  padding: 9px 12px;
+  border: 1px solid #cbd9e7;
+  border-radius: 6px;
+  background: #fff;
+  color: #345979;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.reviewContent .reviewStatusTabs button.active {
+  border-color: #3f5f80;
+  background: #3f5f80;
+  color: #fff;
+}
+
+@media (max-width: 900px) {
+  .reviewShell { padding: 0 16px 54px; }
+  .topBanner .headerActions,
+  .reviewHeaderActions { margin-top: 18px; justify-content: flex-start; flex-wrap: wrap; min-width: 0; }
+  .reviewContent .reviewCandidateRow { align-items: flex-start; flex-direction: column; }
+}
