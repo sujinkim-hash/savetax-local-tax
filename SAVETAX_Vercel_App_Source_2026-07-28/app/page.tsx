@@ -30,7 +30,9 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [region, setRegion] = useState("전체");
   const [notice, setNotice] = useState("");
-  const [copiedPhone, setCopiedPhone] = useState("");
+const [copiedPhone, setCopiedPhone] = useState("");
+const [page, setPage] = useState(1);
+const pageSize = 50;
 
   async function loadFromDatabase() {
     const response = await fetch("/api/contacts", { cache: "no-store" });
@@ -38,6 +40,7 @@ export default function Home() {
     const data = (await response.json()) as { contacts?: Contact[] };
     if (data.contacts?.length) setContacts(data.contacts);
   }
+  useEffect(() => { setPage(1); }, [query, region]);
   useEffect(() => { void loadFromDatabase(); }, []);
   useEffect(() => { const selected = new URLSearchParams(window.location.search).get("region"); if (selected) setRegion(selected); }, []);
 
@@ -52,6 +55,12 @@ export default function Home() {
       .sort(([left], [right]) => left.localeCompare(right, "ko"))
       .map(([sido, items]) => ({ sido, items: items.sort((left, right) => left.local.localeCompare(right.local, "ko")) }));
   }, [sources]);
+  const rows = useMemo(() => contacts.filter((item) =>
+  (region === "전체" || item.sido === region) && `${item.sido} ${item.local} ${item.scope} ${item.phone}`.toLowerCase().includes(query.toLowerCase()),
+), [contacts, query, region]);
+
+const totalPages = Math.max(1, Math.ceil(rows.length / pageSize));
+const pagedRows = useMemo(() => rows.slice((page - 1) * pageSize, page * pageSize), [rows, page]);
 
   async function loadReviews(key: string) {
     const response = await fetch("/api/admin/reviews", { headers: { "x-admin-key": key } });
