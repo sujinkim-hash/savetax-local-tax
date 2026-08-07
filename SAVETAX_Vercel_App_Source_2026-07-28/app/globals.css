@@ -490,6 +490,19 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   color: #fff;
 }
 
+.reviewSearchInput {
+  width: 100%;
+  min-height: 42px;
+  margin: 0 0 14px;
+  padding: 0 13px;
+  border: 1px solid #cbd9e7;
+  border-radius: 7px;
+  font: inherit;
+  color: #263a54;
+  outline: none;
+}
+.reviewSearchInput:focus { box-shadow: 0 0 0 2px #dce8f5; border-color: #9fb8d0; }
+
 @media (max-width: 900px) {
   .reviewShell { padding: 0 16px 54px; }
   .topBanner .headerActions,
