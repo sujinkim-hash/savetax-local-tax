@@ -80,3 +80,109 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 .dialogActions { display:flex; justify-content:flex-end; gap:8px; margin-top:22px; }
 .dialogActions .dialogCancel { background:#fff; color:#586b84; }
 @media (max-width:760px) { main{padding:26px 16px 54px;gap:16px} header{display:grid;gap:18px;padding-bottom:20px} h1{font-size:31px;white-space:normal} .lead{white-space:normal} .headerActions{padding-top:0}.stats{grid-template-columns:1fr}.toolbar{flex-wrap:wrap}.toolbar select{width:100%}.toolbar input{min-width:180px}.download{margin-left:auto}.panelHead{padding:20px}.tr{grid-template-columns:1fr .95fr 2.1fr; padding:0 18px}.tr > :first-child{display:none}.tr.th > :first-child{display:none}.phoneCell{grid-column:3}.review{padding:22px 20px}.review > div:first-child{display:block}.reviewActions{justify-content:flex-start;margin-top:17px}.sourceListRegions{grid-template-columns:1fr}.sourceListRegion li{align-items:flex-start;flex-direction:column}.sourceActions{justify-content:flex-start} }
+
+/* Archive-inspired layout: soft navy, left navigation, table-first directory */
+.appShell {
+  max-width: 1440px;
+  min-height: 100vh;
+  margin: 0 auto;
+  padding: 0 28px 72px;
+  display: grid;
+  grid-template-columns: 218px minmax(0, 1fr);
+  gap: 0;
+}
+
+.sideRail {
+  margin: 0;
+  padding: 34px 20px;
+  background: #f7f9fc;
+  border-right: 1px solid #dbe3eb;
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.railBrand { padding: 0 10px 28px; }
+.railBrand span {
+  color: #58728e;
+  font-size: 11px;
+  letter-spacing: .12em;
+  font-weight: 600;
+}
+.railBrand strong {
+  display: block;
+  margin-top: 8px;
+  color: #263a54;
+  font-size: 20px;
+  line-height: 1.35;
+  font-weight: 600;
+  letter-spacing: -.05em;
+}
+
+.sideRail nav { display: grid; gap: 5px; }
+.sideRail nav a {
+  display: block;
+  color: #4c5f73;
+  text-decoration: none;
+  padding: 10px 11px;
+  border-radius: 7px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.sideRail nav a:hover,
+.sideRail nav a.active { background: #e8eff6; color: #2f557c; }
+
+.sideRail > p {
+  margin-top: auto;
+  padding: 20px 10px 0;
+  border-top: 1px solid #dbe3eb;
+  color: #627487;
+  font-size: 12px;
+  line-height: 1.65;
+}
+
+.appContent {
+  min-width: 0;
+  padding: 0 0 0 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.appContent > header.topBanner {
+  margin: 0;
+  padding: 34px 38px 30px;
+  border: 0;
+  border-radius: 0 0 12px 12px;
+  background: #5a7898;
+  color: #fff;
+}
+
+.topBanner .eyebrow { color: #eaf1f8; }
+.topBanner h1 { color: #fff; }
+.topBanner .lead { color: #f0f5fa; }
+.topBanner .headerActions .reviewLink {
+  background: rgba(255,255,255,.96);
+  border: 1px solid rgba(255,255,255,.82);
+  color: #345979;
+}
+.topBanner .headerActions .admin {
+  background: #3f5f80;
+  border-color: #3f5f80;
+  color: #fff;
+}
+
+.appContent > .stats { margin: 0; }
+.appContent .panel,
+.appContent .review { border-radius: 10px; }
+
+@media (max-width: 900px) {
+  .appShell { display: block; padding: 0 16px 54px; }
+  .sideRail { display: none; }
+  .appContent { padding: 0; gap: 16px; }
+  .appContent > header.topBanner {
+    margin: 0 -16px;
+    padding: 28px 22px 24px;
+    border-radius: 0 0 10px 10px;
+  }
+}
