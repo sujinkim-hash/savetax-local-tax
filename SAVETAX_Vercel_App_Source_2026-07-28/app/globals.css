@@ -1,16 +1,16 @@
 @import "tailwindcss";
-@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500&family=Noto+Serif+KR:wght@400;500&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;600&display=swap");
 
-:root { --ink:#26364e; --muted:#718096; --line:#e5eaf0; --blue:#4d6b90; --blue-pale:#f4f7fa; --page:#fafbfd; --surface:#fff; }
+:root { --ink:#1f314b; --muted:#4e617a; --line:#dbe3eb; --blue:#3f6186; --blue-pale:#f4f7fa; --page:#fbfcfe; --surface:#fff; }
 * { box-sizing:border-box; }
 body { margin:0; background:var(--page); color:var(--ink); font-family:"Noto Sans KR","Malgun Gothic",sans-serif; font-size:16px; line-height:1.65; }
 button,input,select { font:inherit; }
 button { cursor:pointer; }
 main { max-width:1240px; margin:0 auto; padding:42px 28px 72px; display:flex; flex-direction:column; gap:20px; }
 header { display:flex; align-items:flex-start; justify-content:space-between; gap:28px; padding:4px 0 28px; border-bottom:1px solid #dce3ea; }
-.eyebrow { margin:0 0 7px; color:#60738e; font-size:12px; font-weight:500; letter-spacing:.13em; }
-h1,h2,h3 { color:#26364e; font-family:"Noto Serif KR",serif; font-weight:500; letter-spacing:-.045em; }
-h1 { margin:0; font-size:38px; line-height:1.3; white-space:nowrap; }
+.eyebrow { margin:0 0 7px; color:#496481; font-size:12px; font-weight:500; letter-spacing:.13em; }
+h1,h2,h3 { color:#26364e; font-family:"Noto Sans KR","Malgun Gothic",sans-serif; font-weight:500; letter-spacing:-.055em; }
+h1 { margin:0; font-size:37px; line-height:1.3; white-space:nowrap; }
 h2 { margin:0; font-size:25px; line-height:1.4; }
 h3 { margin:0; font-size:20px; line-height:1.4; }
 .lead { margin:8px 0 0; color:var(--muted); font-size:15px; white-space:nowrap; }
@@ -74,7 +74,7 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 .dialogBackdrop { position:fixed; inset:0; z-index:20; display:grid; place-items:center; padding:20px; background:rgba(43,58,78,.28); }
 .dialog { width:min(470px,100%); padding:26px; border:1px solid #e3e8ee; border-radius:12px; background:#fff; box-shadow:0 16px 42px rgba(38,54,78,.16); }
 .dialog p { color:var(--muted); font-size:14px; margin:8px 0 20px; }
-.dialog label { display:block; margin:13px 0 6px; color:#51627b; font-size:13px; }
+.dialog label { display:block; margin:13px 0 6px; color:#415875; font-size:13px; }
 .dialog input { width:100%; height:43px; border:1px solid #d5dfe9; border-radius:8px; padding:0 12px; color:var(--ink); outline:none; }
 .dialog input:focus { border-color:#91a8c0; box-shadow:0 0 0 2px #e8eff5; }
 .dialogActions { display:flex; justify-content:flex-end; gap:8px; margin-top:22px; }
