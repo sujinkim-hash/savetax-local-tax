@@ -283,6 +283,7 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 .reviewContent .reviewOverview b {
   color: #213b5a;
   font-size: 28px;
+  font-weight: 500;
   line-height: 1;
 }
 
