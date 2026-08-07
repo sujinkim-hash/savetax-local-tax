@@ -239,8 +239,8 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 }
 
 .reviewBanner .eyebrow { color: #eaf1f8; }
-.reviewBanner h1 { color: #fff; margin: 7px 0 9px; font-size: 32px; line-height: 1.22; }
-.reviewBanner .lead { color: #f0f5fa; margin: 0; }
+.reviewBanner h1 { color: #fff; margin: 0; font-size: 37px; line-height: 1.3; }
+.reviewBanner .lead { color: #f0f5fa; margin: 8px 0 0; }
 .reviewBanner .reviewLink {
   flex: 0 0 auto;
   color: #345979;
