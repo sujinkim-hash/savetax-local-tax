@@ -152,7 +152,7 @@ if (savedKey) void verifyAdminKey(savedKey, true);
   return <main className="reviewShell">
     <aside className="sideRail reviewRail" aria-label="주요 메뉴">
       <div className="railBrand"><span>LOCAL TAX</span><strong>지방소득세<br />담당자 조회</strong></div>
-      <nav><Link href="/">연락처 조회</Link><a className="active" href="#review-home">검토 현황</a><a href="#source-status">공식 주소 관리</a></nav>
+      <nav><Link href="/">연락처 조회</Link><a className="active" href="#review-home">검토 현황</a><Link href="/sources">공식 주소 관리</Link></nav>
       <p>종합소득세 관련<br />담당 주무관 연락처</p>
     </aside>
     <div className="reviewContent">
