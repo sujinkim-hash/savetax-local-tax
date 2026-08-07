@@ -186,3 +186,150 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
     border-radius: 0 0 10px 10px;
   }
 }
+
+/* Full-width archive layout and dedicated review center */
+.appShell {
+  max-width: none;
+  width: 100%;
+  margin: 0;
+  padding: 0 0 72px;
+  grid-template-columns: 250px minmax(0, 1fr);
+}
+
+.sideRail {
+  padding: 34px 28px;
+  min-height: 100vh;
+}
+
+.appContent {
+  padding: 0 36px;
+}
+
+.reviewShell {
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  background: #fff;
+}
+
+.reviewContent {
+  min-width: 0;
+  padding: 0 36px 72px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.reviewBanner {
+  margin: 0;
+  padding: 34px 38px 30px;
+  border-radius: 0 0 12px 12px;
+  background: #5a7898;
+  color: #fff;
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.reviewBanner .eyebrow { color: #eaf1f8; }
+.reviewBanner h1 { color: #fff; margin: 7px 0 9px; font-size: 32px; line-height: 1.22; }
+.reviewBanner .lead { color: #f0f5fa; margin: 0; }
+.reviewBanner .reviewLink {
+  flex: 0 0 auto;
+  color: #345979;
+  background: rgba(255,255,255,.97);
+  border: 1px solid rgba(255,255,255,.85);
+  border-radius: 7px;
+  padding: 10px 14px;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.reviewWorkspace { display: grid; gap: 18px; }
+
+.reviewContent .reviewOverview {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.reviewContent .reviewOverview article {
+  min-height: 104px;
+  padding: 19px 20px;
+  border: 1px solid #dbe3eb;
+  border-radius: 9px;
+  background: #fff;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: flex-start;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.reviewContent .reviewOverview b {
+  color: #213b5a;
+  font-size: 28px;
+  line-height: 1;
+}
+
+.reviewContent .reviewOverview span {
+  color: #5e7084;
+  font-size: 13px;
+}
+
+.reviewContent .reviewPanel,
+.reviewContent .sourceReviewPanel {
+  margin: 0;
+  border: 1px solid #dbe3eb;
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.reviewContent .sectionAccordion > summary,
+.reviewContent .sourceStatusAccordion > summary {
+  padding: 21px 24px;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 22px;
+}
+
+.reviewContent summary::-webkit-details-marker { display: none; }
+.reviewContent .panelHead h2,
+.reviewContent .sourceStatusSummary h2 { margin: 5px 0 0; font-size: 22px; }
+.reviewContent .panelHead > p { margin: 0; color: #5e7084; font-size: 14px; }
+
+.reviewContent .reviewGrid,
+.reviewContent .changeReviewBody,
+.reviewContent .sourceStatusBody {
+  border-top: 1px solid #e4e9ef;
+  padding: 20px 24px 24px;
+}
+
+.reviewContent .sourceStatusSummaryMeta { display: flex; align-items: center; gap: 10px; color: #5e7084; font-size: 14px; }
+.reviewContent .sourceStatusGuide { margin: 0 0 15px; color: #5e7084; font-size: 14px; }
+.reviewContent .sourceAdminBar { margin: 0 0 16px; }
+.reviewContent .sourceRegionGroups { display: grid; gap: 10px; }
+.reviewContent .sourceRegion { border: 1px solid #e0e7ef; border-radius: 8px; background: #fff; overflow: hidden; }
+.reviewContent .sourceRegion > summary { padding: 14px 16px; cursor: pointer; display: flex; align-items: center; justify-content: space-between; list-style: none; }
+.reviewContent .sourceReviewList { margin: 0; border-top: 1px solid #e5eaf0; }
+
+@media (max-width: 900px) {
+  .appShell, .reviewShell { display: block; padding: 0 16px 54px; }
+  .sideRail { display: none; }
+  .appContent, .reviewContent { padding: 0; gap: 16px; }
+  .appContent > header.topBanner,
+  .reviewBanner { margin: 0 -16px; padding: 28px 22px 24px; border-radius: 0 0 10px 10px; }
+  .reviewBanner { display: block; }
+  .reviewBanner .reviewLink { display: inline-block; margin-top: 18px; }
+  .reviewContent .reviewOverview { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .reviewContent .sectionAccordion > summary,
+  .reviewContent .sourceStatusAccordion > summary { align-items: flex-start; flex-direction: column; gap: 10px; }
+  .reviewContent .panelHead > p { margin: 0; }
+}
