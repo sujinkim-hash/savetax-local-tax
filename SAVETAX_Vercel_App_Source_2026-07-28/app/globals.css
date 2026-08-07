@@ -566,3 +566,59 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   .tr { grid-template-columns: 1fr 2.1fr; }
   .scopeCell { white-space:normal; overflow:visible; text-overflow:clip; }
 }
+
+/* 공식 주소 등록 현황: 관리자 바 / 지역 그룹 / 목록 가독성 개선 */
+.reviewContent .sourceAdminBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 16px;
+  border: 1px solid #e0e7ef;
+  border-radius: 8px;
+  background: #f7f9fc;
+}
+.reviewContent .adminModeStatus { display: flex; flex-direction: column; gap: 3px; }
+.reviewContent .adminModeStatus b { color: #263a54; font-weight: 600; font-size: 14px; }
+.reviewContent .adminModeStatus span { color: #5e7084; font-size: 13px; }
+.reviewContent .exitAdminMode,
+.reviewContent .startAdminMode {
+  flex: none;
+  height: 38px;
+  padding: 0 16px;
+  border: 1px solid #cbd9e7;
+  border-radius: 7px;
+  background: #fff;
+  color: #345979;
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+}
+.reviewContent .startAdminMode { border-color: #3f5f80; background: #3f5f80; color: #fff; }
+.reviewContent .exitAdminMode:hover { background: #eef4fa; }
+.reviewContent .startAdminMode:hover { background: #345979; }
+
+.reviewContent .sourceRegionName { font-weight: 600; color: #263a54; font-size: 15px; }
+.reviewContent .sourceRegionCount { color: #5e7084; font-size: 13px; }
+
+.reviewContent .sourceReviewList { list-style: none; margin: 0; padding: 0; }
+.reviewContent .sourceReviewList li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 13px 16px;
+  border-top: 1px solid #edf1f4;
+}
+.reviewContent .sourceRowMeta { display: flex; flex-direction: column; gap: 2px; }
+.reviewContent .sourceRowMeta b { color: #263a54; font-weight: 500; font-size: 14px; }
+.reviewContent .sourceRowMeta span { color: #8a97a6; font-size: 12px; }
+
+.reviewContent .sourceActions .deleteSource { border-color: #efcfd0; color: #a75c60; }
+.reviewContent .sourceReviewEmpty { color: #5e7084; font-size: 14px; padding: 16px; text-align: center; }
+.reviewContent .sourceNotice { margin: 0; padding: 10px 14px; border: 1px solid #d6e2ef; border-radius: 8px; background: #fff; color: #3c4043; font-size: 14px; }
+
+@media (max-width: 640px) {
+  .reviewContent .sourceAdminBar { flex-direction: column; align-items: stretch; }
+  .reviewContent .sourceReviewList li { flex-direction: column; align-items: flex-start; }
+}
