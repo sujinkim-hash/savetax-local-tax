@@ -222,12 +222,13 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   padding: 0 36px 72px;
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 20px;
 }
 
 .reviewBanner {
   margin: 0;
   padding: 34px 38px 30px;
+  border: 0;
   border-radius: 0 0 12px 12px;
   background: #5a7898;
   color: #fff;
