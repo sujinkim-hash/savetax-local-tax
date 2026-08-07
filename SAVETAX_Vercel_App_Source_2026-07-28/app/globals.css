@@ -524,10 +524,43 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 /* 담당 업무 컬럼 말줄임 처리 + 페이지네이션 (추가 반영) */
 .scopeCell { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:help; }
 
-.pager { display:flex; align-items:center; justify-content:center; gap:14px; padding:18px 26px; border-top:1px solid #edf0f4; }
-.pager button { padding:8px 16px; border:1px solid #d7e0ea; border-radius:7px; background:#fff; color:#415874; font-weight:500; }
-.pager button:disabled { opacity:.4; cursor:not-allowed; }
-.pager span { color:#5e7084; font-size:14px; }
+.pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 20px 26px;
+  border-top: 1px solid #edf0f4;
+  background: #fafbfc;
+}
+.pager button {
+  min-width: 84px;
+  height: 38px;
+  padding: 0 18px;
+  border: 1px solid #cbd9e7;
+  border-radius: 8px;
+  background: #fff;
+  color: #345979;
+  font-weight: 600;
+  font-size: 14px;
+  transition: background .15s, border-color .15s;
+}
+.pager button:not(:disabled):hover {
+  background: #eef4fa;
+  border-color: #9fb8d0;
+}
+.pager button:disabled {
+  opacity: .35;
+  cursor: not-allowed;
+}
+.pager span {
+  min-width: 64px;
+  text-align: center;
+  color: #263a54;
+  font-size: 14px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
 
 @media (max-width:760px) {
   .tr { grid-template-columns: 1fr 2.1fr; }
