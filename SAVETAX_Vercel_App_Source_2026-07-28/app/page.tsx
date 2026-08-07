@@ -30,9 +30,9 @@ export default function Home() {
   const [query, setQuery] = useState("");
   const [region, setRegion] = useState("전체");
   const [notice, setNotice] = useState("");
-const [copiedPhone, setCopiedPhone] = useState("");
-const [page, setPage] = useState(1);
-const pageSize = 50;
+  const [copiedPhone, setCopiedPhone] = useState("");
+  const [page, setPage] = useState(1);
+  const pageSize = 50;
 
   async function loadFromDatabase() {
     const response = await fetch("/api/contacts", { cache: "no-store" });
@@ -55,12 +55,9 @@ const pageSize = 50;
       .sort(([left], [right]) => left.localeCompare(right, "ko"))
       .map(([sido, items]) => ({ sido, items: items.sort((left, right) => left.local.localeCompare(right.local, "ko")) }));
   }, [sources]);
-  const rows = useMemo(() => contacts.filter((item) =>
-  (region === "전체" || item.sido === region) && `${item.sido} ${item.local} ${item.scope} ${item.phone}`.toLowerCase().includes(query.toLowerCase()),
-), [contacts, query, region]);
 
-const totalPages = Math.max(1, Math.ceil(rows.length / pageSize));
-const pagedRows = useMemo(() => rows.slice((page - 1) * pageSize, page * pageSize), [rows, page]);
+  const totalPages = Math.max(1, Math.ceil(rows.length / pageSize));
+  const pagedRows = useMemo(() => rows.slice((page - 1) * pageSize, page * pageSize), [rows, page]);
 
   async function loadReviews(key: string) {
     const response = await fetch("/api/admin/reviews", { headers: { "x-admin-key": key } });
@@ -175,7 +172,7 @@ const pagedRows = useMemo(() => rows.slice((page - 1) * pageSize, page * pageSiz
 
   function downloadCsv() {
     const header = "시도,자치구,담당 업무,직통번호,확인일,상태";
-    const lines = rows.map((item) => [item.sido, item.local, item.scope, item.phone, item.checked, item.status].map((value) => `\"${String(value).replaceAll('\"', '\"\"')}\"`).join(","));
+    const lines = rows.map((item) => [item.sido, item.local, item.scope, item.phone, item.checked, item.status].map((value) => `"${String(value).replaceAll('"', '""')}"`).join(","));
     const blob = new Blob([["\ufeff", header, "\n", lines.join("\n")].join("")], { type: "text/csv;charset=utf-8" });
     const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "전국_지방소득세_담당연락처.csv"; link.click(); URL.revokeObjectURL(link.href);
   }
@@ -219,7 +216,34 @@ const pagedRows = useMemo(() => rows.slice((page - 1) * pageSize, page * pageSiz
     <section className="stats"><article><span>등록 연락처</span><b>{contacts.length}</b></article><article><span>시도</span><b>{new Set(contacts.map((item) => item.sido)).size}</b></article><article><span>시·군·구 지자체</span><b>256</b></article></section>
     <section className="toolbar"><select aria-label="지역 선택" value={region} onChange={(event) => setRegion(event.target.value)}>{regions.map((item) => <option key={item}>{item}</option>)}</select><input aria-label="검색" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="시도, 시·군·구, 담당 업무 또는 번호 검색" /><button className="download" onClick={downloadCsv}>자료 내려받기</button></section>
     {notice && <p className="notice" role="status">{notice}</p>}
-    <section className="panel" id="directory"><div className="panelHead"><div><p className="eyebrow">DIRECT CONTACT DIRECTORY</p><h2>담당자 연락처</h2></div><p>{rows.length}건 표시</p></div><div className="table"><div className="tr th"><span>시도</span><span>자치구</span><span>담당 업무</span><span>직통번호</span></div>{rows.map((item, index) => <div className="tr" key={`${item.sido}-${item.local}-${item.phone}-${index}`}><span>{item.sido}</span><strong>{item.local}</strong><span>{item.scope}</span><span className="phoneCell"><a href={`tel:${item.phone}`}>{item.phone}</a><button type="button" className="copyPhone" onClick={() => void copyPhone(item.phone)} aria-label={`${item.phone} 복사`}>{copiedPhone === item.phone ? "복사됨" : "복사"}</button>{isAdmin && <button type="button" className="contactEdit" onClick={() => openContactEdit(item)}>수정</button>}</span></div>)}</div></section>
+    <section className="panel" id="directory">
+      <div className="panelHead">
+        <div><p className="eyebrow">DIRECT CONTACT DIRECTORY</p><h2>담당자 연락처</h2></div>
+        <p>{rows.length}건 표시 · {page}/{totalPages}페이지</p>
+      </div>
+      <div className="table">
+        <div className="tr th"><span>시도</span><span>자치구</span><span>담당 업무</span><span>직통번호</span></div>
+        {pagedRows.map((item, index) => (
+          <div className="tr" key={`${item.sido}-${item.local}-${item.phone}-${index}`}>
+            <span>{item.sido}</span>
+            <strong>{item.local}</strong>
+            <span className="scopeCell" title={item.scope}>{item.scope}</span>
+            <span className="phoneCell">
+              <a href={`tel:${item.phone}`}>{item.phone}</a>
+              <button type="button" className="copyPhone" onClick={() => void copyPhone(item.phone)} aria-label={`${item.phone} 복사`}>{copiedPhone === item.phone ? "복사됨" : "복사"}</button>
+              {isAdmin && <button type="button" className="contactEdit" onClick={() => openContactEdit(item)}>수정</button>}
+            </span>
+          </div>
+        ))}
+      </div>
+      {totalPages > 1 && (
+        <div className="pager">
+          <button type="button" disabled={page === 1} onClick={() => setPage((p) => Math.max(1, p - 1))}>이전</button>
+          <span>{page} / {totalPages}</span>
+          <button type="button" disabled={page === totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))}>다음</button>
+        </div>
+      )}
+    </section>
     {adminDialogOpen && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={authenticateAdmin}><h2>관리자 인증</h2><p>관리자 키를 입력한 뒤 Enter를 누르거나 인증 버튼을 선택하세요.</p><label htmlFor="admin-key">관리자 키</label><input id="admin-key" type="password" autoFocus value={adminKeyDraft} onChange={(event) => setAdminKeyDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); void authenticateAdmin(); } }} /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setAdminDialogOpen(false); setAdminKeyDraft(""); }}>취소</button><button type="submit">인증</button></div></form></div>}
     {editingContact && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={(event) => { event.preventDefault(); void saveContactPhone(); }}><h2>직통번호 수정</h2><p>{editingContact.sido} {editingContact.local} · {editingContact.scope}</p><label htmlFor="contact-phone">직통번호</label><input id="contact-phone" type="tel" autoFocus required value={contactPhoneDraft} onChange={(event) => setContactPhoneDraft(event.target.value)} placeholder="예: 02-0000-0000" /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => setEditingContact(null)}>취소</button><button type="submit">저장</button></div></form></div>}
     {sourceDialogOpen && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={(event) => { event.preventDefault(); void addSource(); }}><h2>{editingSourceId !== null ? "공식 주소 수정" : "공식 주소 직접 등록"}</h2><p>주소와 시·도, 시·군·구를 입력하세요. 마지막 칸에서 Enter를 누르면 저장됩니다.</p><label htmlFor="source-url">공식 직원검색·조직도 주소</label><input id="source-url" type="url" autoFocus required value={sourceUrlDraft} onChange={(event) => setSourceUrlDraft(event.target.value)} placeholder="https://" /><label htmlFor="source-sido">시·도</label><input id="source-sido" required value={sourceSidoDraft} onChange={(event) => setSourceSidoDraft(event.target.value)} placeholder="예: 경기도" /><label htmlFor="source-local">시·군·구</label><input id="source-local" required value={sourceLocalDraft} onChange={(event) => setSourceLocalDraft(event.target.value)} placeholder="예: 성남시" /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setSourceDialogOpen(false); setEditingSourceId(null); }}>취소</button><button type="submit">{editingSourceId !== null ? "저장" : "등록"}</button></div></form></div>}
