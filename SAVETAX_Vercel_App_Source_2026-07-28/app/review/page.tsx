@@ -41,24 +41,35 @@ export default function ReviewPage() {
   }, []);
 
 
-  async function authenticateAdmin(event?: FormEvent<HTMLFormElement>) {
-    event?.preventDefault();
-    const key = adminKeyDraft.trim();
-    if (!key) return;
-    const response = await fetch("/api/admin/sources", { headers: { "x-admin-key": key } });
-    if (!response.ok) {
-      setNotice("관리자 키를 확인해 주세요.");
-      return;
-    }
-    setAdminKey(key);
-    setIsAdmin(true);
-    setAdminDialogOpen(false);
-    setAdminKeyDraft("");
-    const reviewResponse = await fetch("/api/admin/reviews", { headers: { "x-admin-key": key } });
-    const reviewData = (await reviewResponse.json()) as { reviews?: Review[] };
-    if (reviewResponse.ok) setReviews(reviewData.reviews ?? []);
-    setNotice("관리자 인증이 완료되었습니다. 검토 대기 변경을 확인하고 공식 주소를 수정할 수 있습니다.");
-  }
+  async function verifyAdminKey(key: string, silent?: boolean) {
+const response = await fetch("/api/admin/sources", { headers: { "x-admin-key": key } });
+if (!response.ok) {
+if (!silent) setNotice("관리자 키를 확인해 주세요.");
+window.localStorage.removeItem("savetax_admin_key");
+return false;
+}
+setAdminKey(key);
+setIsAdmin(true);
+window.localStorage.setItem("savetax_admin_key", key);
+const reviewResponse = await fetch("/api/admin/reviews", { headers: { "x-admin-key": key } });
+const reviewData = (await reviewResponse.json()) as { reviews?: Review[] };
+if (reviewResponse.ok) setReviews(reviewData.reviews ?? []);
+if (!silent) setNotice("관리자 인증이 완료되었습니다. 검토 대기 변경을 확인하고 공식 주소를 수정할 수 있습니다.");
+return true;
+}
+
+async function authenticateAdmin(event?: FormEvent<HTMLFormElement>) {
+event?.preventDefault();
+const key = adminKeyDraft.trim();
+if (!key) return;
+const ok = await verifyAdminKey(key);
+if (ok) { setAdminDialogOpen(false); setAdminKeyDraft(""); }
+}
+
+useEffect(() => {
+const savedKey = window.localStorage.getItem("savetax_admin_key");
+if (savedKey) void verifyAdminKey(savedKey, true);
+}, []);
 
 
   async function approveReview(review: Review) {
@@ -147,7 +158,7 @@ export default function ReviewPage() {
     <div className="reviewContent">
       <header className="reviewBanner" id="review-home">
         <div><p className="eyebrow">REVIEW & ADMINISTRATION</p><h1>검토·관리자 센터</h1><p className="lead">공식 주소와 담당 연락처의 변경 사항을 한 곳에서 검토하고 관리합니다.</p></div>
-        <div className="reviewHeaderActions"><Link className="reviewLink" href="/">연락처 조회</Link><button type="button" className="headerAdminButton" onClick={() => isAdmin ? (setIsAdmin(false), setAdminKey(""), setNotice("관리자 모드를 종료했습니다.")) : setAdminDialogOpen(true)}>{isAdmin ? "관리자 종료" : "관리자 인증"}</button></div>
+        <div className="reviewHeaderActions"><Link className="reviewLink" href="/">연락처 조회</Link><button type="button" className="headerAdminButton" onClick={() => onClick={() => isAdmin ? (setIsAdmin(false), setAdminKey(""), window.localStorage.removeItem("savetax_admin_key"), setNotice("관리자 모드를 종료했습니다.")) : setAdminDialogOpen(true)}>{isAdmin ? "관리자 종료" : "관리자 인증"}</button></div>
       </header>
       <div className="reviewWorkspace">
     <section className="reviewOverview"><article><b>{contacts.length}</b><span>등록 연락처</span></article><article><b>{areas.length}</b><span>검토 지역</span></article><article><b>{summary.reduce((total, item) => total + item.pending, 0)}</b><span>재검토 대상</span></article><article><b>{sourcesLoaded ? sources.length : "-"}</b><span>등록 공식 주소</span></article></section>
@@ -166,7 +177,7 @@ export default function ReviewPage() {
       </summary>
       <div className="sourceStatusBody">
         <p className="sourceStatusGuide">시·도를 먼저 선택하면 해당 지자체의 공식 직원검색·조직도 주소를 확인할 수 있습니다.</p>
-        <div className="sourceAdminBar">{isAdmin ? <><div className="adminModeStatus"><b>주소 관리 권한이 활성화되었습니다.</b><span>주소를 수정하거나 삭제할 수 있습니다.</span></div><button type="button" className="exitAdminMode" onClick={() => { setIsAdmin(false); setAdminKey(""); setNotice("관리자 모드를 종료했습니다."); }}>관리자 모드 종료</button></> : <button type="button" className="startAdminMode" onClick={() => setAdminDialogOpen(true)}>주소 수정 권한 인증</button>}</div>
+        <div className="sourceAdminBar">{isAdmin ? <><div className="adminModeStatus"><b>주소 관리 권한이 활성화되었습니다.</b><span>주소를 수정하거나 삭제할 수 있습니다.</span></div><button type="button" className="exitAdminMode" onClick={() => { setIsAdmin(false); setAdminKey(""); window.localStorage.removeItem("savetax_admin_key"); setNotice("관리자 모드를 종료했습니다."); }}>관리자 모드 종료</button></> : <button type="button" className="startAdminMode" onClick={() => setAdminDialogOpen(true)}>주소 수정 권한 인증</button>}</div>
         {notice && <p className="sourceNotice" role="status">{notice}</p>}
         {sourcesLoaded && sources.length > 0 ? <div className="sourceRegionGroups">{sourcesByArea.map((group) => <details className="sourceRegion" key={group.sido}><summary><span className="sourceRegionName">{group.sido}</span><span className="sourceRegionCount">{group.rows.length}개 지자체</span></summary><ul className="sourceReviewList">{group.rows.map((source) => <li key={source.id}><div className="sourceRowMeta"><b>{source.local}</b><span>등록일 {source.created_at.slice(0, 10)}</span></div><div className="sourceActions"><a href={source.source_url} target="_blank" rel="noreferrer">공식 페이지 열기</a>{isAdmin && <><button type="button" onClick={() => openSourceEditor(source)}>수정</button><button type="button" className="deleteSource" onClick={() => void deleteSource(source)}>삭제</button></>}</div></li>)}</ul></details>)}</div> : <p className="sourceReviewEmpty">{sourcesLoaded ? "아직 등록된 공식 주소가 없습니다." : "등록된 공식 주소를 불러오는 중입니다."}</p>}
       </div>
