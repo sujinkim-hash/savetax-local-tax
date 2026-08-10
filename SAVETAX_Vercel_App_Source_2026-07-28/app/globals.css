@@ -732,3 +732,11 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   .appContent .tr { grid-template-columns: 112px 130px minmax(0, 1fr) 258px; padding: 0 18px; }
   .appContent .tr > span, .appContent .tr > strong { font-size: 13px; }
 }
+/* 연락처 표: 직통번호를 제목 아래로 맞추고 업무 열 간격 축소 */
+@media (min-width: 1101px) {
+  .appContent .tr {
+    grid-template-columns: 130px 160px minmax(340px, 520px) 300px;
+    justify-content: start;
+  }
+  .appContent .phoneCell { justify-content: flex-start; }
+}
