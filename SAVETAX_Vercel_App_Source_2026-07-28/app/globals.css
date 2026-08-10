@@ -786,3 +786,15 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
     padding-right: 18px;
   }
 }
+
+/* 공식 페이지 열: 제목과 동작 버튼 중앙 정렬 */
+@media (min-width: 761px) {
+  .appContent .tr.th > :last-child,
+  .appContent .tr .sourceCell {
+    justify-self: center;
+    text-align: center;
+  }
+  .appContent .tr .sourceCell {
+    justify-content: center;
+  }
+}
