@@ -18,3 +18,14 @@ export async function PATCH(request: Request) {
   if (!contact) return Response.json({ error: "연락처를 찾을 수 없습니다." }, { status: 404 });
   return Response.json({ ok: true, contact });
 }
+export async function DELETE(request: Request) {
+  if (!requireAdmin(request)) return Response.json({ error: "관리자 권한이 없습니다." }, { status: 401 });
+  const body = (await request.json()) as { id?: number };
+  const id = Number(body.id);
+  if (!Number.isFinite(id)) return Response.json({ error: "삭제할 연락처를 선택해 주세요." }, { status: 400 });
+  const sql = await ensureSchema();
+  if (!sql) return Response.json({ error: "DATABASE_URL 연결을 확인하세요." }, { status: 503 });
+  const [contact] = await sql`DELETE FROM contacts WHERE id = ${id} RETURNING id, sido, local_name AS local, scope, phone, checked_on AS checked, status`;
+  if (!contact) return Response.json({ error: "연락처를 찾을 수 없습니다." }, { status: 404 });
+  return Response.json({ ok: true, contact });
+}
