@@ -7,15 +7,16 @@ import contactData from "../contacts.json";
 import missingContactData from "../contacts-missing.json";
 
 
-type Contact = { sido: string; local: string; checked: string; status: "확인" | "검토중" };
+type Contact = { id?: number; sido: string; local: string; checked: string; status: "확인" | "검토중" };
 type Source = { id: number; sido: string; local: string; source_url: string; created_at: string };
 type Review = { id: number; sido: string; local: string; field: string; previous_value: string; proposed_value: string; reason: string; source_url?: string; created_at: string };
 
 
-const contacts = [...(contactData as Contact[]), ...(missingContactData as Contact[])];
+const fallbackContacts = [...(contactData as Contact[]), ...(missingContactData as Contact[])];
 
 
 export default function ReviewPage() {
+  const [contacts, setContacts] = useState<Contact[]>(fallbackContacts);
   const [sources, setSources] = useState<Source[]>([]);
   const [sourcesLoaded, setSourcesLoaded] = useState(false);
   const [adminKey, setAdminKey] = useState("");
@@ -31,6 +32,13 @@ export default function ReviewPage() {
   const [reviewStatusFilter, setReviewStatusFilter] = useState<"registered" | "unregistered">("registered");
   const [reviewSearch, setReviewSearch] = useState("");
 
+
+  useEffect(() => {
+    void fetch("/api/contacts", { cache: "no-store" })
+      .then(async (response) => response.ok ? (await response.json()) as { contacts?: Contact[] } : { contacts: [] })
+      .then((data) => { if (data.contacts?.length) setContacts(data.contacts); })
+      .catch(() => undefined);
+  }, []);
 
   useEffect(() => {
     void fetch("/api/sources", { cache: "no-store" })
