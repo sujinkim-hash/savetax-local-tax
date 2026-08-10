@@ -41,8 +41,10 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 .tr.th span { font-size:12px; font-weight:500; }
 .phoneCell { display:flex; align-items:center; gap:7px; white-space:nowrap; }
 .phoneCell a { color:#40678f; font-weight:500; text-decoration:none; font-variant-numeric:tabular-nums; }
-.copyPhone,.contactEdit { padding:4px 7px; border:1px solid #d3deea; border-radius:6px; background:#fff; color:#58708d; font-size:12px; }
+.copyPhone,.contactEdit,.contactDelete { padding:4px 7px; border:1px solid #d3deea; border-radius:6px; background:#fff; color:#58708d; font-size:12px; }
 .contactEdit { color:#3f5f80; }
+.contactDelete { color:#b42318; border-color:#f0c9c5; }
+.contactDelete:hover { background:#fff5f4; }
 .review { padding:25px 28px; }
 .review > div:first-child { display:flex; align-items:flex-start; justify-content:space-between; gap:24px; }
 .review > div:first-child > div p:not(.eyebrow),.review > div:first-child > p { color:var(--muted); font-size:14px; }
