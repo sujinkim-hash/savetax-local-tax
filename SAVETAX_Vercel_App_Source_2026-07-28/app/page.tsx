@@ -160,6 +160,16 @@ export default function Home() {
     setNotice("직통번호를 수정했습니다.");
   }
 
+  async function deleteContact(contact: Contact) {
+    if (!contact.id) { setNotice("저장된 연락처만 삭제할 수 있습니다. 먼저 연락처 DB 시작하기를 실행하세요."); return; }
+    if (!window.confirm(contact.sido + " " + contact.local + " · " + contact.scope + " 연락처를 삭제할까요?")) return;
+    const response = await fetch("/api/contacts", { method: "DELETE", headers: { "content-type": "application/json", "x-admin-key": adminKey }, body: JSON.stringify({ id: contact.id }) });
+    const data = (await response.json()) as { error?: string };
+    if (!response.ok) { setNotice(data.error ?? "연락처 삭제에 실패했습니다."); return; }
+    setContacts((current) => current.filter((item) => item.id !== contact.id));
+    setNotice("연락처를 삭제했습니다. 삭제한 행은 공개 목록에서 제외됩니다.");
+  }
+
   async function importMoisSources() {
     const key = adminKey || window.prompt("관리자 키를 입력하세요.");
     if (!key) return;
@@ -233,7 +243,7 @@ export default function Home() {
             <span className="phoneCell">
               <a href={`tel:${item.phone}`}>{item.phone}</a>
               <button type="button" className="copyPhone" onClick={() => void copyPhone(item.phone)} aria-label={`${item.phone} 복사`}>{copiedPhone === item.phone ? "복사됨" : "복사"}</button>
-              {isAdmin && <button type="button" className="contactEdit" onClick={() => openContactEdit(item)}>수정</button>}
+              {isAdmin && <><button type="button" className="contactEdit" onClick={() => openContactEdit(item)}>수정</button><button type="button" className="contactDelete" onClick={() => void deleteContact(item)}>삭제</button></>}
             </span>
           </div>
         ))}
