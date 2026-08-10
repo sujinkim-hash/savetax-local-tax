@@ -750,3 +750,19 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   .appContent .contactEdit,
   .appContent .contactDelete { font-size: 13px; }
 }
+/* 공식 페이지 열을 포함한 연락처 표 */
+@media (min-width: 1101px) {
+  .appContent .tr { grid-template-columns: 130px 160px minmax(380px, 600px) 290px 126px; }
+  .appContent .sourceCell { display: flex; align-items: center; justify-content: flex-start; }
+}
+@media (min-width: 761px) and (max-width: 1100px) {
+  .appContent .tr { grid-template-columns: 105px 125px minmax(260px, 1fr) 250px 92px; }
+}
+.sourceCell a, .sourceCell button {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 30px; padding: 0 9px; border: 1px solid #cbd9e7; border-radius: 6px;
+  background: #fff; color: #345979; font: inherit; font-size: 13px; text-decoration: none; white-space: nowrap;
+}
+.sourceCell button { cursor: pointer; }
+.sourceCell em { color: #8a97a6; font-size: 13px; font-style: normal; }
+@media (max-width: 760px) { .tr .sourceCell, .tr.th > :last-child { display: none; } }
