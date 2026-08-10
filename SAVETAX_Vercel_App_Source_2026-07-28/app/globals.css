@@ -723,3 +723,12 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 .reviewContent .reviewRegion > summary { padding: 14px; }
 .reviewContent .reviewRegion .changeReviewList { padding: 9px; }
 }
+/* 관리자 연락처 조작 버튼 공간 확보 */
+@media (min-width: 761px) {
+  .appContent .tr { grid-template-columns: 130px 160px minmax(0, 1fr) 270px; }
+  .appContent .phoneCell { justify-content: flex-end; gap: 6px; }
+}
+@media (min-width: 761px) and (max-width: 1100px) {
+  .appContent .tr { grid-template-columns: 112px 130px minmax(0, 1fr) 258px; padding: 0 18px; }
+  .appContent .tr > span, .appContent .tr > strong { font-size: 13px; }
+}
