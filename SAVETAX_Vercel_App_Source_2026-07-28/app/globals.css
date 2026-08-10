@@ -766,3 +766,23 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 .sourceCell button { cursor: pointer; }
 .sourceCell em { color: #8a97a6; font-size: 13px; font-style: normal; }
 @media (max-width: 760px) { .tr .sourceCell, .tr.th > :last-child { display: none; } }
+
+/* 연락처 표: 행 여백과 구분선 정돈 */
+@media (min-width: 761px) {
+  .appContent .tr {
+    min-height: 72px;
+    border-bottom-color: #d9e3ec;
+  }
+  .appContent .tr.th {
+    min-height: 54px;
+    background: #f8fafc;
+    border-bottom-color: #cfdbe7;
+  }
+  .appContent .tr > :not(:first-child) {
+    border-left: 1px solid #e1e8f0;
+    padding-left: 18px;
+  }
+  .appContent .tr > :not(:last-child) {
+    padding-right: 18px;
+  }
+}
