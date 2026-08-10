@@ -41,7 +41,7 @@ export default function Home() {
     if (data.contacts?.length) setContacts(data.contacts);
   }
   useEffect(() => { setPage(1); }, [query, region]);
-  useEffect(() => { void loadFromDatabase(); }, []);
+  useEffect(() => { void loadFromDatabase(); void loadPublicSources(); }, []);
   useEffect(() => { const savedKey = window.localStorage.getItem("savetax_admin_key"); if (savedKey) void loadReviews(savedKey); }, []);
   useEffect(() => { const selected = new URLSearchParams(window.location.search).get("region"); if (selected) setRegion(selected); }, []);
 
@@ -49,13 +49,7 @@ export default function Home() {
     (region === "전체" || item.sido === region) && `${item.sido} ${item.local} ${item.scope} ${item.phone}`.toLowerCase().includes(query.toLowerCase()),
   ), [contacts, query, region]);
   const regions = ["전체", ...Array.from(new Set(contacts.map((item) => item.sido)))];
-  const sourcesBySido = useMemo(() => {
-    const groups = new Map<string, Source[]>();
-    sources.forEach((source) => groups.set(source.sido, [...(groups.get(source.sido) ?? []), source]));
-    return Array.from(groups.entries())
-      .sort(([left], [right]) => left.localeCompare(right, "ko"))
-      .map(([sido, items]) => ({ sido, items: items.sort((left, right) => left.local.localeCompare(right.local, "ko")) }));
-  }, [sources]);
+  const sourceByOffice = useMemo(() => new Map(sources.map((source) => [source.sido + "::" + source.local, source])), [sources]);
 
   const totalPages = Math.max(1, Math.ceil(rows.length / pageSize));
   const pagedRows = useMemo(() => rows.slice((page - 1) * pageSize, page * pageSize), [rows, page]);
@@ -74,6 +68,13 @@ export default function Home() {
 
   async function loadSources(key: string) {
     const response = await fetch("/api/admin/sources", { headers: { "x-admin-key": key } });
+    if (!response.ok) return;
+    const data = (await response.json()) as { sources?: Source[] };
+    setSources(data.sources ?? []);
+  }
+
+  async function loadPublicSources() {
+    const response = await fetch("/api/sources", { cache: "no-store" });
     if (!response.ok) return;
     const data = (await response.json()) as { sources?: Source[] };
     setSources(data.sources ?? []);
@@ -125,6 +126,14 @@ export default function Home() {
     setSourceLocalDraft("");
     setNotice(wasEditing ? "공식 주소 정보를 수정했습니다." : "공식 주소를 등록했습니다. 아래 등록 현황에서 바로 확인할 수 있습니다.");
     await loadSources(adminKey);
+  }
+
+  function openSourceRegistration(contact: Contact) {
+    setEditingSourceId(null);
+    setSourceUrlDraft("");
+    setSourceSidoDraft(contact.sido);
+    setSourceLocalDraft(contact.local);
+    setSourceDialogOpen(true);
   }
 
   function editSource(source: Source) {
@@ -234,19 +243,21 @@ export default function Home() {
         <p>{rows.length}건 표시 · {page}/{totalPages}페이지</p>
       </div>
       <div className="table">
-        <div className="tr th"><span>시도</span><span>자치구</span><span>담당 업무</span><span>직통번호</span></div>
-        {pagedRows.map((item, index) => (
-          <div className="tr" key={`${item.sido}-${item.local}-${item.phone}-${index}`}>
+        <div className="tr th"><span>시도</span><span>자치구</span><span>담당 업무</span><span>직통번호</span><span>공식 페이지</span></div>
+        {pagedRows.map((item, index) => {
+          const officialSource = sourceByOffice.get(item.sido + "::" + item.local);
+          return <div className="tr" key={item.sido + "-" + item.local + "-" + item.phone + "-" + index}>
             <span>{item.sido}</span>
             <strong>{item.local}</strong>
             <span className="scopeCell" title={item.scope}>{item.scope}</span>
             <span className="phoneCell">
-              <a href={`tel:${item.phone}`}>{item.phone}</a>
-              <button type="button" className="copyPhone" onClick={() => void copyPhone(item.phone)} aria-label={`${item.phone} 복사`}>{copiedPhone === item.phone ? "복사됨" : "복사"}</button>
+              <a href={"tel:" + item.phone}>{item.phone}</a>
+              <button type="button" className="copyPhone" onClick={() => void copyPhone(item.phone)} aria-label={item.phone + " 복사"}>{copiedPhone === item.phone ? "복사됨" : "복사"}</button>
               {isAdmin && <><button type="button" className="contactEdit" onClick={() => openContactEdit(item)}>수정</button><button type="button" className="contactDelete" onClick={() => void deleteContact(item)}>삭제</button></>}
             </span>
-          </div>
-        ))}
+            <span className="sourceCell">{officialSource ? <a href={officialSource.source_url} target="_blank" rel="noreferrer">열기</a> : isAdmin ? <button type="button" onClick={() => openSourceRegistration(item)}>등록</button> : <em>미등록</em>}</span>
+          </div>;
+        })}
       </div>
       {totalPages > 1 && (
         <div className="pager">
