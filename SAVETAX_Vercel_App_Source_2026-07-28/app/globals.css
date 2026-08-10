@@ -740,3 +740,13 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   }
   .appContent .phoneCell { justify-content: flex-start; }
 }
+/* 연락처 표 가독성 강화 */
+@media (min-width: 761px) {
+  .appContent .tr > span,
+  .appContent .tr > strong { font-size: 15px; }
+  .appContent .tr.th span { font-size: 13px; }
+  .appContent .phoneCell a { font-size: 16px; }
+  .appContent .copyPhone,
+  .appContent .contactEdit,
+  .appContent .contactDelete { font-size: 13px; }
+}
