@@ -661,3 +661,63 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   .reviewContent .sourceAdminBar { flex-direction: column; align-items: stretch; }
   .reviewContent .sourceReviewList li { flex-direction: column; align-items: flex-start; }
 }
+/* Region grouped change review */
+.reviewContent .reviewRegionGroups {
+  display: grid;
+  gap: 10px;
+}
+
+.reviewContent .reviewRegion {
+  overflow: hidden;
+  border: 1px solid #dbe3eb;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.reviewContent .reviewRegion > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 15px 17px;
+  cursor: pointer;
+  list-style: none;
+}
+
+.reviewContent .reviewRegion > summary::-webkit-details-marker { display: none; }
+.reviewContent .reviewRegion > summary::after {
+  content: "+";
+  margin-left: 6px;
+  color: #47698b;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.reviewContent .reviewRegion[open] > summary::after { content: "−"; }
+.reviewContent .reviewRegionName {
+  flex: 1;
+  color: #263a54;
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.reviewContent .reviewRegionCount {
+  color: #5e7084;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.reviewContent .reviewRegion .changeReviewList {
+  margin: 0;
+  padding: 10px 12px 12px;
+  border-top: 1px solid #e5eaf0;
+  background: #fbfcfe;
+}
+
+.reviewContent .reviewRegion .reviewCandidateRow {
+  background: #fff;
+}
+@media (max-width: 720px) {
+.reviewContent .reviewRegion > summary { padding: 14px; }
+.reviewContent .reviewRegion .changeReviewList { padding: 9px; }
+}
