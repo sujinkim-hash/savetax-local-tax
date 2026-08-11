@@ -31,6 +31,14 @@ export async function ensureSchema() {
     AND NOT EXISTS (SELECT 1 FROM source_pages WHERE is_manual = TRUE)`;
   await sql`CREATE TABLE IF NOT EXISTS review_candidates (id BIGSERIAL PRIMARY KEY, contact_id BIGINT REFERENCES contacts(id), sido TEXT NOT NULL, local_name TEXT NOT NULL, field TEXT NOT NULL, previous_value TEXT NOT NULL, proposed_value TEXT NOT NULL, reason TEXT NOT NULL, source_url TEXT, status TEXT NOT NULL DEFAULT 'pending', created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), reviewed_at TIMESTAMPTZ)`;
   await sql`CREATE TABLE IF NOT EXISTS review_runs (id BIGSERIAL PRIMARY KEY, started_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), finished_at TIMESTAMPTZ, checked_count INTEGER NOT NULL DEFAULT 0, note TEXT)`;
+  await sql`CREATE TABLE IF NOT EXISTS app_migrations (name TEXT PRIMARY KEY, applied_at TIMESTAMPTZ NOT NULL DEFAULT NOW())`;
+  const [seochoUpdate] = await sql`INSERT INTO app_migrations (name) VALUES ('seocho_income_tax_update_2026_08_11') ON CONFLICT DO NOTHING RETURNING name`;
+  if (seochoUpdate) {
+    await sql`DELETE FROM contacts WHERE sido = '서울' AND local_name = '서초구' AND phone = '02-2155-6575'`;
+    await sql`UPDATE contacts SET scope = '서초2동, 서초4동', checked_on = TO_CHAR(CURRENT_DATE, 'YYYY-MM-DD'), status = '확인', updated_at = NOW() WHERE sido = '서울' AND local_name = '서초구' AND phone = '02-2155-6573'`;
+    await sql`DELETE FROM contacts WHERE sido = '서울' AND local_name = '서초구' AND phone = '02-2155-6571'`;
+    await sql`INSERT INTO contacts (sido, local_name, scope, phone, checked_on, status) VALUES ('서울', '서초구', '내곡동', '02-2155-6571', TO_CHAR(CURRENT_DATE, 'YYYY-MM-DD'), '확인')`;
+  }
   return sql;
 }
 
