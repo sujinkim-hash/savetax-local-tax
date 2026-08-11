@@ -831,3 +831,10 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   .appContent .phoneCell { gap: 8px; }
   .appContent .phoneCell > a:first-child { margin-right: 5px; }
 }
+
+/* 담당 업무 열 폭을 제한해 번호와의 간격 축소 */
+@media (min-width: 1101px) {
+  .appContent .tr {
+    grid-template-columns: 140px 160px minmax(340px, 450px) minmax(270px, 1fr) 136px;
+  }
+}
