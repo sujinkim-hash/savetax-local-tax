@@ -49,7 +49,14 @@ export default function Home() {
     (region === "전체" || item.sido === region) && `${item.sido} ${item.local} ${item.scope} ${item.phone}`.toLowerCase().includes(query.toLowerCase()),
   ), [contacts, query, region]);
   const regions = ["전체", ...Array.from(new Set(contacts.map((item) => item.sido)))];
-  const sourceByOffice = useMemo(() => new Map(sources.map((source) => [source.sido + "::" + source.local, source])), [sources]);
+  const sourcesByOffice = useMemo(() => {
+    const grouped = new Map<string, Source[]>();
+    sources.forEach((source) => {
+      const key = source.sido + "::" + source.local;
+      grouped.set(key, [...(grouped.get(key) ?? []), source]);
+    });
+    return grouped;
+  }, [sources]);
 
   const totalPages = Math.max(1, Math.ceil(rows.length / pageSize));
   const pagedRows = useMemo(() => rows.slice((page - 1) * pageSize, page * pageSize), [rows, page]);
@@ -258,7 +265,7 @@ export default function Home() {
       <div className="table">
         <div className="tr th"><span>시도</span><span>자치구</span><span>담당 업무</span><span>직통번호</span><span>공식 페이지</span></div>
         {pagedRows.map((item, index) => {
-          const officialSource = sourceByOffice.get(item.sido + "::" + item.local);
+          const officialSources = sourcesByOffice.get(item.sido + "::" + item.local) ?? [];
           return <div className="tr" key={item.sido + "-" + item.local + "-" + item.phone + "-" + index}>
             <span>{item.sido}</span>
             <strong>{item.local}</strong>
@@ -268,7 +275,7 @@ export default function Home() {
               <button type="button" className="copyPhone" onClick={() => void copyPhone(item.phone)} aria-label={item.phone + " 복사"}>{copiedPhone === item.phone ? "복사됨" : "복사"}</button>
               {isAdmin && <><button type="button" className="contactEdit" onClick={() => openContactEdit(item)}>수정</button><button type="button" className="contactDelete" onClick={() => void deleteContact(item)}>삭제</button></>}
             </span>
-            <span className="sourceCell">{officialSource ? <a href={officialSource.source_url} target="_blank" rel="noreferrer">열기</a> : isAdmin ? <button type="button" onClick={() => openSourceRegistration(item)}>등록</button> : <em>미등록</em>}</span>
+            <span className="sourceCell">{officialSources.length > 0 ? <span className="sourceLinks">{officialSources.map((source, sourceIndex) => <a key={source.id} href={source.source_url} target="_blank" rel="noreferrer">열기{officialSources.length > 1 ? " " + (sourceIndex + 1) : ""}</a>)}</span> : isAdmin ? <button type="button" onClick={() => openSourceRegistration(item)}>등록</button> : <em>미등록</em>}</span>
           </div>;
         })}
       </div>
