@@ -80,8 +80,9 @@ export async function GET(request: Request) {
     await syncSourceReviews(sql);
   }
   const sources = await sql`SELECT id, sido, local_name AS local, source_url, navigation_note, created_at FROM source_pages WHERE is_active = TRUE AND is_manual = TRUE ORDER BY created_at DESC`;
+  const officeNotes = await sql`SELECT sido, local_name AS local, navigation_note FROM office_notes ORDER BY sido, local_name`;
   const candidates = await sql`SELECT DISTINCT ON (sido, local_name) id, sido, local_name AS local, source_url, navigation_note, created_at FROM source_pages WHERE is_manual = FALSE ORDER BY sido, local_name, created_at DESC`;
-  return Response.json({ sources, candidates });
+  return Response.json({ sources, candidates, officeNotes });
 }
 
 export async function POST(request: Request) {
@@ -89,17 +90,25 @@ export async function POST(request: Request) {
   const body = (await request.json()) as {
     id?: number; sido?: string; local?: string; sourceUrl?: string; navigationNote?: string;
     sourceUrls?: Array<{ sourceUrl?: string; navigationNote?: string }>;
+    noteOnly?: boolean;
   };
   const sourceEntries = (body.sourceUrls?.length
     ? body.sourceUrls
     : [{ sourceUrl: body.sourceUrl, navigationNote: body.navigationNote }])
     .map((item) => ({ sourceUrl: item.sourceUrl?.trim() ?? "", navigationNote: item.navigationNote?.trim() || null }))
     .filter((item) => item.sourceUrl);
-  if (!body.sido || !body.local || sourceEntries.length === 0 || sourceEntries.some((item) => !item.sourceUrl.startsWith("http"))) {
-    return Response.json({ error: "시도, 시·군·구, 올바른 공식 홈페이지 주소가 필요합니다." }, { status: 400 });
+  if (!body.sido || !body.local || (body.noteOnly ? !body.navigationNote?.trim() : sourceEntries.length === 0) || (!body.noteOnly && sourceEntries.some((item) => !item.sourceUrl.startsWith("http")))) {
+    return Response.json({ error: "시도, 시·군·구와 공식 주소 또는 확인 메모가 필요합니다." }, { status: 400 });
   }
   const sql = await ensureSchema();
   if (!sql) return Response.json({ error: "DATABASE_URL 연결을 확인하세요." }, { status: 503 });
+  if (body.noteOnly) {
+    await sql`INSERT INTO office_notes (sido, local_name, navigation_note, updated_at)
+      VALUES (${body.sido}, ${body.local}, ${body.navigationNote!.trim()}, NOW())
+      ON CONFLICT (sido, local_name) DO UPDATE SET navigation_note = EXCLUDED.navigation_note, updated_at = NOW()`;
+    return Response.json({ ok: true, noteOnly: true });
+  }
+
   // 같은 지자체에는 여러 조직도·직원검색 페이지를 등록할 수 있습니다.
   // 수정일 때만 선택한 주소 1건을 교체하고, 기존 추가 페이지는 유지합니다.
   if (body.id) {
