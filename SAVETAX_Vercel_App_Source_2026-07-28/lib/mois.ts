@@ -1,4 +1,5 @@
-import { seedContacts } from "@/lib/contacts";
+import contactData from "@/app/contacts.json";
+import missingContactData from "@/app/contacts-missing.json";
 
 const MOIS_DIRECTORY_URL = "https://www.mois.go.kr/frt/sub/a04/localGovernment/screen.do";
 
@@ -61,7 +62,8 @@ export async function collectMoisSources(): Promise<MoisSource[]> {
   const offices = parseDirectory(await response.text());
   if (offices.length < 150) throw new Error("행정안전부 목록에서 충분한 지자체 주소를 찾지 못했습니다.");
 
-  const locals = [...new Map(seedContacts.map((item) => [`${item.sido}|${item.local}`, item])).values()];
+  const contactRows = [...(contactData as Array<{ sido: string; local: string }>), ...(missingContactData as Array<{ sido: string; local: string }>)];
+  const locals = [...new Map(contactRows.map((item) => [item.sido + "|" + item.local, item])).values()];
   const sources: MoisSource[] = [];
   for (const item of locals) {
     const names = new Set(localNames(item.local));
