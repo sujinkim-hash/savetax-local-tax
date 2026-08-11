@@ -5,6 +5,7 @@ import Link from "next/link";
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 import contactData from "../contacts.json";
 import missingContactData from "../contacts-missing.json";
+import officialHomepageData from "../mois-homepages.json";
 
 
 type Contact = { id?: number; sido: string; local: string; checked: string; status: "확인" | "검토중" };
@@ -14,6 +15,7 @@ type Review = { id: number; sido: string; local: string; field: string; previous
 
 
 const fallbackContacts = [...(contactData as Contact[]), ...(missingContactData as Contact[])];
+const fallbackOfficialHomepages = officialHomepageData as Source[];
 
 function normalizeSidoName(value: string) {
   return value
@@ -40,7 +42,7 @@ function findOfficialHomepage(candidates: Source[], office: { sido: string; loca
 export default function ReviewPage() {
   const [contacts, setContacts] = useState<Contact[]>(fallbackContacts);
   const [sources, setSources] = useState<Source[]>([]);
-  const [homepageCandidates, setHomepageCandidates] = useState<Source[]>([]);
+  const [homepageCandidates, setHomepageCandidates] = useState<Source[]>(fallbackOfficialHomepages);
   const [sourcesLoaded, setSourcesLoaded] = useState(false);
   const [adminKey, setAdminKey] = useState("");
   const [adminKeyDraft, setAdminKeyDraft] = useState("");
@@ -80,7 +82,7 @@ window.localStorage.removeItem("savetax_admin_key");
 return false;
 }
 const sourceData = (await response.json()) as { candidates?: Source[] };
-setHomepageCandidates(sourceData.candidates ?? []);
+setHomepageCandidates(Array.from(new Map([...fallbackOfficialHomepages, ...(sourceData.candidates ?? [])].map((candidate) => [candidate.sido + "::" + candidate.local, candidate])).values()));
 setAdminKey(key);
 setIsAdmin(true);
 window.localStorage.setItem("savetax_admin_key", key);
