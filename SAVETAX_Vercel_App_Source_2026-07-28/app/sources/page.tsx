@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { type FormEvent, useEffect, useMemo, useState } from "react";
 
-type Source = { id: number; sido: string; local: string; source_url: string; created_at: string };
+type Source = { id: number; sido: string; local: string; source_url: string; navigation_note?: string | null; created_at: string };
 
 export default function SourcesPage() {
   const [sources, setSources] = useState<Source[]>([]);
@@ -17,6 +17,7 @@ export default function SourcesPage() {
   const [sourceUrlDraft, setSourceUrlDraft] = useState("");
   const [sourceSidoDraft, setSourceSidoDraft] = useState("");
   const [sourceLocalDraft, setSourceLocalDraft] = useState("");
+  const [sourceNoteDraft, setSourceNoteDraft] = useState("");
   const [notice, setNotice] = useState("");
 
   async function loadSources() {
@@ -67,6 +68,7 @@ export default function SourcesPage() {
     setSourceUrlDraft("");
     setSourceSidoDraft("");
     setSourceLocalDraft("");
+    setSourceNoteDraft("");
     setSourceDialogOpen(true);
   }
 
@@ -75,6 +77,7 @@ export default function SourcesPage() {
     setSourceUrlDraft(source.source_url);
     setSourceSidoDraft(source.sido);
     setSourceLocalDraft(source.local);
+    setSourceNoteDraft(source.navigation_note ?? "");
     setSourceDialogOpen(true);
   }
 
@@ -87,7 +90,7 @@ export default function SourcesPage() {
     const response = await fetch("/api/admin/sources", {
       method: "POST",
       headers: { "content-type": "application/json", "x-admin-key": adminKey },
-      body: JSON.stringify({ id: editingSourceId ?? undefined, sido, local, sourceUrl }),
+      body: JSON.stringify({ id: editingSourceId ?? undefined, sido, local, sourceUrl, navigationNote: sourceNoteDraft.trim() }),
     });
     const data = (await response.json()) as { error?: string };
     if (!response.ok) { setNotice(data.error ?? "공식 주소 저장에 실패했습니다."); return; }
@@ -137,12 +140,12 @@ export default function SourcesPage() {
             <p className="sourceStatusGuide">시·도를 먼저 선택하면 해당 지자체의 공식 직원검색·조직도 주소를 확인할 수 있습니다.</p>
             <div className="sourceAdminBar">{isAdmin ? <><div className="adminModeStatus"><b>주소 관리 권한이 활성화되었습니다.</b><span>주소를 등록·수정·삭제할 수 있습니다.</span></div><button type="button" className="exitAdminMode" onClick={exitAdmin}>관리자 모드 종료</button></> : <button type="button" className="startAdminMode" onClick={() => setAdminDialogOpen(true)}>주소 수정 권한 인증</button>}</div>
             {notice && <p className="sourceNotice" role="status">{notice}</p>}
-            {sourcesLoaded && sources.length > 0 ? <div className="sourceRegionGroups">{sourcesByArea.map((group) => <details className="sourceRegion" key={group.sido}><summary><span className="sourceRegionName">{group.sido}</span><span className="sourceRegionCount">{group.rows.length}개 지자체</span></summary><ul className="sourceReviewList">{group.rows.map((source) => <li key={source.id}><div className="sourceRowMeta"><b>{source.local}</b><span>등록일 {source.created_at.slice(0, 10)}</span></div><div className="sourceActions"><a href={source.source_url} target="_blank" rel="noreferrer">공식 페이지 열기</a>{isAdmin && <><button type="button" onClick={() => openEditSource(source)}>수정</button><button type="button" className="deleteSource" onClick={() => void deleteSource(source)}>삭제</button></>}</div></li>)}</ul></details>)}</div> : <p className="sourceReviewEmpty">{sourcesLoaded ? "아직 등록된 공식 주소가 없습니다." : "등록된 공식 주소를 불러오는 중입니다."}</p>}
+            {sourcesLoaded && sources.length > 0 ? <div className="sourceRegionGroups">{sourcesByArea.map((group) => <details className="sourceRegion" key={group.sido}><summary><span className="sourceRegionName">{group.sido}</span><span className="sourceRegionCount">{group.rows.length}개 지자체</span></summary><ul className="sourceReviewList">{group.rows.map((source) => <li key={source.id}><div className="sourceRowMeta"><b>{source.local}</b><span>등록일 {source.created_at.slice(0, 10)}</span>{source.navigation_note?.trim() && <span className="sourceNavigationNote">메모: {source.navigation_note}</span>}</div><div className="sourceActions"><a href={source.source_url} target="_blank" rel="noreferrer">공식 페이지 열기</a>{isAdmin && <><button type="button" onClick={() => openEditSource(source)}>수정</button><button type="button" className="deleteSource" onClick={() => void deleteSource(source)}>삭제</button></>}</div></li>)}</ul></details>)}</div> : <p className="sourceReviewEmpty">{sourcesLoaded ? "아직 등록된 공식 주소가 없습니다." : "등록된 공식 주소를 불러오는 중입니다."}</p>}
           </div>
         </div>
       </div>
       {adminDialogOpen && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={authenticateAdmin}><h2>관리자 인증</h2><p>관리자 키를 입력하면 공식 주소를 등록·수정할 수 있습니다.</p><label htmlFor="sources-admin-key">관리자 키</label><input id="sources-admin-key" type="password" autoFocus value={adminKeyDraft} onChange={(event) => setAdminKeyDraft(event.target.value)} /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setAdminDialogOpen(false); setAdminKeyDraft(""); }}>취소</button><button type="submit">인증</button></div></form></div>}
-      {sourceDialogOpen && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={saveSource}><h2>{editingSourceId !== null ? "공식 주소 수정" : "공식 페이지 추가 등록"}</h2><p>기존 페이지는 유지되며, 같은 지자체에 추가 직원검색·조직도 주소를 등록할 수 있습니다.</p><label htmlFor="source-sido">시·도</label><input id="source-sido" autoFocus required value={sourceSidoDraft} onChange={(event) => setSourceSidoDraft(event.target.value)} placeholder="예: 경기도" /><label htmlFor="source-local">시·군·구</label><input id="source-local" required value={sourceLocalDraft} onChange={(event) => setSourceLocalDraft(event.target.value)} placeholder="예: 성남시" /><label htmlFor="source-url">공식 직원검색·조직도 주소</label><input id="source-url" type="url" required value={sourceUrlDraft} onChange={(event) => setSourceUrlDraft(event.target.value)} placeholder="https://" /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setSourceDialogOpen(false); setEditingSourceId(null); }}>취소</button><button type="submit">{editingSourceId !== null ? "저장" : "등록"}</button></div></form></div>}
+      {sourceDialogOpen && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={saveSource}><h2>{editingSourceId !== null ? "공식 주소 수정" : "공식 페이지 추가 등록"}</h2><p>기존 페이지는 유지되며, 같은 지자체에 추가 직원검색·조직도 주소를 등록할 수 있습니다.</p><label htmlFor="source-sido">시·도</label><input id="source-sido" autoFocus required value={sourceSidoDraft} onChange={(event) => setSourceSidoDraft(event.target.value)} placeholder="예: 경기도" /><label htmlFor="source-local">시·군·구</label><input id="source-local" required value={sourceLocalDraft} onChange={(event) => setSourceLocalDraft(event.target.value)} placeholder="예: 성남시" /><label htmlFor="source-url">공식 직원검색·조직도 주소</label><input id="source-url" type="url" required value={sourceUrlDraft} onChange={(event) => setSourceUrlDraft(event.target.value)} placeholder="https://" /><label htmlFor="source-note">확인 경로 메모 <small>(선택)</small></label><textarea id="source-note" value={sourceNoteDraft} onChange={(event) => setSourceNoteDraft(event.target.value)} placeholder="예: 세무2과 선택 후 지방소득세(종합소득) 담당자 확인" /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setSourceDialogOpen(false); setEditingSourceId(null); }}>취소</button><button type="submit">{editingSourceId !== null ? "저장" : "등록"}</button></div></form></div>}
     </div>
   </main>;
 }
