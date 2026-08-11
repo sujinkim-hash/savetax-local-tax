@@ -1040,3 +1040,61 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
     text-align: center;
   }
 }
+
+
+/* 공식 페이지와 확인 경로 메모: 넓은 표에서 번호는 업무 열에 가깝게, 보조 정보는 오른쪽에 배치 */
+.dialog textarea {
+  width: 100%;
+  min-height: 86px;
+  resize: vertical;
+  border: 1px solid #d5dfe9;
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--ink);
+  font: inherit;
+  line-height: 1.55;
+  outline: none;
+}
+.dialog textarea:focus { border-color: #91a8c0; box-shadow: 0 0 0 2px #e8eff5; }
+.dialog label small { color: #738297; font-weight: 400; }
+.sourceNoteDialog { max-width: 520px; }
+.sourceNoteText { white-space: pre-wrap; color: #263a54 !important; line-height: 1.7; }
+.sourceNoteOpen {
+  display: inline-flex; align-items: center; min-height: 38px; padding: 0 12px;
+  border: 1px solid #cbd9e7; border-radius: 7px; color: #345979; text-decoration: none;
+}
+.sourceMemoButton {
+  min-height: 30px; padding: 0 9px; border: 1px solid #cbd9e7; border-radius: 6px;
+  background: #fff; color: #345979; font: inherit; font-size: 13px; white-space: nowrap;
+}
+.sourceNavigationNote { max-width: 520px; color: #52657a !important; line-height: 1.45; }
+
+@media (min-width: 1201px) {
+  .appContent .tr {
+    grid-template-columns: 120px 150px minmax(0, 1fr) 210px 108px 92px;
+  }
+  .appContent .tr > :nth-child(4) { padding-left: 14px; }
+  .appContent .tr > :nth-child(5),
+  .appContent .tr > :nth-child(6) {
+    justify-self: stretch;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+  }
+  .appContent .tr.th > :nth-child(5),
+  .appContent .tr.th > :nth-child(6) { display:flex; justify-content:center; }
+  .appContent .phoneCell { justify-content:flex-start; gap: 9px; }
+  .appContent .phoneCell > a:first-child { margin-right: 7px; }
+  .appContent .sourceCell .sourceLinks,
+  .appContent .memoCell .sourceLinks { display:flex; justify-content:center; gap:6px; flex-wrap:wrap; }
+  .appContent .memoCell em { color:#8a97a6; font-style:normal; }
+}
+@media (min-width: 761px) and (max-width: 1200px) {
+  .appContent .tr { grid-template-columns: 115px 140px minmax(280px, 1fr) 220px 96px 82px; }
+  .appContent .tr > :nth-child(5),
+  .appContent .tr > :nth-child(6) { justify-self: stretch; text-align:center; display:flex; align-items:center; justify-content:center; }
+}
+@media (max-width: 760px) {
+  .tr .memoCell, .tr.th > :nth-child(6) { display:none; }
+}
