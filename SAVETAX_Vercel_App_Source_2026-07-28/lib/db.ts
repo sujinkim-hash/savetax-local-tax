@@ -22,6 +22,7 @@ export async function ensureSchema() {
   await sql`ALTER TABLE source_pages ADD COLUMN IF NOT EXISTS navigation_note TEXT`;
   await sql`ALTER TABLE source_pages DROP CONSTRAINT IF EXISTS source_pages_source_url_key`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS source_pages_unique_office_url ON source_pages (sido, local_name, source_url)`;
+  await sql`CREATE TABLE IF NOT EXISTS office_notes (sido TEXT NOT NULL, local_name TEXT NOT NULL, navigation_note TEXT NOT NULL, updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(), PRIMARY KEY (sido, local_name))`;
   await sql`WITH seed AS (
     SELECT id FROM source_pages WHERE is_manual = FALSE ORDER BY created_at DESC LIMIT 8
   )
