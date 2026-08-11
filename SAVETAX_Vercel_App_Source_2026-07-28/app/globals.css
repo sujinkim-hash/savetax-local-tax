@@ -1163,3 +1163,42 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   }
   .appContent .phoneCell { min-width:0; gap:7px; white-space:nowrap; }
 }
+
+
+/* 메모 안내 창과 인증 전 검토 진입 버튼의 가독성 */
+.sourceNoteDialog .sourceNoteOpen {
+  min-height: 44px;
+  padding: 0 16px;
+  border-color: #3f5878;
+  border-radius: 8px;
+  background: #3f5878;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 600;
+  box-shadow: 0 2px 5px rgba(48, 76, 108, .16);
+}
+.sourceNoteDialog .sourceNoteOpen:hover {
+  background: #34516f;
+  border-color: #34516f;
+}
+.sourceNoteDialog .dialogActions { margin-top: 18px; }
+
+.reviewContent .reviewAdminButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 42px;
+  padding: 0 16px;
+  border: 1px solid #3f5878;
+  border-radius: 8px;
+  background: #fff;
+  color: #345979;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.reviewContent .reviewAdminButton:hover {
+  background: #f2f6fa;
+  border-color: #7891aa;
+}
