@@ -19,6 +19,7 @@ export async function ensureSchema() {
   await sql`ALTER TABLE source_pages ADD COLUMN IF NOT EXISTS is_manual BOOLEAN NOT NULL DEFAULT FALSE`;
   await sql`ALTER TABLE source_pages ADD COLUMN IF NOT EXISTS content_hash TEXT`;
   await sql`ALTER TABLE source_pages ADD COLUMN IF NOT EXISTS content_checked_at TIMESTAMPTZ`;
+  await sql`ALTER TABLE source_pages ADD COLUMN IF NOT EXISTS navigation_note TEXT`;
   await sql`ALTER TABLE source_pages DROP CONSTRAINT IF EXISTS source_pages_source_url_key`;
   await sql`CREATE UNIQUE INDEX IF NOT EXISTS source_pages_unique_office_url ON source_pages (sido, local_name, source_url)`;
   await sql`WITH seed AS (
