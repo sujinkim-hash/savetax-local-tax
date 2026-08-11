@@ -1251,3 +1251,57 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   font-size: 13px;
   cursor: pointer;
 }
+
+
+.sourceNoteDialog {
+  width: min(620px, calc(100vw - 40px));
+  max-width: 620px;
+  padding: 30px 32px 26px;
+}
+.sourceNoteDialog > .eyebrow {
+  margin: 0 0 8px;
+  font-size: 11px;
+}
+.sourceNoteDialog h2 {
+  margin: 0 0 20px;
+  font-size: 25px;
+}
+.sourceNoteCard {
+  margin: 0 0 20px;
+  padding: 18px 20px;
+  border: 1px solid #d7e1ed;
+  border-radius: 10px;
+  background: #f8fafc;
+}
+.sourceNoteLabel {
+  margin: 0 0 9px;
+  color: #48627e !important;
+  font-size: 13px;
+  font-weight: 700;
+}
+.sourceNoteText {
+  margin: 0;
+  color: #172f4d !important;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 1.75;
+}
+.sourceNoteActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.sourceNoteOpen {
+  min-height: 34px;
+  padding: 0 11px;
+  border-color: #c7d5e5;
+  background: #fff;
+  color: #345979;
+  font-size: 13px;
+  font-weight: 600;
+}
+.sourceNoteActions .dialogCancel {
+  min-height: 34px;
+  padding: 0 13px;
+}
