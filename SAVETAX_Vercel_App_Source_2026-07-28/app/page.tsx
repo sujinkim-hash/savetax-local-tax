@@ -76,7 +76,7 @@ export default function Home() {
   }
 
   async function loadSources(key: string) {
-    const response = await fetch("/api/admin/sources", { headers: { "x-admin-key": key } });
+    const response = await fetch("/api/admin/sources?fast=1", { headers: { "x-admin-key": key } });
     if (!response.ok) return;
     const data = (await response.json()) as { sources?: Source[] };
     setSources(data.sources ?? []);
