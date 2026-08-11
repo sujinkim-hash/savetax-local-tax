@@ -86,8 +86,18 @@ export async function GET(request: Request) {
 
 export async function POST(request: Request) {
   if (!requireAdmin(request)) return Response.json({ error: "관리자 권한이 없습니다." }, { status: 401 });
-  const body = (await request.json()) as { id?: number; sido?: string; local?: string; sourceUrl?: string; navigationNote?: string };
-  if (!body.sido || !body.local || !body.sourceUrl?.startsWith("http")) return Response.json({ error: "시도, 시·군·구, 올바른 공식 홈페이지 주소가 필요합니다." }, { status: 400 });
+  const body = (await request.json()) as {
+    id?: number; sido?: string; local?: string; sourceUrl?: string; navigationNote?: string;
+    sourceUrls?: Array<{ sourceUrl?: string; navigationNote?: string }>;
+  };
+  const sourceEntries = (body.sourceUrls?.length
+    ? body.sourceUrls
+    : [{ sourceUrl: body.sourceUrl, navigationNote: body.navigationNote }])
+    .map((item) => ({ sourceUrl: item.sourceUrl?.trim() ?? "", navigationNote: item.navigationNote?.trim() || null }))
+    .filter((item) => item.sourceUrl);
+  if (!body.sido || !body.local || sourceEntries.length === 0 || sourceEntries.some((item) => !item.sourceUrl.startsWith("http"))) {
+    return Response.json({ error: "시도, 시·군·구, 올바른 공식 홈페이지 주소가 필요합니다." }, { status: 400 });
+  }
   const sql = await ensureSchema();
   if (!sql) return Response.json({ error: "DATABASE_URL 연결을 확인하세요." }, { status: 503 });
   // 같은 지자체에는 여러 조직도·직원검색 페이지를 등록할 수 있습니다.
@@ -98,10 +108,24 @@ export async function POST(request: Request) {
         AND status = 'pending' AND field IN ('공식 홈페이지', '공식 주소')`;
     await sql`DELETE FROM source_pages WHERE id = ${body.id}`;
   }
-  const [source] = await sql`INSERT INTO source_pages (sido, local_name, source_url, navigation_note, is_active, is_manual) VALUES (${body.sido}, ${body.local}, ${body.sourceUrl}, ${body.navigationNote?.trim() || null}, TRUE, TRUE) RETURNING id, sido, local_name AS local, source_url, navigation_note, created_at`;
-  await sql`INSERT INTO review_candidates (contact_id, sido, local_name, field, previous_value, proposed_value, reason, source_url, status)
-    VALUES (NULL, ${body.sido}, ${body.local}, '공식 주소', '미등록', '등록', '관리자가 등록한 공식 직원검색·조직도 주소입니다. 주소와 지자체를 확인한 뒤 반영하세요.', ${body.sourceUrl}, 'pending')`;
-  return Response.json({ ok: true, source });
+  const sources = [];
+  for (const entry of sourceEntries) {
+    const [source] = await sql`INSERT INTO source_pages (sido, local_name, source_url, navigation_note, is_active, is_manual)
+      VALUES (${body.sido}, ${body.local}, ${entry.sourceUrl}, ${entry.navigationNote}, TRUE, TRUE)
+      ON CONFLICT (sido, local_name, source_url) DO UPDATE SET
+        navigation_note = EXCLUDED.navigation_note, is_active = TRUE, is_manual = TRUE
+      RETURNING id, sido, local_name AS local, source_url, navigation_note, created_at`;
+    sources.push(source);
+    await sql`INSERT INTO review_candidates (contact_id, sido, local_name, field, previous_value, proposed_value, reason, source_url, status)
+      SELECT NULL, ${body.sido}, ${body.local}, '공식 주소', '미등록', '등록',
+        '관리자가 등록한 공식 직원검색·조직도 주소입니다. 주소와 지자체를 확인한 뒤 반영하세요.', ${entry.sourceUrl}, 'pending'
+      WHERE NOT EXISTS (
+        SELECT 1 FROM review_candidates
+        WHERE sido = ${body.sido} AND local_name = ${body.local}
+          AND field = '공식 주소' AND source_url = ${entry.sourceUrl} AND status = 'pending'
+      )`;
+  }
+  return Response.json({ ok: true, sources });
 }
 
 export async function DELETE(request: Request) {
