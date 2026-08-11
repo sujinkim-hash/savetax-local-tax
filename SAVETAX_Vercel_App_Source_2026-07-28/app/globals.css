@@ -1210,3 +1210,44 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   font-size: 16px;
   letter-spacing: -.015em;
 }
+
+
+.addSourceButton {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  align-self: flex-start;
+  margin: 2px 0 4px;
+  min-height: 38px;
+  padding: 0 14px;
+  border: 1px dashed #7b9ac1;
+  border-radius: 8px;
+  background: #f8fbff;
+  color: #1d548d;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.additionalSourceFields {
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+  padding: 14px;
+  border: 1px solid #d5e1ef;
+  border-radius: 10px;
+  background: #fbfdff;
+}
+.additionalSourceHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #153a67;
+}
+.additionalSourceHead button {
+  border: 0;
+  background: transparent;
+  color: #b23b3b;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
