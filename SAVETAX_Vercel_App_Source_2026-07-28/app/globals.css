@@ -838,3 +838,14 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
     grid-template-columns: 140px 160px minmax(340px, 450px) minmax(270px, 1fr) 136px;
   }
 }
+
+/* 넓은 화면에서는 담당 업무를 한 줄로 모두 읽을 수 있게 확장 */
+@media (min-width: 1400px) {
+  .appContent .tr {
+    grid-template-columns: 140px 160px minmax(560px, 700px) minmax(240px, 1fr) 136px;
+  }
+  .appContent .scopeCell {
+    font-size: 14px;
+    white-space: nowrap;
+  }
+}
