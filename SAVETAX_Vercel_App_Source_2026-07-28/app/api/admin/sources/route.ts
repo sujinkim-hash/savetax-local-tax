@@ -60,13 +60,14 @@ async function syncSourceReviews(sql: NonNullable<Awaited<ReturnType<typeof ensu
         AND r.field = '공식 주소' AND r.source_url = s.source_url
     )`;
 
-  // 같은 시·군·구의 공식 주소 검토 건은 최신 등록 1건만 유지합니다.
+  // 동일 주소의 중복 검토 건만 정리합니다. 한 지자체의 추가 페이지는 모두 유지합니다.
   await sql`DELETE FROM review_candidates older
     USING review_candidates newer
     WHERE older.id < newer.id
       AND older.status = 'pending' AND newer.status = 'pending'
       AND older.field = '공식 주소' AND newer.field = '공식 주소'
-      AND older.sido = newer.sido AND older.local_name = newer.local_name`;
+      AND older.sido = newer.sido AND older.local_name = newer.local_name
+      AND older.source_url = newer.source_url`;
 }
 
 export async function GET(request: Request) {
@@ -86,11 +87,14 @@ export async function POST(request: Request) {
   if (!body.sido || !body.local || !body.sourceUrl?.startsWith("http")) return Response.json({ error: "시도, 시·군·구, 올바른 공식 홈페이지 주소가 필요합니다." }, { status: 400 });
   const sql = await ensureSchema();
   if (!sql) return Response.json({ error: "DATABASE_URL 연결을 확인하세요." }, { status: 503 });
-  if (body.id) await sql`DELETE FROM source_pages WHERE id = ${body.id}`;
-  await sql`DELETE FROM source_pages WHERE sido = ${body.sido} AND local_name = ${body.local}`;
-  await sql`DELETE FROM review_candidates
-    WHERE sido = ${body.sido} AND local_name = ${body.local}
-      AND field IN ('공식 홈페이지', '공식 주소') AND status = 'pending'`;
+  // 같은 지자체에는 여러 조직도·직원검색 페이지를 등록할 수 있습니다.
+  // 수정일 때만 선택한 주소 1건을 교체하고, 기존 추가 페이지는 유지합니다.
+  if (body.id) {
+    await sql`DELETE FROM review_candidates
+      WHERE source_url = (SELECT source_url FROM source_pages WHERE id = ${body.id})
+        AND status = 'pending' AND field IN ('공식 홈페이지', '공식 주소')`;
+    await sql`DELETE FROM source_pages WHERE id = ${body.id}`;
+  }
   const [source] = await sql`INSERT INTO source_pages (sido, local_name, source_url, is_active, is_manual) VALUES (${body.sido}, ${body.local}, ${body.sourceUrl}, TRUE, TRUE) RETURNING id, sido, local_name AS local, source_url, created_at`;
   await sql`INSERT INTO review_candidates (contact_id, sido, local_name, field, previous_value, proposed_value, reason, source_url, status)
     VALUES (NULL, ${body.sido}, ${body.local}, '공식 주소', '미등록', '등록', '관리자가 등록한 공식 직원검색·조직도 주소입니다. 주소와 지자체를 확인한 뒤 반영하세요.', ${body.sourceUrl}, 'pending')`;
