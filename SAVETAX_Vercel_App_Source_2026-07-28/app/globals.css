@@ -950,3 +950,44 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   .appContent .scopeCell { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   .appContent .phoneCell { gap: 7px; white-space: nowrap; }
 }
+
+/* 1280px 화면에서도 메뉴·번호 버튼·긴 업무명을 함께 표시하는 압축 배치 */
+@media (min-width: 1201px) {
+  .appShell { grid-template-columns: 120px minmax(0, 1fr); }
+  .appShell .sideRail {
+    display: flex;
+    padding: 24px 10px;
+  }
+  .sideRail .railBrand { padding: 0 8px 22px; }
+  .sideRail .railBrand strong { font-size: 16px; }
+  .sideRail nav a {
+    padding: 10px 7px;
+    font-size: 12px;
+    white-space: nowrap;
+  }
+  .sideRail > p { display: none; }
+
+  .appContent { padding: 0 20px; }
+  .appContent .tr {
+    padding-left: 14px;
+    padding-right: 14px;
+    grid-template-columns: 120px 150px minmax(0, 1fr) 240px 90px;
+  }
+  .appContent .tr > :nth-child(1),
+  .appContent .tr > :nth-child(2) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .appContent .scopeCell {
+    font-size: 12px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .appContent .phoneCell {
+    min-width: 0;
+    gap: 7px;
+    white-space: nowrap;
+  }
+}
