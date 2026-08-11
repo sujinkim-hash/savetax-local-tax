@@ -816,3 +816,18 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   }
   .appContent .tr .sourceCell { justify-content: center; }
 }
+
+/* 연락처 표: 열 사이 여백과 번호 동작 간격 균형 */
+@media (min-width: 1101px) {
+  .appContent .tr {
+    grid-template-columns: 140px 160px minmax(380px, 1fr) 270px 136px;
+  }
+  .appContent .tr > :not(:first-child) { padding-left: 20px; }
+  .appContent .tr > :not(:last-child) { padding-right: 20px; }
+  .appContent .phoneCell { gap: 8px; }
+  .appContent .phoneCell > a:first-child { margin-right: 6px; }
+}
+@media (min-width: 761px) and (max-width: 1100px) {
+  .appContent .phoneCell { gap: 8px; }
+  .appContent .phoneCell > a:first-child { margin-right: 5px; }
+}
