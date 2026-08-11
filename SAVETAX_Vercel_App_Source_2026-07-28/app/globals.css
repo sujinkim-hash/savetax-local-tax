@@ -1028,3 +1028,15 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   .sideRail .railBrand strong { font-size: 19px; }
   .sideRail nav a { font-size: 14px; padding: 11px 10px; }
 }
+
+/* 넓은 화면: 공식 페이지 열을 넓히고 직통번호를 왼쪽으로 이동 */
+@media (min-width: 1440px) {
+  .appContent .tr {
+    grid-template-columns: 120px 150px minmax(0, 1fr) 320px 150px;
+  }
+  .appContent .sourceCell,
+  .appContent .tr.th > :last-child {
+    justify-self: stretch;
+    text-align: center;
+  }
+}
