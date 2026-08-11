@@ -76,14 +76,14 @@ export async function GET(request: Request) {
   if (!sql) return Response.json({ error: "DATABASE_URL 연결을 확인하세요." }, { status: 503 });
   await ensureMoisCandidates(sql);
   await syncSourceReviews(sql);
-  const sources = await sql`SELECT id, sido, local_name AS local, source_url, created_at FROM source_pages WHERE is_active = TRUE AND is_manual = TRUE ORDER BY created_at DESC`;
-  const candidates = await sql`SELECT DISTINCT ON (sido, local_name) id, sido, local_name AS local, source_url, created_at FROM source_pages WHERE is_manual = FALSE ORDER BY sido, local_name, created_at DESC`;
+  const sources = await sql`SELECT id, sido, local_name AS local, source_url, navigation_note, created_at FROM source_pages WHERE is_active = TRUE AND is_manual = TRUE ORDER BY created_at DESC`;
+  const candidates = await sql`SELECT DISTINCT ON (sido, local_name) id, sido, local_name AS local, source_url, navigation_note, created_at FROM source_pages WHERE is_manual = FALSE ORDER BY sido, local_name, created_at DESC`;
   return Response.json({ sources, candidates });
 }
 
 export async function POST(request: Request) {
   if (!requireAdmin(request)) return Response.json({ error: "관리자 권한이 없습니다." }, { status: 401 });
-  const body = (await request.json()) as { id?: number; sido?: string; local?: string; sourceUrl?: string };
+  const body = (await request.json()) as { id?: number; sido?: string; local?: string; sourceUrl?: string; navigationNote?: string };
   if (!body.sido || !body.local || !body.sourceUrl?.startsWith("http")) return Response.json({ error: "시도, 시·군·구, 올바른 공식 홈페이지 주소가 필요합니다." }, { status: 400 });
   const sql = await ensureSchema();
   if (!sql) return Response.json({ error: "DATABASE_URL 연결을 확인하세요." }, { status: 503 });
@@ -95,7 +95,7 @@ export async function POST(request: Request) {
         AND status = 'pending' AND field IN ('공식 홈페이지', '공식 주소')`;
     await sql`DELETE FROM source_pages WHERE id = ${body.id}`;
   }
-  const [source] = await sql`INSERT INTO source_pages (sido, local_name, source_url, is_active, is_manual) VALUES (${body.sido}, ${body.local}, ${body.sourceUrl}, TRUE, TRUE) RETURNING id, sido, local_name AS local, source_url, created_at`;
+  const [source] = await sql`INSERT INTO source_pages (sido, local_name, source_url, navigation_note, is_active, is_manual) VALUES (${body.sido}, ${body.local}, ${body.sourceUrl}, ${body.navigationNote?.trim() || null}, TRUE, TRUE) RETURNING id, sido, local_name AS local, source_url, navigation_note, created_at`;
   await sql`INSERT INTO review_candidates (contact_id, sido, local_name, field, previous_value, proposed_value, reason, source_url, status)
     VALUES (NULL, ${body.sido}, ${body.local}, '공식 주소', '미등록', '등록', '관리자가 등록한 공식 직원검색·조직도 주소입니다. 주소와 지자체를 확인한 뒤 반영하세요.', ${body.sourceUrl}, 'pending')`;
   return Response.json({ ok: true, source });
