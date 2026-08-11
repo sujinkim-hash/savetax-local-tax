@@ -849,3 +849,19 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
     white-space: nowrap;
   }
 }
+
+/* 긴 담당 업무는 행을 늘리지 않고, 넓은 표에서 한 줄로 표시 */
+@media (min-width: 761px) {
+  .appContent .table {
+    overflow-x: auto;
+    scrollbar-color: #c8d5e3 transparent;
+  }
+  .appContent .tr {
+    min-width: 1280px;
+    grid-template-columns: 120px 140px minmax(720px, 1fr) 190px 110px;
+  }
+  .appContent .scopeCell {
+    font-size: 14px;
+    white-space: nowrap;
+  }
+}
