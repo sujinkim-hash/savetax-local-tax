@@ -51,9 +51,16 @@ export default function Home() {
   useEffect(() => { const savedKey = window.localStorage.getItem("savetax_admin_key"); if (savedKey) void loadReviews(savedKey); }, []);
   useEffect(() => { const selected = new URLSearchParams(window.location.search).get("region"); if (selected) setRegion(selected); }, []);
 
-  const rows = useMemo(() => contacts.filter((item) =>
-    (region === "전체" || item.sido === region) && `${item.sido} ${item.local} ${item.scope} ${item.phone}`.toLowerCase().includes(query.toLowerCase()),
-  ), [contacts, query, region]);
+  const rows = useMemo(() => contacts
+    .filter((item) =>
+      (region === "전체" || item.sido === region) && `${item.sido} ${item.local} ${item.scope} ${item.phone}`.toLowerCase().includes(query.toLowerCase()),
+    )
+    .sort((a, b) => {
+      const officeOrder = `${a.sido} ${a.local}`.localeCompare(`${b.sido} ${b.local}`, "ko");
+      if (officeOrder !== 0) return officeOrder;
+      return a.phone.localeCompare(b.phone, "ko", { numeric: true });
+    }),
+  [contacts, query, region]);
   const regions = ["전체", ...Array.from(new Set(contacts.map((item) => item.sido)))];
   const sourcesByOffice = useMemo(() => {
     const grouped = new Map<string, Source[]>();
