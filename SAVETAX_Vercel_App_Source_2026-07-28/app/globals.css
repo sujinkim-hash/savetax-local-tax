@@ -798,3 +798,21 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
     justify-content: center;
   }
 }
+
+/* 공식 페이지 열: 셀 폭 전체를 사용해 구분선과 중앙 정렬 일치 */
+@media (min-width: 761px) {
+  .appContent .tr.th > :last-child,
+  .appContent .tr .sourceCell {
+    grid-column: 5;
+    justify-self: stretch;
+    width: 100%;
+    box-sizing: border-box;
+    text-align: center;
+  }
+  .appContent .tr.th > :last-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .appContent .tr .sourceCell { justify-content: center; }
+}
