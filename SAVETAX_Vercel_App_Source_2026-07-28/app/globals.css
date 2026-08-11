@@ -1202,3 +1202,11 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   background: #f2f6fa;
   border-color: #7891aa;
 }
+
+/* 관리자 검토 진입은 안내가 아닌 주 동작으로 명확하게 표시 */
+.reviewContent .reviewAdminButton {
+  min-height: 48px;
+  padding: 0 20px;
+  font-size: 16px;
+  letter-spacing: -.015em;
+}
