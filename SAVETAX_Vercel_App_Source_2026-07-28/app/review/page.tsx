@@ -9,7 +9,7 @@ import officialHomepageData from "../mois-homepages.json";
 
 
 type Contact = { id?: number; sido: string; local: string; checked: string; status: "확인" | "검토중" };
-type Source = { id: number; sido: string; local: string; source_url: string; created_at: string };
+type Source = { id: number; sido: string; local: string; source_url: string; navigation_note?: string | null; created_at: string };
 type Review = { id: number; sido: string; local: string; field: string; previous_value: string; proposed_value: string; reason: string; source_url?: string; created_at: string };
 
 
@@ -52,6 +52,7 @@ export default function ReviewPage() {
   const [sourceUrlDraft, setSourceUrlDraft] = useState("");
   const [sourceSidoDraft, setSourceSidoDraft] = useState("");
   const [sourceLocalDraft, setSourceLocalDraft] = useState("");
+  const [sourceNoteDraft, setSourceNoteDraft] = useState("");
   const [notice, setNotice] = useState("");
   const [reviews, setReviews] = useState<Review[]>([]);
   const [reviewStatusFilter, setReviewStatusFilter] = useState<"registered" | "unregistered">("registered");
@@ -121,6 +122,7 @@ if (savedKey) void verifyAdminKey(savedKey, true);
     setSourceUrlDraft(source.source_url);
     setSourceSidoDraft(source.sido);
     setSourceLocalDraft(source.local);
+    setSourceNoteDraft(source.navigation_note ?? "");
   }
 
 
@@ -130,7 +132,7 @@ if (savedKey) void verifyAdminKey(savedKey, true);
     const response = await fetch("/api/admin/sources", {
       method: "POST",
       headers: { "content-type": "application/json", "x-admin-key": adminKey },
-      body: JSON.stringify({ id: editingSource.id, sido: sourceSidoDraft.trim(), local: sourceLocalDraft.trim(), sourceUrl: sourceUrlDraft.trim() }),
+      body: JSON.stringify({ id: editingSource.id || undefined, sido: sourceSidoDraft.trim(), local: sourceLocalDraft.trim(), sourceUrl: sourceUrlDraft.trim(), navigationNote: sourceNoteDraft.trim() }),
     });
     const data = (await response.json()) as { error?: string };
     if (!response.ok) {
@@ -139,6 +141,7 @@ if (savedKey) void verifyAdminKey(savedKey, true);
     }
     setEditingSource(null);
     setSourceUrlDraft("");
+    setSourceNoteDraft("");
     setNotice(`${sourceSidoDraft.trim()} ${sourceLocalDraft.trim()} 공식 주소를 수정했습니다.`);
     setSourcesLoaded(false);
     const refreshed = await fetch("/api/sources", { cache: "no-store" });
@@ -210,7 +213,7 @@ if (savedKey) void verifyAdminKey(savedKey, true);
     <details className="reviewPanel sectionAccordion" onToggle={(event) => { if (event.currentTarget.open) window.setTimeout(() => event.currentTarget.scrollIntoView({ behavior: "smooth", block: "start" }), 0); }}><summary className="panelHead"><div><p className="eyebrow">CHANGE REVIEW</p><h2>수정 내용 검토</h2></div><p>공식 주소와 담당 연락처의 변경 사항을 검토합니다.</p><i aria-hidden="true" /></summary><div className="changeReviewBody">{!isAdmin ? <button type="button" className="reviewAdminButton" onClick={() => setAdminDialogOpen(true)}>관리자 인증 후 변경 검토</button> : (registeredOffices.length + unregisteredOffices.length) > 0 ? <><div className="reviewStatusTabs" role="group" aria-label="검토 상태 선택"><button type="button" className={reviewStatusFilter === "registered" ? "active" : ""} onClick={() => setReviewStatusFilter("registered")}>등록 <span>{registeredOffices.length}</span></button><button type="button" className={reviewStatusFilter === "unregistered" ? "active" : ""} onClick={() => setReviewStatusFilter("unregistered")}>미등록 <span>{unregisteredOffices.length}</span></button></div><input type="text" className="reviewSearchInput" aria-label="지역 검색" placeholder="시·도 또는 시·군·구 검색" value={reviewSearch} onChange={(event) => setReviewSearch(event.target.value)} />{visibleOffices.length > 0 ? <div className="reviewRegionGroups">{officeGroups.map((group) => <details className="reviewRegion" key={group.sido}><summary><span className="reviewRegionName">{group.sido}</span><span className="reviewRegionCount">{group.rows.length}건</span></summary><ul className="changeReviewList">{group.rows.map((office) => { const homepageCandidate = homepageCandidateByOffice.get(office.sido + "::" + office.local) ?? findOfficialHomepage(homepageCandidates, office); return <li key={office.sido + office.local} className="reviewCandidateRow"><b>{office.local}</b><div className="changeReviewActions">{reviewStatusFilter === "registered" ? <><a href={office.source?.source_url} target="_blank" rel="noreferrer">홈페이지</a><button type="button" onClick={() => office.source && openSourceEditor(office.source)}>주소 수정</button></> : <>{homepageCandidate && <a href={homepageCandidate.source_url} target="_blank" rel="noreferrer">공식 페이지 확인</a>}<button type="button" onClick={() => openSourceEditor({ id: 0, sido: office.sido, local: office.local, source_url: "" })}>주소 등록</button></>}</div></li>; })}</ul></details>)}</div> : <p className="sourceReviewEmpty">{reviewStatusFilter === "registered" ? "등록 상태의 검토 항목이 없습니다." : "미등록 상태의 검토 항목이 없습니다."}</p>}</> : <p className="sourceReviewEmpty">현재 반영 대기 중인 수정 내용이 없습니다.</p>}</div></details>
     
     {adminDialogOpen && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={authenticateAdmin}><h2>관리자 인증</h2><p>관리자 키를 입력하면 공식 주소를 바로 수정할 수 있습니다.</p><label htmlFor="review-admin-key">관리자 키</label><input id="review-admin-key" type="password" autoFocus value={adminKeyDraft} onChange={(event) => setAdminKeyDraft(event.target.value)} /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setAdminDialogOpen(false); setAdminKeyDraft(""); }}>취소</button><button type="submit">인증</button></div></form></div>}
-    {editingSource && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={saveSource}><h2>{editingSource.id ? "공식 주소 수정" : "공식 주소 등록"}</h2><p>{editingSource.id ? "지역 이름과 직원검색·조직도 주소를 함께 수정할 수 있습니다." : "해당 지자체의 공식 직원검색·조직도 주소를 입력해 등록하세요."}</p><label htmlFor="source-edit-sido">시·도</label><input id="source-edit-sido" required readOnly={editingSource.id === 0} value={sourceSidoDraft} onChange={(event) => setSourceSidoDraft(event.target.value)} placeholder="예: 경기도" /><label htmlFor="source-edit-local">시·군·구</label><input id="source-edit-local" required readOnly={editingSource.id === 0} value={sourceLocalDraft} onChange={(event) => setSourceLocalDraft(event.target.value)} placeholder="예: 성남시" /><label htmlFor="source-edit-url">공식 직원검색·조직도 주소</label><input id="source-edit-url" type="url" autoFocus required value={sourceUrlDraft} onChange={(event) => setSourceUrlDraft(event.target.value)} placeholder="https://" /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setEditingSource(null); setSourceUrlDraft(""); setSourceSidoDraft(""); setSourceLocalDraft(""); }}>취소</button><button type="submit">저장</button></div></form></div>}
+    {editingSource && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={saveSource}><h2>{editingSource.id ? "공식 주소 수정" : "공식 주소 등록"}</h2><p>{editingSource.id ? "지역 이름과 직원검색·조직도 주소를 함께 수정할 수 있습니다." : "해당 지자체의 공식 직원검색·조직도 주소를 입력해 등록하세요."}</p><label htmlFor="source-edit-sido">시·도</label><input id="source-edit-sido" required readOnly={editingSource.id === 0} value={sourceSidoDraft} onChange={(event) => setSourceSidoDraft(event.target.value)} placeholder="예: 경기도" /><label htmlFor="source-edit-local">시·군·구</label><input id="source-edit-local" required readOnly={editingSource.id === 0} value={sourceLocalDraft} onChange={(event) => setSourceLocalDraft(event.target.value)} placeholder="예: 성남시" /><label htmlFor="source-edit-url">공식 직원검색·조직도 주소</label><input id="source-edit-url" type="url" autoFocus required value={sourceUrlDraft} onChange={(event) => setSourceUrlDraft(event.target.value)} placeholder="https://" /><label htmlFor="source-edit-note">확인 경로 메모 <small>(선택)</small></label><textarea id="source-edit-note" value={sourceNoteDraft} onChange={(event) => setSourceNoteDraft(event.target.value)} placeholder="예: 세무2과 선택 후 지방소득세(종합소득) 담당자 확인" /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setEditingSource(null); setSourceUrlDraft(""); setSourceSidoDraft(""); setSourceLocalDraft(""); setSourceNoteDraft(""); }}>취소</button><button type="submit">저장</button></div></form></div>}
       </div>
     </div>
   </main>;
