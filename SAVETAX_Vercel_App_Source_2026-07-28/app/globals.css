@@ -874,3 +874,34 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
     overflow-y: hidden;
   }
 }
+
+/* 연락처 조회는 표를 우선: 좌측 보조 메뉴를 숨기고 한 줄 업무명 폭 확보 */
+@media (min-width: 761px) {
+  .appShell { grid-template-columns: minmax(0, 1fr); }
+  .appShell .sideRail { display: none; }
+  .appContent { padding: 0 36px; }
+
+  .appContent .panel:has(.table) { overflow: hidden; }
+  .appContent .table { overflow: visible; width: 100%; }
+  .appContent .tr {
+    min-width: 0;
+    grid-template-columns: 110px 130px minmax(540px, 1fr) 250px 120px;
+  }
+  .appContent .scopeCell {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .appContent .phoneCell {
+    gap: 8px;
+    white-space: nowrap;
+  }
+}
+
+/* 표 전체가 넓은 화면에서는 업무 열이 남는 폭을 모두 사용 */
+@media (min-width: 1440px) {
+  .appContent .tr {
+    grid-template-columns: 120px 140px minmax(620px, 1fr) 250px 120px;
+  }
+}
