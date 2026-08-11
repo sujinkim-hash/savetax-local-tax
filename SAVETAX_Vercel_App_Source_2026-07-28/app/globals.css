@@ -991,3 +991,13 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
     white-space: nowrap;
   }
 }
+
+
+/* 가장 긴 담당 업무(김포시 기준)까지 한 줄로 표시할 여유 확보 */
+@media (min-width: 1201px) {
+  .appContent .tr {
+    padding-left: 12px;
+    padding-right: 12px;
+    grid-template-columns: 110px 145px minmax(0, 1fr) 240px 80px;
+  }
+}
