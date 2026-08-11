@@ -76,7 +76,7 @@ export default function ReviewPage() {
 
 
   async function verifyAdminKey(key: string, silent?: boolean) {
-const response = await fetch("/api/admin/sources", { headers: { "x-admin-key": key } });
+const response = await fetch("/api/admin/sources?fast=1", { headers: { "x-admin-key": key } });
 if (!response.ok) {
 if (!silent) setNotice("관리자 키를 확인해 주세요.");
 window.localStorage.removeItem("savetax_admin_key");
@@ -87,10 +87,11 @@ setHomepageCandidates(Array.from(new Map([...fallbackOfficialHomepages, ...(sour
 setAdminKey(key);
 setIsAdmin(true);
 window.localStorage.setItem("savetax_admin_key", key);
-const reviewResponse = await fetch("/api/admin/reviews", { headers: { "x-admin-key": key } });
-const reviewData = (await reviewResponse.json()) as { reviews?: Review[] };
-if (reviewResponse.ok) setReviews(reviewData.reviews ?? []);
-if (!silent) setNotice("관리자 인증이 완료되었습니다. 검토 대기 변경을 확인하고 공식 주소를 수정할 수 있습니다.");
+if (!silent) setNotice("관리자 인증이 완료되었습니다. 검토 목록을 불러오는 중입니다.");
+void fetch("/api/admin/reviews", { headers: { "x-admin-key": key } })
+  .then(async (reviewResponse) => reviewResponse.ok ? (await reviewResponse.json()) as { reviews?: Review[] } : { reviews: [] })
+  .then((reviewData) => setReviews(reviewData.reviews ?? []))
+  .catch(() => undefined);
 return true;
 }
 
