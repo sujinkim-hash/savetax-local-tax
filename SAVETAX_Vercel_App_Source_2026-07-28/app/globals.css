@@ -1019,3 +1019,12 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   }
   .appContent .sourceCell { white-space: nowrap; }
 }
+
+/* 넓은 화면에서는 좌측 메뉴를 여유 있게 표시 */
+@media (min-width: 1440px) {
+  .appShell { grid-template-columns: 220px minmax(0, 1fr); }
+  .appShell .sideRail { padding: 30px 22px; }
+  .sideRail .railBrand { padding: 0 10px 28px; }
+  .sideRail .railBrand strong { font-size: 19px; }
+  .sideRail nav a { font-size: 14px; padding: 11px 10px; }
+}
