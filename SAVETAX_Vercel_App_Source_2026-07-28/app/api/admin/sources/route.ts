@@ -74,8 +74,11 @@ export async function GET(request: Request) {
   if (!requireAdmin(request)) return Response.json({ error: "관리자 권한이 없습니다." }, { status: 401 });
   const sql = await ensureSchema();
   if (!sql) return Response.json({ error: "DATABASE_URL 연결을 확인하세요." }, { status: 503 });
-  await ensureMoisCandidates(sql);
-  await syncSourceReviews(sql);
+  const fast = new URL(request.url).searchParams.get("fast") === "1";
+  if (!fast) {
+    await ensureMoisCandidates(sql);
+    await syncSourceReviews(sql);
+  }
   const sources = await sql`SELECT id, sido, local_name AS local, source_url, navigation_note, created_at FROM source_pages WHERE is_active = TRUE AND is_manual = TRUE ORDER BY created_at DESC`;
   const candidates = await sql`SELECT DISTINCT ON (sido, local_name) id, sido, local_name AS local, source_url, navigation_note, created_at FROM source_pages WHERE is_manual = FALSE ORDER BY sido, local_name, created_at DESC`;
   return Response.json({ sources, candidates });
