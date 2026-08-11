@@ -865,3 +865,12 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
     white-space: nowrap;
   }
 }
+
+
+/* 좁은 화면에서는 표 영역 안에서만 가로 이동해 긴 업무명을 보존 */
+@media (min-width: 761px) {
+  .appContent .panel:has(.table) {
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+}
