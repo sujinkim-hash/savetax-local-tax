@@ -12,5 +12,6 @@ export async function GET() {
     WHERE is_active = TRUE AND is_manual = TRUE
     ORDER BY created_at DESC
   `;
-  return Response.json({ sources }, { headers: { "cache-control": "no-store" } });
+  const officeNotes = await sql`SELECT sido, local_name AS local, navigation_note FROM office_notes ORDER BY sido, local_name`;
+  return Response.json({ sources, officeNotes }, { headers: { "cache-control": "no-store" } });
 }
