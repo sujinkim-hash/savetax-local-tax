@@ -7,7 +7,7 @@ export async function GET() {
   if (!sql) return Response.json({ sources: [] });
 
   const sources = await sql`
-    SELECT id, sido, local_name AS local, source_url, created_at
+    SELECT id, sido, local_name AS local, source_url, navigation_note, created_at
     FROM source_pages
     WHERE is_active = TRUE AND is_manual = TRUE
     ORDER BY created_at DESC
