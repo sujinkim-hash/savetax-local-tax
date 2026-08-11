@@ -273,10 +273,12 @@ export default function Home() {
         })}
       </div>
       {totalPages > 1 && (
-        <div className="pager">
+        <div className="pager" aria-label="페이지 이동">
+          <button type="button" disabled={page === 1} onClick={() => setPage(1)} aria-label="첫 페이지로 이동">&lt;&lt;</button>
           <button type="button" disabled={page === 1} onClick={() => setPage((p) => Math.max(1, p - 1))}>이전</button>
           <span>{page} / {totalPages}</span>
           <button type="button" disabled={page === totalPages} onClick={() => setPage((p) => Math.min(totalPages, p + 1))}>다음</button>
+          <button type="button" disabled={page === totalPages} onClick={() => setPage(totalPages)} aria-label="마지막 페이지로 이동">&gt;&gt;</button>
         </div>
       )}
     </section>
