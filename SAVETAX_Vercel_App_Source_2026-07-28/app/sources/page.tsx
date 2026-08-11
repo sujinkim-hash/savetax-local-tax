@@ -29,7 +29,7 @@ export default function SourcesPage() {
   }
 
   async function verifyAdminKey(key: string, silent?: boolean) {
-    const response = await fetch("/api/admin/sources", { headers: { "x-admin-key": key } });
+    const response = await fetch("/api/admin/sources?fast=1", { headers: { "x-admin-key": key } });
     if (!response.ok) {
       if (!silent) setNotice("관리자 키를 확인해 주세요.");
       window.localStorage.removeItem("savetax_admin_key");
