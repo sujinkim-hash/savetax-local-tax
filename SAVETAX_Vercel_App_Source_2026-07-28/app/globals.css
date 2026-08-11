@@ -905,3 +905,48 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
     grid-template-columns: 120px 140px minmax(620px, 1fr) 250px 120px;
   }
 }
+
+/* 연락처 표 최종 폭 배분: 좌측 메뉴 유지, 지자체명 줄바꿈 방지 */
+@media (min-width: 1201px) {
+  .appShell { grid-template-columns: 160px minmax(0, 1fr); }
+  .appShell .sideRail { display: flex; }
+  .appContent { padding: 0 20px; }
+  .appContent .panel:has(.table) { overflow: hidden; }
+  .appContent .table { overflow: visible; width: 100%; }
+  .appContent .tr {
+    min-width: 0;
+    grid-template-columns: 130px 140px minmax(0, 1fr) 240px 105px;
+  }
+  .appContent .tr > :nth-child(1),
+  .appContent .tr > :nth-child(2) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .appContent .scopeCell {
+    font-size: 13px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .appContent .phoneCell {
+    min-width: 0;
+    gap: 7px;
+    white-space: nowrap;
+  }
+}
+
+/* 중간 폭에서는 메뉴를 접어 표와 버튼을 우선 표시 */
+@media (min-width: 761px) and (max-width: 1200px) {
+  .appShell { grid-template-columns: minmax(0, 1fr); }
+  .appShell .sideRail { display: none; }
+  .appContent { padding: 0 20px; }
+  .appContent .tr {
+    min-width: 0;
+    grid-template-columns: 130px 140px minmax(0, 1fr) 240px 105px;
+  }
+  .appContent .tr > :nth-child(1),
+  .appContent .tr > :nth-child(2) { white-space: nowrap; }
+  .appContent .scopeCell { font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .appContent .phoneCell { gap: 7px; white-space: nowrap; }
+}
