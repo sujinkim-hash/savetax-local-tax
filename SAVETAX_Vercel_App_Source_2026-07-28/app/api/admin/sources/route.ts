@@ -1,5 +1,25 @@
 import { ensureSchema, requireAdmin } from "@/lib/db";
+import { collectMoisSources } from "@/lib/mois";
 export const dynamic = "force-dynamic";
+export const maxDuration = 60;
+
+async function ensureMoisCandidates(sql: NonNullable<Awaited<ReturnType<typeof ensureSchema>>>) {
+  const [existing] = await sql`SELECT COUNT(*)::int AS count FROM (
+    SELECT DISTINCT sido, local_name FROM source_pages WHERE is_manual = FALSE
+  ) AS candidates`;
+  if (Number(existing?.count ?? 0) >= 250) return;
+
+  try {
+    const collected = await collectMoisSources();
+    for (const source of collected) {
+      await sql`INSERT INTO source_pages (sido, local_name, source_url, is_active, is_manual)
+        VALUES (${source.sido}, ${source.local}, ${source.sourceUrl}, FALSE, FALSE)
+        ON CONFLICT (sido, local_name, source_url) DO NOTHING`;
+    }
+  } catch {
+    // 자동 수집 실패 시 기존에 저장된 공식 홈페이지 후보만 사용합니다.
+  }
+}
 
 async function syncSourceReviews(sql: NonNullable<Awaited<ReturnType<typeof ensureSchema>>>) {
   // 실제로 등록된 주소와 일치하는 항목만 등록 상태로 표시합니다.
@@ -53,6 +73,7 @@ export async function GET(request: Request) {
   if (!requireAdmin(request)) return Response.json({ error: "관리자 권한이 없습니다." }, { status: 401 });
   const sql = await ensureSchema();
   if (!sql) return Response.json({ error: "DATABASE_URL 연결을 확인하세요." }, { status: 503 });
+  await ensureMoisCandidates(sql);
   await syncSourceReviews(sql);
   const sources = await sql`SELECT id, sido, local_name AS local, source_url, created_at FROM source_pages WHERE is_active = TRUE AND is_manual = TRUE ORDER BY created_at DESC`;
   const candidates = await sql`SELECT DISTINCT ON (sido, local_name) id, sido, local_name AS local, source_url, created_at FROM source_pages WHERE is_manual = FALSE ORDER BY sido, local_name, created_at DESC`;
