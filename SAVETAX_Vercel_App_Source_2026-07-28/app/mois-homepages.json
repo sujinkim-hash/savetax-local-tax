@@ -1,0 +1,1773 @@
+[
+  {
+    "id": -1,
+    "sido": "강원특별자치도",
+    "local": "강릉시",
+    "source_url": "https://www.gn.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -2,
+    "sido": "강원특별자치도",
+    "local": "고성군",
+    "source_url": "https://www.gwgs.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -3,
+    "sido": "강원특별자치도",
+    "local": "동해시",
+    "source_url": "https://www.dh.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -4,
+    "sido": "강원특별자치도",
+    "local": "삼척시",
+    "source_url": "https://www.samcheok.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -5,
+    "sido": "강원특별자치도",
+    "local": "속초시",
+    "source_url": "https://www.sokcho.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -6,
+    "sido": "강원특별자치도",
+    "local": "양구군",
+    "source_url": "https://www.yanggu.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -7,
+    "sido": "강원특별자치도",
+    "local": "양양군",
+    "source_url": "https://www.yangyang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -8,
+    "sido": "강원특별자치도",
+    "local": "영월군",
+    "source_url": "https://www.yw.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -9,
+    "sido": "강원특별자치도",
+    "local": "원주시",
+    "source_url": "https://www.wonju.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -10,
+    "sido": "강원특별자치도",
+    "local": "인제군",
+    "source_url": "https://www.inje.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -11,
+    "sido": "강원특별자치도",
+    "local": "정선군",
+    "source_url": "https://www.jeongseon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -12,
+    "sido": "강원특별자치도",
+    "local": "철원군",
+    "source_url": "https://www.cwg.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -13,
+    "sido": "강원특별자치도",
+    "local": "춘천시",
+    "source_url": "https://www.chuncheon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -14,
+    "sido": "강원특별자치도",
+    "local": "태백시",
+    "source_url": "https://www.taebaek.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -15,
+    "sido": "강원특별자치도",
+    "local": "평창군",
+    "source_url": "https://www.pc.go.kr/portal",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -16,
+    "sido": "강원특별자치도",
+    "local": "홍천군",
+    "source_url": "https://www.hongcheon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -17,
+    "sido": "강원특별자치도",
+    "local": "화천군",
+    "source_url": "https://www.ihc.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -18,
+    "sido": "강원특별자치도",
+    "local": "횡성군",
+    "source_url": "https://www.hsg.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -19,
+    "sido": "경기도",
+    "local": "가평군",
+    "source_url": "https://www.gp.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -20,
+    "sido": "경기도",
+    "local": "고양시 덕양구",
+    "source_url": "https://www.goyang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -21,
+    "sido": "경기도",
+    "local": "고양시 일산동구",
+    "source_url": "https://www.goyang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -22,
+    "sido": "경기도",
+    "local": "고양시 일산서구",
+    "source_url": "https://www.goyang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -23,
+    "sido": "경기도",
+    "local": "과천시",
+    "source_url": "https://www.gccity.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -24,
+    "sido": "경기도",
+    "local": "광명시",
+    "source_url": "https://www.gm.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -25,
+    "sido": "경기도",
+    "local": "광주시",
+    "source_url": "https://www.gjcity.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -26,
+    "sido": "경기도",
+    "local": "구리시",
+    "source_url": "https://www.guri.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -27,
+    "sido": "경기도",
+    "local": "군포시",
+    "source_url": "https://www.gunpo.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -28,
+    "sido": "경기도",
+    "local": "김포시",
+    "source_url": "https://www.gimpo.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -29,
+    "sido": "경기도",
+    "local": "남양주시",
+    "source_url": "https://www.nyj.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -30,
+    "sido": "경기도",
+    "local": "동두천시",
+    "source_url": "https://www.ddc.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -31,
+    "sido": "경기도",
+    "local": "부천시 소사구",
+    "source_url": "https://www.bucheon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -32,
+    "sido": "경기도",
+    "local": "부천시 오정구",
+    "source_url": "https://www.bucheon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -33,
+    "sido": "경기도",
+    "local": "부천시 원미구",
+    "source_url": "https://www.bucheon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -34,
+    "sido": "경기도",
+    "local": "성남시 분당구",
+    "source_url": "https://www.seongnam.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -35,
+    "sido": "경기도",
+    "local": "성남시 수정구",
+    "source_url": "https://www.seongnam.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -36,
+    "sido": "경기도",
+    "local": "성남시 중원구",
+    "source_url": "https://www.seongnam.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -37,
+    "sido": "경기도",
+    "local": "수원시 권선구",
+    "source_url": "https://www.suwon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -38,
+    "sido": "경기도",
+    "local": "수원시 영통구",
+    "source_url": "https://www.suwon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -39,
+    "sido": "경기도",
+    "local": "수원시 장안구",
+    "source_url": "https://www.suwon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -40,
+    "sido": "경기도",
+    "local": "수원시 팔달구",
+    "source_url": "https://www.suwon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -41,
+    "sido": "경기도",
+    "local": "시흥시",
+    "source_url": "https://www.siheung.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -42,
+    "sido": "경기도",
+    "local": "안산시 단원구",
+    "source_url": "https://www.ansan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -43,
+    "sido": "경기도",
+    "local": "안산시 상록구",
+    "source_url": "https://www.ansan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -44,
+    "sido": "경기도",
+    "local": "안성시",
+    "source_url": "https://www.anseong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -45,
+    "sido": "경기도",
+    "local": "안양시 동안구",
+    "source_url": "https://www.anyang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -46,
+    "sido": "경기도",
+    "local": "안양시 만안구",
+    "source_url": "https://www.anyang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -47,
+    "sido": "경기도",
+    "local": "양주시",
+    "source_url": "https://www.yangju.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -48,
+    "sido": "경기도",
+    "local": "양평군",
+    "source_url": "https://www.yp21.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -49,
+    "sido": "경기도",
+    "local": "여주시",
+    "source_url": "https://www.yeoju.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -50,
+    "sido": "경기도",
+    "local": "연천군",
+    "source_url": "https://www.yeoncheon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -51,
+    "sido": "경기도",
+    "local": "오산시",
+    "source_url": "https://www.osan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -52,
+    "sido": "경기도",
+    "local": "용인시 기흥구",
+    "source_url": "https://www.yongin.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -53,
+    "sido": "경기도",
+    "local": "용인시 수지구",
+    "source_url": "https://www.yongin.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -54,
+    "sido": "경기도",
+    "local": "용인시 처인구",
+    "source_url": "https://www.yongin.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -55,
+    "sido": "경기도",
+    "local": "의왕시",
+    "source_url": "https://www.uiwang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -56,
+    "sido": "경기도",
+    "local": "의정부시",
+    "source_url": "https://www.ui4u.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -57,
+    "sido": "경기도",
+    "local": "이천시",
+    "source_url": "https://www.icheon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -58,
+    "sido": "경기도",
+    "local": "파주시",
+    "source_url": "https://www.paju.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -59,
+    "sido": "경기도",
+    "local": "평택시",
+    "source_url": "https://www.pyeongtaek.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -60,
+    "sido": "경기도",
+    "local": "포천시",
+    "source_url": "https://www.pocheon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -61,
+    "sido": "경기도",
+    "local": "하남시",
+    "source_url": "https://www.hanam.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -62,
+    "sido": "경기도",
+    "local": "화성시 동탄구",
+    "source_url": "https://www.hscity.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -63,
+    "sido": "경기도",
+    "local": "화성시 만세구",
+    "source_url": "https://www.hscity.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -64,
+    "sido": "경기도",
+    "local": "화성시 병점구",
+    "source_url": "https://www.hscity.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -65,
+    "sido": "경기도",
+    "local": "화성시 효행구",
+    "source_url": "https://www.hscity.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -66,
+    "sido": "경상남도",
+    "local": "김해시",
+    "source_url": "https://www.gimhae.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -67,
+    "sido": "대구광역시",
+    "local": "북구",
+    "source_url": "https://www.buk.daegu.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -68,
+    "sido": "대구광역시",
+    "local": "서구",
+    "source_url": "https://www.dgs.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -69,
+    "sido": "대전광역시",
+    "local": "대덕구",
+    "source_url": "https://www.daedeok.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -70,
+    "sido": "대전광역시",
+    "local": "동구",
+    "source_url": "https://www.donggu.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -71,
+    "sido": "대전광역시",
+    "local": "서구",
+    "source_url": "https://www.seogu.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -72,
+    "sido": "대전광역시",
+    "local": "유성구",
+    "source_url": "https://www.yuseong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -73,
+    "sido": "대전광역시",
+    "local": "중구",
+    "source_url": "https://www.djjunggu.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -74,
+    "sido": "부산광역시",
+    "local": "강서구",
+    "source_url": "https://www.bsgangseo.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -75,
+    "sido": "부산광역시",
+    "local": "금정구",
+    "source_url": "https://www.geumjeong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -76,
+    "sido": "부산광역시",
+    "local": "기장군",
+    "source_url": "https://www.gijang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -77,
+    "sido": "부산광역시",
+    "local": "남구",
+    "source_url": "https://www.bsnamgu.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -78,
+    "sido": "부산광역시",
+    "local": "동구",
+    "source_url": "https://www.bsdonggu.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -79,
+    "sido": "부산광역시",
+    "local": "동래구",
+    "source_url": "https://www.dongnae.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -80,
+    "sido": "부산광역시",
+    "local": "부산진구",
+    "source_url": "https://www.busanjin.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -81,
+    "sido": "부산광역시",
+    "local": "북구",
+    "source_url": "https://www.bsbukgu.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -82,
+    "sido": "부산광역시",
+    "local": "사상구",
+    "source_url": "https://www.sasang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -83,
+    "sido": "부산광역시",
+    "local": "사하구",
+    "source_url": "https://www.saha.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -84,
+    "sido": "부산광역시",
+    "local": "서구",
+    "source_url": "https://www.bsseogu.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -85,
+    "sido": "부산광역시",
+    "local": "수영구",
+    "source_url": "https://www.suyeong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -86,
+    "sido": "부산광역시",
+    "local": "연제구",
+    "source_url": "https://www.yeonje.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -87,
+    "sido": "부산광역시",
+    "local": "영도구",
+    "source_url": "https://www.yeongdo.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -88,
+    "sido": "부산광역시",
+    "local": "중구",
+    "source_url": "https://www.bsjunggu.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -89,
+    "sido": "부산광역시",
+    "local": "해운대구",
+    "source_url": "https://www.haeundae.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -90,
+    "sido": "서울",
+    "local": "강남구",
+    "source_url": "https://www.gangnam.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -91,
+    "sido": "서울",
+    "local": "강동구",
+    "source_url": "https://www.gangdong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -92,
+    "sido": "서울",
+    "local": "강북구",
+    "source_url": "https://www.gangbuk.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -93,
+    "sido": "서울",
+    "local": "강서구",
+    "source_url": "https://www.gangseo.seoul.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -94,
+    "sido": "서울",
+    "local": "관악구",
+    "source_url": "https://www.gwanak.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -95,
+    "sido": "서울",
+    "local": "광진구",
+    "source_url": "https://www.gwangjin.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -96,
+    "sido": "서울",
+    "local": "구로구",
+    "source_url": "https://www.guro.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -97,
+    "sido": "서울",
+    "local": "금천구",
+    "source_url": "https://www.geumcheon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -98,
+    "sido": "서울",
+    "local": "노원구",
+    "source_url": "https://www.nowon.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -99,
+    "sido": "서울",
+    "local": "도봉구",
+    "source_url": "https://www.dobong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -100,
+    "sido": "서울",
+    "local": "동대문구",
+    "source_url": "https://www.ddm.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -101,
+    "sido": "서울",
+    "local": "동작구",
+    "source_url": "https://www.dongjak.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -102,
+    "sido": "서울",
+    "local": "마포구",
+    "source_url": "https://www.mapo.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -103,
+    "sido": "서울",
+    "local": "서대문구",
+    "source_url": "https://www.sdm.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -104,
+    "sido": "서울",
+    "local": "서초구",
+    "source_url": "https://www.seocho.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -105,
+    "sido": "서울",
+    "local": "성동구",
+    "source_url": "https://www.sd.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -106,
+    "sido": "서울",
+    "local": "성북구",
+    "source_url": "https://www.sb.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -107,
+    "sido": "서울",
+    "local": "송파구",
+    "source_url": "https://www.songpa.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -108,
+    "sido": "서울",
+    "local": "양천구",
+    "source_url": "https://www.yangcheon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -109,
+    "sido": "서울",
+    "local": "영등포구",
+    "source_url": "https://www.ydp.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -110,
+    "sido": "서울",
+    "local": "용산구",
+    "source_url": "https://www.yongsan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -111,
+    "sido": "서울",
+    "local": "은평구",
+    "source_url": "https://www.ep.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -112,
+    "sido": "서울",
+    "local": "종로구",
+    "source_url": "https://www.jongno.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -113,
+    "sido": "서울",
+    "local": "중구",
+    "source_url": "https://www.junggu.seoul.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -114,
+    "sido": "서울",
+    "local": "중랑구",
+    "source_url": "https://www.jungnang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -115,
+    "sido": "인천광역시",
+    "local": "강화군",
+    "source_url": "https://www.ganghwa.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -116,
+    "sido": "인천광역시",
+    "local": "검단구",
+    "source_url": "https://www.geomdan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -117,
+    "sido": "인천광역시",
+    "local": "계양구",
+    "source_url": "https://www.gyeyang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -118,
+    "sido": "인천광역시",
+    "local": "남동구",
+    "source_url": "https://www.namdong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -119,
+    "sido": "인천광역시",
+    "local": "미추홀구",
+    "source_url": "https://michu.incheon.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -120,
+    "sido": "인천광역시",
+    "local": "부평구",
+    "source_url": "https://www.icbp.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -121,
+    "sido": "인천광역시",
+    "local": "서해구",
+    "source_url": "https://www.seo.incheon.kr/open_content/main/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -122,
+    "sido": "인천광역시",
+    "local": "연수구",
+    "source_url": "https://www.yeonsu.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -123,
+    "sido": "인천광역시",
+    "local": "영종구",
+    "source_url": "https://www.yeongjong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -124,
+    "sido": "인천광역시",
+    "local": "옹진군",
+    "source_url": "https://www.ongjin.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -125,
+    "sido": "인천광역시",
+    "local": "제물포구",
+    "source_url": "https://www.jemulpo.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -126,
+    "sido": "충청남도",
+    "local": "계룡시",
+    "source_url": "https://www.gyeryong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -127,
+    "sido": "충청남도",
+    "local": "공주시",
+    "source_url": "https://www.gongju.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -128,
+    "sido": "충청남도",
+    "local": "금산군",
+    "source_url": "https://www.geumsan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -129,
+    "sido": "충청남도",
+    "local": "논산시",
+    "source_url": "https://www.nonsan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -130,
+    "sido": "충청남도",
+    "local": "당진시",
+    "source_url": "https://www.dangjin.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -131,
+    "sido": "충청남도",
+    "local": "보령시",
+    "source_url": "https://www.brcn.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -132,
+    "sido": "충청남도",
+    "local": "부여군",
+    "source_url": "https://www.buyeo.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -133,
+    "sido": "충청남도",
+    "local": "서산시",
+    "source_url": "https://www.seosan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -134,
+    "sido": "충청남도",
+    "local": "서천군",
+    "source_url": "https://www.seocheon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -135,
+    "sido": "충청남도",
+    "local": "아산시",
+    "source_url": "https://www.asan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -136,
+    "sido": "충청남도",
+    "local": "예산군",
+    "source_url": "https://www.yesan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -137,
+    "sido": "충청남도",
+    "local": "천안시 동남구",
+    "source_url": "https://www.cheonan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -138,
+    "sido": "충청남도",
+    "local": "천안시 서북구",
+    "source_url": "https://www.cheonan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -139,
+    "sido": "충청남도",
+    "local": "청양군",
+    "source_url": "https://www.cheongyang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -140,
+    "sido": "충청남도",
+    "local": "태안군",
+    "source_url": "https://www.taean.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -141,
+    "sido": "충청남도",
+    "local": "홍성군",
+    "source_url": "https://www.hongseong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -142,
+    "sido": "충청북도",
+    "local": "괴산군",
+    "source_url": "https://www.goesan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -143,
+    "sido": "충청북도",
+    "local": "단양군",
+    "source_url": "https://www.danyang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -144,
+    "sido": "충청북도",
+    "local": "보은군",
+    "source_url": "https://www.boeun.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -145,
+    "sido": "충청북도",
+    "local": "영동군",
+    "source_url": "https://www.yd21.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -146,
+    "sido": "충청북도",
+    "local": "옥천군",
+    "source_url": "https://www.oc.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -147,
+    "sido": "충청북도",
+    "local": "음성군",
+    "source_url": "https://www.eumseong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -148,
+    "sido": "충청북도",
+    "local": "제천시",
+    "source_url": "https://www.jecheon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -149,
+    "sido": "충청북도",
+    "local": "증평군",
+    "source_url": "https://www.jp.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -150,
+    "sido": "충청북도",
+    "local": "진천군",
+    "source_url": "https://www.jincheon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -151,
+    "sido": "충청북도",
+    "local": "청주시 상당구",
+    "source_url": "https://www.cheongju.go.kr/www/index.do#n",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -152,
+    "sido": "충청북도",
+    "local": "청주시 서원구",
+    "source_url": "https://www.cheongju.go.kr/www/index.do#n",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -153,
+    "sido": "충청북도",
+    "local": "청주시 청원구",
+    "source_url": "https://www.cheongju.go.kr/www/index.do#n",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -154,
+    "sido": "충청북도",
+    "local": "청주시 흥덕구",
+    "source_url": "https://www.cheongju.go.kr/www/index.do#n",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -155,
+    "sido": "충청북도",
+    "local": "충주시",
+    "source_url": "https://www.chungju.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -156,
+    "sido": "경상남도",
+    "local": "거제시",
+    "source_url": "https://www.geoje.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -157,
+    "sido": "경상남도",
+    "local": "거창군",
+    "source_url": "https://www.geochang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -158,
+    "sido": "경상남도",
+    "local": "고성군",
+    "source_url": "https://www.goseong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -159,
+    "sido": "경상남도",
+    "local": "남해군",
+    "source_url": "https://www.namhae.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -160,
+    "sido": "경상남도",
+    "local": "밀양시",
+    "source_url": "https://www.miryang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -161,
+    "sido": "경상남도",
+    "local": "사천시",
+    "source_url": "https://www.sacheon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -162,
+    "sido": "경상남도",
+    "local": "산청군",
+    "source_url": "https://www.sancheong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -163,
+    "sido": "경상남도",
+    "local": "양산시",
+    "source_url": "https://www.yangsan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -164,
+    "sido": "경상남도",
+    "local": "의령군",
+    "source_url": "https://www.uiryeong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -165,
+    "sido": "경상남도",
+    "local": "진주시",
+    "source_url": "https://www.jinju.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -166,
+    "sido": "경상남도",
+    "local": "창녕군",
+    "source_url": "https://www.cng.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -167,
+    "sido": "경상남도",
+    "local": "창원시 마산합포구",
+    "source_url": "https://www.changwon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -168,
+    "sido": "경상남도",
+    "local": "창원시 마산회원구",
+    "source_url": "https://www.changwon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -169,
+    "sido": "경상남도",
+    "local": "창원시 성산구",
+    "source_url": "https://www.changwon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -170,
+    "sido": "경상남도",
+    "local": "창원시 의창구",
+    "source_url": "https://www.changwon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -171,
+    "sido": "경상남도",
+    "local": "창원시 진해구",
+    "source_url": "https://www.changwon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -172,
+    "sido": "경상남도",
+    "local": "통영시",
+    "source_url": "https://www.tongyeong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -173,
+    "sido": "경상남도",
+    "local": "하동군",
+    "source_url": "https://www.hadong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -174,
+    "sido": "경상남도",
+    "local": "함안군",
+    "source_url": "https://www.haman.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -175,
+    "sido": "경상남도",
+    "local": "함양군",
+    "source_url": "https://www.hygn.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -176,
+    "sido": "경상남도",
+    "local": "합천군",
+    "source_url": "https://www.hc.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -177,
+    "sido": "경상북도",
+    "local": "경산시",
+    "source_url": "https://gbgs.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -178,
+    "sido": "경상북도",
+    "local": "경주시",
+    "source_url": "https://www.gyeongju.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -179,
+    "sido": "경상북도",
+    "local": "고령군",
+    "source_url": "https://www.goryeong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -180,
+    "sido": "경상북도",
+    "local": "구미시",
+    "source_url": "https://www.gumi.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -181,
+    "sido": "경상북도",
+    "local": "김천시",
+    "source_url": "https://www.gc.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -182,
+    "sido": "경상북도",
+    "local": "문경시",
+    "source_url": "https://www.gbmg.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -183,
+    "sido": "경상북도",
+    "local": "봉화군",
+    "source_url": "https://www.bonghwa.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -184,
+    "sido": "경상북도",
+    "local": "상주시",
+    "source_url": "https://www.sangju.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -185,
+    "sido": "경상북도",
+    "local": "성주군",
+    "source_url": "https://www.sj.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -186,
+    "sido": "경상북도",
+    "local": "안동시",
+    "source_url": "https://www.andong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -187,
+    "sido": "경상북도",
+    "local": "영덕군",
+    "source_url": "https://www.yd.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -188,
+    "sido": "경상북도",
+    "local": "영양군",
+    "source_url": "https://www.yyg.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -189,
+    "sido": "경상북도",
+    "local": "영주시",
+    "source_url": "https://www.yeongju.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -190,
+    "sido": "경상북도",
+    "local": "영천시",
+    "source_url": "https://www.yc.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -191,
+    "sido": "경상북도",
+    "local": "예천군",
+    "source_url": "https://www.ycg.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -192,
+    "sido": "경상북도",
+    "local": "울릉군",
+    "source_url": "https://www.ulleung.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -193,
+    "sido": "경상북도",
+    "local": "울진군",
+    "source_url": "https://www.uljin.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -194,
+    "sido": "경상북도",
+    "local": "의성군",
+    "source_url": "https://www.usc.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -195,
+    "sido": "경상북도",
+    "local": "청도군",
+    "source_url": "https://www.cheongdo.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -196,
+    "sido": "경상북도",
+    "local": "청송군",
+    "source_url": "https://www.cs.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -197,
+    "sido": "경상북도",
+    "local": "칠곡군",
+    "source_url": "https://www.chilgok.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -200,
+    "sido": "광주광역시",
+    "local": "광산구",
+    "source_url": "https://www.gwangsan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -201,
+    "sido": "광주광역시",
+    "local": "남구",
+    "source_url": "https://www.namgu.gwangju.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -202,
+    "sido": "광주광역시",
+    "local": "동구",
+    "source_url": "https://www.donggu.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -203,
+    "sido": "광주광역시",
+    "local": "북구",
+    "source_url": "https://bukgu.gwangju.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -204,
+    "sido": "광주광역시",
+    "local": "서구",
+    "source_url": "https://seogu.gwangju.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -205,
+    "sido": "대구광역시",
+    "local": "군위군",
+    "source_url": "https://www.gunwi.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -206,
+    "sido": "대구광역시",
+    "local": "남구",
+    "source_url": "https://www.nam.daegu.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -207,
+    "sido": "대구광역시",
+    "local": "달서구",
+    "source_url": "https://www.dalseo.daegu.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -208,
+    "sido": "대구광역시",
+    "local": "달성군",
+    "source_url": "https://www.dalseong.daegu.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -209,
+    "sido": "대구광역시",
+    "local": "동구",
+    "source_url": "https://www.dong.daegu.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -210,
+    "sido": "대구광역시",
+    "local": "수성구",
+    "source_url": "https://www.suseong.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -211,
+    "sido": "대구광역시",
+    "local": "중구",
+    "source_url": "https://www.jung.daegu.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -213,
+    "sido": "울산광역시",
+    "local": "남구",
+    "source_url": "https://www.ulsannamgu.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -214,
+    "sido": "울산광역시",
+    "local": "동구",
+    "source_url": "https://www.donggu.ulsan.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -215,
+    "sido": "울산광역시",
+    "local": "북구",
+    "source_url": "https://www.bukgu.ulsan.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -216,
+    "sido": "울산광역시",
+    "local": "울주군",
+    "source_url": "https://www.ulju.ulsan.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -217,
+    "sido": "울산광역시",
+    "local": "중구",
+    "source_url": "https://www.junggu.ulsan.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -218,
+    "sido": "전라남도",
+    "local": "강진군",
+    "source_url": "https://www.gangjin.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -219,
+    "sido": "전라남도",
+    "local": "고흥군",
+    "source_url": "https://www.goheung.go.kr/index.do",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -220,
+    "sido": "전라남도",
+    "local": "곡성군",
+    "source_url": "https://www.gokseong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -221,
+    "sido": "전라남도",
+    "local": "광양시",
+    "source_url": "https://www.gwangyang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -222,
+    "sido": "전라남도",
+    "local": "구례군",
+    "source_url": "https://www.gurye.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -223,
+    "sido": "전라남도",
+    "local": "나주시",
+    "source_url": "https://www.naju.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -224,
+    "sido": "전라남도",
+    "local": "담양군",
+    "source_url": "https://www.damyang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -225,
+    "sido": "전라남도",
+    "local": "목포시",
+    "source_url": "https://www.mokpo.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -226,
+    "sido": "전라남도",
+    "local": "무안군",
+    "source_url": "https://www.muan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -227,
+    "sido": "전라남도",
+    "local": "보성군",
+    "source_url": "https://www.boseong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -228,
+    "sido": "전라남도",
+    "local": "순천시",
+    "source_url": "https://www.suncheon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -229,
+    "sido": "전라남도",
+    "local": "신안군",
+    "source_url": "https://www.shinan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -230,
+    "sido": "전라남도",
+    "local": "여수시",
+    "source_url": "https://www.yeosu.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -231,
+    "sido": "전라남도",
+    "local": "영광군",
+    "source_url": "https://www.yeonggwang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -232,
+    "sido": "전라남도",
+    "local": "영암군",
+    "source_url": "https://www.yeongam.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -233,
+    "sido": "전라남도",
+    "local": "완도군",
+    "source_url": "https://www.wando.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -234,
+    "sido": "전라남도",
+    "local": "장성군",
+    "source_url": "https://www.jangseong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -235,
+    "sido": "전라남도",
+    "local": "장흥군",
+    "source_url": "https://www.jangheung.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -236,
+    "sido": "전라남도",
+    "local": "진도군",
+    "source_url": "https://www.jindo.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -237,
+    "sido": "전라남도",
+    "local": "함평군",
+    "source_url": "https://www.hampyeong.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -238,
+    "sido": "전라남도",
+    "local": "해남군",
+    "source_url": "https://www.haenam.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -239,
+    "sido": "전라남도",
+    "local": "화순군",
+    "source_url": "https://www.hwasun.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -240,
+    "sido": "전라북도",
+    "local": "고창군",
+    "source_url": "https://www.gochang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -241,
+    "sido": "전라북도",
+    "local": "군산시",
+    "source_url": "https://www.gunsan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -242,
+    "sido": "전라북도",
+    "local": "김제시",
+    "source_url": "https://www.gimje.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -243,
+    "sido": "전라북도",
+    "local": "남원시",
+    "source_url": "https://www.namwon.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -244,
+    "sido": "전라북도",
+    "local": "무주군",
+    "source_url": "https://www.muju.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -245,
+    "sido": "전라북도",
+    "local": "부안군",
+    "source_url": "https://www.buan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -246,
+    "sido": "전라북도",
+    "local": "순창군",
+    "source_url": "https://www.sunchang.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -247,
+    "sido": "전라북도",
+    "local": "완주군",
+    "source_url": "https://www.wanju.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -248,
+    "sido": "전라북도",
+    "local": "익산시",
+    "source_url": "https://www.iksan.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -249,
+    "sido": "전라북도",
+    "local": "임실군",
+    "source_url": "https://www.imsil.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -250,
+    "sido": "전라북도",
+    "local": "장수군",
+    "source_url": "https://www.jangsu.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -251,
+    "sido": "전라북도",
+    "local": "전주시 덕진구",
+    "source_url": "https://www.jeonju.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -252,
+    "sido": "전라북도",
+    "local": "전주시 완산구",
+    "source_url": "https://www.jeonju.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -253,
+    "sido": "전라북도",
+    "local": "정읍시",
+    "source_url": "https://www.jeongeup.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -254,
+    "sido": "전라북도",
+    "local": "진안군",
+    "source_url": "https://www.jinan.go.kr//",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -255,
+    "sido": "제주특별자치도",
+    "local": "서귀포시",
+    "source_url": "https://www.seogwipo.go.kr/",
+    "created_at": "2026-08-11"
+  },
+  {
+    "id": -256,
+    "sido": "제주특별자치도",
+    "local": "제주시",
+    "source_url": "https://www.jejusi.go.kr/",
+    "created_at": "2026-08-11"
+  }
+]
