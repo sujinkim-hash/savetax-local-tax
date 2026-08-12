@@ -139,13 +139,18 @@ export async function POST(request: Request) {
 
 export async function PATCH(request: Request) {
   if (!requireAdmin(request)) return Response.json({ error: "관리자 권한이 없습니다." }, { status: 401 });
-  const body = (await request.json()) as { sido?: string; local?: string; navigationNote?: string };
+  const body = (await request.json()) as { action?: "deleteSourceNote"; id?: number; sido?: string; local?: string; navigationNote?: string };
+  const sql = await ensureSchema();
+  if (!sql) return Response.json({ error: "DATABASE_URL 연결을 확인하세요." }, { status: 503 });
+  if (body.action === "deleteSourceNote") {
+    if (!body.id) return Response.json({ error: "삭제할 메모를 찾을 수 없습니다." }, { status: 400 });
+    await sql`UPDATE source_pages SET navigation_note = NULL WHERE id = ${body.id}`;
+    return Response.json({ ok: true, sourceNoteDeleted: true });
+  }
   const sido = body.sido?.trim();
   const local = body.local?.trim();
   const navigationNote = body.navigationNote?.trim();
   if (!sido || !local || !navigationNote) return Response.json({ error: "시도, 시·군·구와 메모 내용이 필요합니다." }, { status: 400 });
-  const sql = await ensureSchema();
-  if (!sql) return Response.json({ error: "DATABASE_URL 연결을 확인하세요." }, { status: 503 });
   await sql`INSERT INTO office_notes (sido, local_name, navigation_note, updated_at)
     VALUES (${sido}, ${local}, ${navigationNote}, NOW())
     ON CONFLICT (sido, local_name) DO UPDATE
