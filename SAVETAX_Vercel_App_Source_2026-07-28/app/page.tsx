@@ -355,13 +355,13 @@ export default function Home() {
             <span className="memoCell">
               {officialSources.some((source) => source.navigation_note?.trim()) ?
                 <span className="sourceLinks">{officialSources.filter((source) => source.navigation_note?.trim()).map((source, noteIndex) =>
-                  <button type="button" key={source.id} className="sourceMemoButton" onClick={() => setViewingSourceNote(source)}>메모{officialSources.filter((item) => item.navigation_note?.trim()).length > 1 ? " " + (noteIndex + 1) : ""}</button>
+                  <button type="button" key={source.id} className="sourceMemoButton memoCheckButton" onClick={() => setViewingSourceNote(source)}>확인{officialSources.filter((item) => item.navigation_note?.trim()).length > 1 ? " " + (noteIndex + 1) : ""}</button>
                 )}</span>
               : officeNote ?
                 <span className="sourceLinks">
-                  <button type="button" className="sourceMemoButton" onClick={() => setViewingSourceNote({ id: 0, sido: item.sido, local: item.local, source_url: "", navigation_note: officeNote, created_at: "" })}>메모</button>
+                  <button type="button" className="sourceMemoButton memoCheckButton" onClick={() => setViewingSourceNote({ id: 0, sido: item.sido, local: item.local, source_url: "", navigation_note: officeNote, created_at: "" })}>확인</button>
                 </span>
-              : <button type="button" className="sourceMemoButton" onClick={() => openOfficeNoteEdit({ sido: item.sido, local: item.local, navigation_note: "" })}>메모 등록</button>}
+              : <button type="button" className="sourceMemoButton memoAddButton" onClick={() => openOfficeNoteEdit({ sido: item.sido, local: item.local, navigation_note: "" })}>추가</button>}
             </span>
           </div>;
         })}
