@@ -9,7 +9,7 @@ import missingContactData from "./contacts-missing.json";
 type Contact = { id?: number; sido: string; local: string; scope: string; phone: string; checked: string; status: "확인" | "검토중" };
 type Review = { id: number; sido: string; local: string; field: string; previous_value: string; proposed_value: string; reason: string; source_url?: string; created_at: string };
 type Source = { id: number; sido: string; local: string; source_url: string; navigation_note?: string | null; created_at: string };
-type OfficeNote = { sido: string; local: string; navigation_note: string };
+type OfficeNote = { sido: string; local: string; navigation_note: string; sourceId?: number };
 
 const fallbackContacts = [...(contactData as Contact[]), ...(missingContactData as Contact[])];
 
@@ -199,15 +199,18 @@ export default function Home() {
   }
 
   async function saveOfficeNote() {
-    if (!adminKey || !editingOfficeNote || !officeNoteDraft.trim()) return;
+    if (!editingOfficeNote || !officeNoteDraft.trim()) return;
+    const isNewOfficeNote = !editingOfficeNote.sourceId && !editingOfficeNote.navigation_note.trim();
+    if (!isNewOfficeNote && !window.confirm("메모를 수정하시겠습니까?")) return;
     const response = await fetch("/api/admin/sources", {
       method: "PATCH",
-      headers: { "content-type": "application/json", "x-admin-key": adminKey },
-      body: JSON.stringify({ sido: editingOfficeNote.sido, local: editingOfficeNote.local, navigationNote: officeNoteDraft.trim() }),
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(editingOfficeNote.sourceId ? { action: "updateSourceNote", id: editingOfficeNote.sourceId, navigationNote: officeNoteDraft.trim() } : { sido: editingOfficeNote.sido, local: editingOfficeNote.local, navigationNote: officeNoteDraft.trim() }),
     });
     const data = (await response.json()) as { error?: string };
     if (!response.ok) { setNotice(data.error ?? "메모 수정에 실패했습니다."); return; }
-    setOfficeNotes((current) => current.map((note) => note.sido === editingOfficeNote.sido && note.local === editingOfficeNote.local ? { ...note, navigation_note: officeNoteDraft.trim() } : note));
+    if (editingOfficeNote.sourceId) setSources((current) => current.map((source) => source.id === editingOfficeNote.sourceId ? { ...source, navigation_note: officeNoteDraft.trim() } : source));
+    else setOfficeNotes((current) => { const exists = current.some((note) => note.sido === editingOfficeNote.sido && note.local === editingOfficeNote.local); return exists ? current.map((note) => note.sido === editingOfficeNote.sido && note.local === editingOfficeNote.local ? { ...note, navigation_note: officeNoteDraft.trim() } : note) : [...current, { sido: editingOfficeNote.sido, local: editingOfficeNote.local, navigation_note: officeNoteDraft.trim() }]; });
     setEditingOfficeNote(null);
     setOfficeNoteDraft("");
     setNotice("확인 메모를 수정했습니다.");
@@ -217,7 +220,7 @@ export default function Home() {
     if (!window.confirm(note.sido + " " + note.local + "의 확인 메모를 삭제할까요?")) return;
     const response = await fetch("/api/admin/sources", {
       method: "DELETE",
-      headers: { "content-type": "application/json", "x-admin-key": adminKey },
+      headers: { "content-type": "application/json" },
       body: JSON.stringify({ noteOnly: true, sido: note.sido, local: note.local }),
     });
     const data = (await response.json()) as { error?: string };
@@ -231,7 +234,7 @@ export default function Home() {
     if (!window.confirm(source.sido + " " + source.local + "의 확인 메모를 삭제할까요?")) return;
     const response = await fetch("/api/admin/sources", {
       method: "PATCH",
-      headers: { "content-type": "application/json", "x-admin-key": adminKey },
+      headers: { "content-type": "application/json" },
       body: JSON.stringify({ action: "deleteSourceNote", id: source.id }),
     });
     const data = (await response.json()) as { error?: string };
@@ -358,7 +361,7 @@ export default function Home() {
                 <span className="sourceLinks">
                   <button type="button" className="sourceMemoButton" onClick={() => setViewingSourceNote({ id: 0, sido: item.sido, local: item.local, source_url: "", navigation_note: officeNote, created_at: "" })}>메모</button>
                 </span>
-              : <em>-</em>}
+              : <button type="button" className="sourceMemoButton" onClick={() => openOfficeNoteEdit({ sido: item.sido, local: item.local, navigation_note: "" })}>메모 등록</button>}
             </span>
           </div>;
         })}
@@ -378,14 +381,16 @@ export default function Home() {
     {sourceDialogOpen && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={(event) => { event.preventDefault(); void addSource(); }}><h2>{editingSourceId !== null ? "공식 주소 수정" : "공식 페이지 추가 등록"}</h2><p>조직도 정비 중인 경우에는 주소 없이 확인 메모만 저장할 수 있습니다.</p><label htmlFor="source-url">공식 직원검색·조직도 주소 <small>(선택)</small></label><input id="source-url" type="url" autoFocus value={sourceUrlDraft} onChange={(event) => setSourceUrlDraft(event.target.value)} placeholder="https://" /><label htmlFor="source-sido">시·도</label><input id="source-sido" required value={sourceSidoDraft} onChange={(event) => setSourceSidoDraft(event.target.value)} placeholder="예: 경기도" /><label htmlFor="source-local">시·군·구</label><input id="source-local" required value={sourceLocalDraft} onChange={(event) => setSourceLocalDraft(event.target.value)} placeholder="예: 성남시" /><label htmlFor="source-note">확인 경로 메모 <small>(선택)</small></label><textarea id="source-note" value={sourceNoteDraft} onChange={(event) => setSourceNoteDraft(event.target.value)} placeholder="예: 세무2과 선택 후 지방소득세(종합소득) 담당자 확인" /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setSourceDialogOpen(false); setEditingSourceId(null); }}>취소</button><button type="submit">{editingSourceId !== null ? "저장" : "등록"}</button></div></form></div>}
     {editingOfficeNote && <div className="dialogBackdrop" role="presentation">
       <form className="dialog noteEditDialog" onSubmit={(event) => { event.preventDefault(); void saveOfficeNote(); }}>
-        <h2>확인 메모 수정</h2>
+        <h2>{editingOfficeNote.navigation_note ? "확인 메모 수정" : "확인 메모 등록"}</h2>
         <p>{editingOfficeNote.sido} {editingOfficeNote.local}에 표시되는 안내 메모입니다.</p>
         <label htmlFor="office-note">메모 내용</label>
         <textarea id="office-note" autoFocus required value={officeNoteDraft} onChange={(event) => setOfficeNoteDraft(event.target.value)} />
         <div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setEditingOfficeNote(null); setOfficeNoteDraft(""); }}>취소</button><button type="submit">저장</button></div>
       </form>
     </div>}
-    {viewingSourceNote && <div className="dialogBackdrop" role="presentation"><div className="dialog sourceNoteDialog" role="dialog" aria-modal="true" aria-labelledby="source-note-title"><p className="eyebrow">CONFIRMATION NOTE</p><h2 id="source-note-title">{viewingSourceNote.sido} {viewingSourceNote.local} 확인 경로</h2><div className="sourceNoteCard"><p className="sourceNoteLabel">메모</p><p className="sourceNoteText">{viewingSourceNote.navigation_note}</p></div><div className="sourceNoteActions">{isAdmin && <div className="memoDialogActions">{viewingSourceNote.id === 0 ? <><button type="button" className="memoDialogEdit" onClick={() => { openOfficeNoteEdit({ sido: viewingSourceNote.sido, local: viewingSourceNote.local, navigation_note: viewingSourceNote.navigation_note ?? "" }); setViewingSourceNote(null); }}>메모 수정</button><button type="button" className="memoDialogDelete" onClick={() => void deleteOfficeNote({ sido: viewingSourceNote.sido, local: viewingSourceNote.local, navigation_note: viewingSourceNote.navigation_note ?? "" })}>메모 삭제</button></> : <><button type="button" className="memoDialogEdit" onClick={() => { editSource(viewingSourceNote); setViewingSourceNote(null); }}>메모 수정</button><button type="button" className="memoDialogDelete" onClick={() => void deleteSourceNote(viewingSourceNote)}>메모 삭제</button></>}</div>}{viewingSourceNote.source_url && <a className="sourceNoteOpen" href={viewingSourceNote.source_url} target="_blank" rel="noreferrer">공식 페이지 열기 ↗</a>}<button type="button" className="dialogCancel" onClick={() => setViewingSourceNote(null)}>닫기</button></div></div></div>}
+    {viewingSourceNote && <div className="dialogBackdrop" role="presentation"><div className="dialog sourceNoteDialog" role="dialog" aria-modal="true" aria-labelledby="source-note-title"><p className="eyebrow">CONFIRMATION NOTE</p><h2 id="source-note-title">{viewingSourceNote.sido} {viewingSourceNote.local} 확인 경로</h2><div className="sourceNoteCard"><p className="sourceNoteLabel">메모</p><p className="sourceNoteText">{viewingSourceNote.navigation_note}</p></div><div className="sourceNoteActions"><div className="memoDialogActions">{viewingSourceNote.id === 0 ? <><button type="button" className="memoDialogEdit" onClick={() => { openOfficeNoteEdit({ sido: viewingSourceNote.sido, local: viewingSourceNote.local, navigation_note: viewingSourceNote.navigation_note ?? "" }); setViewingSourceNote(null); }}>메모 수정</button><button type="button" className="memoDialogDelete" onClick={() => void deleteOfficeNote({ sido: viewingSourceNote.sido, local: viewingSourceNote.local, navigation_note: viewingSourceNote.navigation_note ?? "" })}>메모 삭제</button></> : <><button type="button" className="memoDialogEdit" onClick={() => { openOfficeNoteEdit({ sido: viewingSourceNote.sido, local: viewingSourceNote.local, navigation_note: viewingSourceNote.navigation_note ?? "", sourceId: viewingSourceNote.id }); setViewingSourceNote(null); }}>메모 수정</button><button type="button" className="memoDialogDelete" onClick={() => void deleteSourceNote(viewingSourceNote)}>메모 삭제</button></>}</div>{viewingSourceNote.source_url && <a className="sourceNoteOpen" href={viewingSourceNote.source_url} target="_blank" rel="noreferrer">공식 페이지 열기 ↗</a>}<button type="button" className="dialogCancel" onClick={() => setViewingSourceNote(null)}>닫기</button></div></div></div>}
     </div>
   </main>;
 }
+
+
