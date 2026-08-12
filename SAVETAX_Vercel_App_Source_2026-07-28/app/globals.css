@@ -1111,7 +1111,7 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 /* 메모 열 최종 정렬: 헤더와 행을 같은 6열에 고정하고, 관리자 동작 버튼도 번호 칸 안에 유지 */
 @media (min-width: 1201px) {
   .appContent .tr {
-    grid-template-columns: 130px 150px minmax(420px, 1fr) 270px 108px 108px;
+    grid-template-columns: 130px 150px minmax(420px, 1fr) 310px 108px 108px;
   }
   .appContent .tr.th > :last-child,
   .appContent .tr.th > :nth-child(5),
@@ -1152,7 +1152,7 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 
 @media (min-width: 761px) and (max-width: 1200px) {
   .appContent .tr {
-    grid-template-columns: 115px 140px minmax(260px, 1fr) 270px 100px 100px;
+    grid-template-columns: 115px 140px minmax(260px, 1fr) 300px 100px 100px;
   }
   .appContent .tr.th > :last-child,
   .appContent .tr.th > :nth-child(5),
