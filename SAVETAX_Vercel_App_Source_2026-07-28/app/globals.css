@@ -1314,3 +1314,12 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 .memoCell .memoDelete:hover { background:#fff6f6; }
 .noteEditDialog { max-width:520px; }
 .noteEditDialog textarea { min-height:150px; }
+
+/* Keep narrow table cells uncluttered: memo management belongs in the memo dialog. */
+.sourceNoteActions { flex-wrap: wrap; }
+.memoDialogActions { display: flex; gap: 8px; margin-right: auto; }
+.memoDialogEdit,
+.memoDialogDelete { min-height: 34px; padding: 0 12px; border: 1px solid #cbd9e7; border-radius: 7px; background: #fff; color: #345979; font: inherit; font-size: 13px; font-weight: 600; cursor: pointer; }
+.memoDialogDelete { border-color: #ebc8ca; color: #b44b4d; }
+.memoDialogEdit:hover { background: #f4f8fc; }
+.memoDialogDelete:hover { background: #fff6f6; }
