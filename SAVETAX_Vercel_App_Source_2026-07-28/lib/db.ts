@@ -49,6 +49,19 @@ export async function ensureSchema() {
       VALUES ('경기도', '부천시 원미구', '개인지방소득세', '032-625-5213', TO_CHAR(CURRENT_DATE, 'YYYY-MM-DD'), '확인')
       ON CONFLICT (sido, local_name, scope, phone) DO NOTHING`;
   }
+  const [anyangDonganUpdate] = await sql`INSERT INTO app_migrations (name) VALUES ('anyang_dongan_comprehensive_income_tax_2026_08_12') ON CONFLICT DO NOTHING RETURNING name`;
+  if (anyangDonganUpdate) {
+    await sql`DELETE FROM contacts
+      WHERE sido = '경기도' AND local_name = '안양시 동안구'
+        AND scope LIKE '%특별징수%'`;
+    await sql`INSERT INTO contacts (sido, local_name, scope, phone, checked_on, status) VALUES
+      ('경기도', '안양시 동안구', '지방소득세(종합소득·평촌동)', '031-8045-4024', TO_CHAR(CURRENT_DATE, 'YYYY-MM-DD'), '확인'),
+      ('경기도', '안양시 동안구', '지방소득세(종합소득·비산동·호계동·관양동)', '031-8045-4959', TO_CHAR(CURRENT_DATE, 'YYYY-MM-DD'), '확인')
+      ON CONFLICT (sido, local_name, scope, phone) DO NOTHING`;
+    await sql`INSERT INTO source_pages (sido, local_name, source_url, is_manual, navigation_note)
+      VALUES ('경기도', '안양시 동안구', 'https://www.anyang.go.kr/dongan/selectWebEmployeeTeamSaeolList.do?key=1093&depCode=38500290000&blgTeamNm=%EC%A7%80%EB%B0%A9%EC%86%8C%EB%93%9D%EC%84%B8&searchAreaCode=DONGAN', TRUE, '지방소득세 검색 결과에서 종합소득세 담당 주무관 확인')
+      ON CONFLICT (sido, local_name, source_url) DO NOTHING`;
+  }
   return sql;
 }
 
