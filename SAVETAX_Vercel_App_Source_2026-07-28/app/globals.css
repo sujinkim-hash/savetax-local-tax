@@ -1320,8 +1320,12 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 .memoCell .memoManage { color:#345979; }
 .memoCell .memoDelete { color:#b44b4d; border-color:#ebc8ca; }
 .memoCell .memoDelete:hover { background:#fff6f6; }
-.noteEditDialog { max-width:520px; }
-.noteEditDialog textarea { min-height:150px; }
+.noteEditDialog {
+  width: min(620px, calc(100vw - 40px));
+  max-width: 620px;
+  padding: 30px 32px 26px;
+}
+.noteEditDialog textarea { min-height: 150px; }
 
 /* Keep narrow table cells uncluttered: memo management belongs in the memo dialog. */
 .sourceNoteActions { flex-wrap: wrap; }
