@@ -226,6 +226,20 @@ export default function Home() {
     setViewingSourceNote((current) => current?.source_url ? current : null);
     setNotice("확인 메모를 삭제했습니다.");
   }
+
+  async function deleteSourceNote(source: Source) {
+    if (!window.confirm(source.sido + " " + source.local + "의 확인 메모를 삭제할까요?")) return;
+    const response = await fetch("/api/admin/sources", {
+      method: "PATCH",
+      headers: { "content-type": "application/json", "x-admin-key": adminKey },
+      body: JSON.stringify({ action: "deleteSourceNote", id: source.id }),
+    });
+    const data = (await response.json()) as { error?: string };
+    if (!response.ok) { setNotice(data.error ?? "메모 삭제에 실패했습니다."); return; }
+    setSources((current) => current.map((item) => item.id === source.id ? { ...item, navigation_note: null } : item));
+    setViewingSourceNote(null);
+    setNotice("확인 메모를 삭제했습니다.");
+  }
   function openContactEdit(contact: Contact) {
     if (!contact.id) { setNotice("저장된 연락처만 수정할 수 있습니다. 먼저 연락처 DB 시작하기를 실행하세요."); return; }
     setEditingContact(contact);
@@ -343,7 +357,6 @@ export default function Home() {
               : officeNote ?
                 <span className="sourceLinks">
                   <button type="button" className="sourceMemoButton" onClick={() => setViewingSourceNote({ id: 0, sido: item.sido, local: item.local, source_url: "", navigation_note: officeNote, created_at: "" })}>메모</button>
-                  {isAdmin && <><button type="button" className="memoManage" onClick={() => openOfficeNoteEdit({ sido: item.sido, local: item.local, navigation_note: officeNote })}>수정</button><button type="button" className="memoDelete" onClick={() => void deleteOfficeNote({ sido: item.sido, local: item.local, navigation_note: officeNote })}>삭제</button></>}
                 </span>
               : <em>-</em>}
             </span>
@@ -372,7 +385,7 @@ export default function Home() {
         <div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setEditingOfficeNote(null); setOfficeNoteDraft(""); }}>취소</button><button type="submit">저장</button></div>
       </form>
     </div>}
-    {viewingSourceNote && <div className="dialogBackdrop" role="presentation"><div className="dialog sourceNoteDialog" role="dialog" aria-modal="true" aria-labelledby="source-note-title"><p className="eyebrow">CONFIRMATION NOTE</p><h2 id="source-note-title">{viewingSourceNote.sido} {viewingSourceNote.local} 확인 경로</h2><div className="sourceNoteCard"><p className="sourceNoteLabel">메모</p><p className="sourceNoteText">{viewingSourceNote.navigation_note}</p></div><div className="sourceNoteActions">{viewingSourceNote.source_url && <a className="sourceNoteOpen" href={viewingSourceNote.source_url} target="_blank" rel="noreferrer">공식 페이지 열기 ↗</a>}<button type="button" className="dialogCancel" onClick={() => setViewingSourceNote(null)}>닫기</button></div></div></div>}
+    {viewingSourceNote && <div className="dialogBackdrop" role="presentation"><div className="dialog sourceNoteDialog" role="dialog" aria-modal="true" aria-labelledby="source-note-title"><p className="eyebrow">CONFIRMATION NOTE</p><h2 id="source-note-title">{viewingSourceNote.sido} {viewingSourceNote.local} 확인 경로</h2><div className="sourceNoteCard"><p className="sourceNoteLabel">메모</p><p className="sourceNoteText">{viewingSourceNote.navigation_note}</p></div><div className="sourceNoteActions">{isAdmin && <div className="memoDialogActions">{viewingSourceNote.id === 0 ? <><button type="button" className="memoDialogEdit" onClick={() => { openOfficeNoteEdit({ sido: viewingSourceNote.sido, local: viewingSourceNote.local, navigation_note: viewingSourceNote.navigation_note ?? "" }); setViewingSourceNote(null); }}>메모 수정</button><button type="button" className="memoDialogDelete" onClick={() => void deleteOfficeNote({ sido: viewingSourceNote.sido, local: viewingSourceNote.local, navigation_note: viewingSourceNote.navigation_note ?? "" })}>메모 삭제</button></> : <><button type="button" className="memoDialogEdit" onClick={() => { editSource(viewingSourceNote); setViewingSourceNote(null); }}>메모 수정</button><button type="button" className="memoDialogDelete" onClick={() => void deleteSourceNote(viewingSourceNote)}>메모 삭제</button></>}</div>}{viewingSourceNote.source_url && <a className="sourceNoteOpen" href={viewingSourceNote.source_url} target="_blank" rel="noreferrer">공식 페이지 열기 ↗</a>}<button type="button" className="dialogCancel" onClick={() => setViewingSourceNote(null)}>닫기</button></div></div></div>}
     </div>
   </main>;
 }
