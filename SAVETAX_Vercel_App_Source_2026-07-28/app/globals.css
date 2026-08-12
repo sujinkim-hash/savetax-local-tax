@@ -1345,3 +1345,29 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   .appContent .sourceCell,
   .appContent .memoCell { width: 108px; min-width: 108px; max-width: 108px; }
 }
+/* 연락처 추가는 관리자 작업임을 분명하게, 두 화면에서 같은 버튼 규칙으로 표시 */
+.panelHeadActions { display:flex; align-items:center; justify-content:flex-end; gap:12px; }
+.panelHeadActions > p { margin:0; }
+.addContactButton,
+.reviewAddContactButton {
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:38px;
+  padding:0 14px;
+  border:1px solid #3f5878;
+  border-radius:7px;
+  background:#3f5878;
+  color:#fff;
+  font:inherit;
+  font-size:14px;
+  font-weight:700;
+  white-space:nowrap;
+  cursor:pointer;
+}
+.addContactButton:hover,
+.reviewAddContactButton:hover { background:#34516f; border-color:#34516f; }
+.reviewContent .reviewAddContactButton { margin:0 0 14px; }
+@media (max-width:760px) {
+  .panelHeadActions { width:100%; justify-content:space-between; margin-top:10px; }
+}
