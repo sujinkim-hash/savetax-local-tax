@@ -1305,3 +1305,12 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   min-height: 34px;
   padding: 0 13px;
 }
+
+
+/* 관리자 메모 수정·삭제 */
+.memoCell .memoManage, .memoCell .memoDelete { min-height:30px; padding:0 8px; border:1px solid #cbd9e7; border-radius:6px; background:#fff; font:inherit; font-size:13px; white-space:nowrap; }
+.memoCell .memoManage { color:#345979; }
+.memoCell .memoDelete { color:#b44b4d; border-color:#ebc8ca; }
+.memoCell .memoDelete:hover { background:#fff6f6; }
+.noteEditDialog { max-width:520px; }
+.noteEditDialog textarea { min-height:150px; }
