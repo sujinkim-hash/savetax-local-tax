@@ -137,9 +137,34 @@ export async function POST(request: Request) {
   return Response.json({ ok: true, sources });
 }
 
+export async function PATCH(request: Request) {
+  if (!requireAdmin(request)) return Response.json({ error: "관리자 권한이 없습니다." }, { status: 401 });
+  const body = (await request.json()) as { sido?: string; local?: string; navigationNote?: string };
+  const sido = body.sido?.trim();
+  const local = body.local?.trim();
+  const navigationNote = body.navigationNote?.trim();
+  if (!sido || !local || !navigationNote) return Response.json({ error: "시도, 시·군·구와 메모 내용이 필요합니다." }, { status: 400 });
+  const sql = await ensureSchema();
+  if (!sql) return Response.json({ error: "DATABASE_URL 연결을 확인하세요." }, { status: 503 });
+  await sql`INSERT INTO office_notes (sido, local_name, navigation_note, updated_at)
+    VALUES (${sido}, ${local}, ${navigationNote}, NOW())
+    ON CONFLICT (sido, local_name) DO UPDATE
+    SET navigation_note = EXCLUDED.navigation_note, updated_at = NOW()`;
+  return Response.json({ ok: true, officeNote: { sido, local, navigation_note: navigationNote } });
+}
+
 export async function DELETE(request: Request) {
   if (!requireAdmin(request)) return Response.json({ error: "관리자 권한이 없습니다." }, { status: 401 });
-  const body = (await request.json()) as { id?: number };
+  const body = (await request.json()) as { id?: number; noteOnly?: boolean; sido?: string; local?: string };
+  if (body.noteOnly) {
+    const sido = body.sido?.trim();
+    const local = body.local?.trim();
+    if (!sido || !local) return Response.json({ error: "삭제할 메모를 찾을 수 없습니다." }, { status: 400 });
+    const sql = await ensureSchema();
+    if (!sql) return Response.json({ error: "DATABASE_URL 연결을 확인하세요." }, { status: 503 });
+    await sql`DELETE FROM office_notes WHERE sido = ${sido} AND local_name = ${local}`;
+    return Response.json({ ok: true, noteOnly: true });
+  }
   if (!body.id) return Response.json({ error: "삭제할 공식 주소를 찾을 수 없습니다." }, { status: 400 });
   const sql = await ensureSchema();
   if (!sql) return Response.json({ error: "DATABASE_URL 연결을 확인하세요." }, { status: 503 });
