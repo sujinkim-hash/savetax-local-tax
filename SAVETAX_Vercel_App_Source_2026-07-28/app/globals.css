@@ -1335,3 +1335,13 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 .memoDialogDelete { border-color: #ebc8ca; color: #b44b4d; }
 .memoDialogEdit:hover { background: #f4f8fc; }
 .memoDialogDelete:hover { background: #fff6f6; }
+
+/* 범위 번호가 있는 지자체도 번호·관리 동작을 한 줄로 표시 */
+@media (min-width: 1201px) {
+  .appContent .tr {
+    grid-template-columns: 130px 150px minmax(0, 1fr) 350px 108px 108px;
+  }
+  .appContent .phoneCell { min-width: 350px; }
+  .appContent .sourceCell,
+  .appContent .memoCell { width: 108px; min-width: 108px; max-width: 108px; }
+}
