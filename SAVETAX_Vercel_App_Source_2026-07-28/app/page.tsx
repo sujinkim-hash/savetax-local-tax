@@ -32,6 +32,11 @@ export default function Home() {
   const [editingOfficeNote, setEditingOfficeNote] = useState<OfficeNote | null>(null);
   const [officeNoteDraft, setOfficeNoteDraft] = useState("");
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
+  const [addingContact, setAddingContact] = useState(false);
+  const [newContactSidoDraft, setNewContactSidoDraft] = useState("");
+  const [newContactLocalDraft, setNewContactLocalDraft] = useState("");
+  const [newContactScopeDraft, setNewContactScopeDraft] = useState("");
+  const [newContactPhoneDraft, setNewContactPhoneDraft] = useState("");
   const [contactPhoneDraft, setContactPhoneDraft] = useState("");
   const [contactLocalDraft, setContactLocalDraft] = useState("");
   const [contactScopeDraft, setContactScopeDraft] = useState("");
@@ -264,6 +269,31 @@ export default function Home() {
     setNotice("지역·담당 업무·직통번호를 수정했습니다.");
   }
 
+  function openContactAdd() {
+    setNewContactSidoDraft("");
+    setNewContactLocalDraft("");
+    setNewContactScopeDraft("");
+    setNewContactPhoneDraft("");
+    setAddingContact(true);
+  }
+
+  async function addContact() {
+    if (!newContactSidoDraft.trim() || !newContactLocalDraft.trim() || !newContactScopeDraft.trim() || !newContactPhoneDraft.trim()) return;
+    const response = await fetch("/api/contacts", {
+      method: "POST",
+      headers: { "content-type": "application/json", "x-admin-key": adminKey },
+      body: JSON.stringify({ sido: newContactSidoDraft.trim(), local: newContactLocalDraft.trim(), scope: newContactScopeDraft.trim(), phone: newContactPhoneDraft.trim() }),
+    });
+    const data = (await response.json()) as { contact?: Contact; error?: string };
+    if (!response.ok || !data.contact) { setNotice(data.error ?? "연락처 추가에 실패했습니다."); return; }
+    setContacts((current) => {
+      const exists = current.some((item) => item.id === data.contact?.id || (item.sido === data.contact?.sido && item.local === data.contact?.local && item.scope === data.contact?.scope && item.phone === data.contact?.phone));
+      return exists ? current.map((item) => item.id === data.contact?.id ? data.contact! : item) : [...current, data.contact!];
+    });
+    setAddingContact(false);
+    setNotice("연락처를 추가했습니다. 검토 현황에도 같은 지자체로 표시됩니다.");
+  }
+
   async function deleteContact(contact: Contact) {
     if (!contact.id) { setNotice("저장된 연락처만 삭제할 수 있습니다. 먼저 연락처 DB 시작하기를 실행하세요."); return; }
     if (!window.confirm(contact.sido + " " + contact.local + " · " + contact.scope + " 연락처를 삭제할까요?")) return;
@@ -335,7 +365,7 @@ export default function Home() {
     <section className="panel" id="directory">
       <div className="panelHead">
         <div><p className="eyebrow">DIRECT CONTACT DIRECTORY</p><h2>담당자 연락처</h2></div>
-        <p>{rows.length}건 표시 · {page}/{totalPages}페이지</p>
+        <div className="panelHeadActions"><p>{rows.length}건 표시 · {page}/{totalPages}페이지</p>{isAdmin && <button type="button" className="addContactButton" onClick={openContactAdd}>+ 연락처 추가</button>}</div>
       </div>
       <div className="table">
         <div className="tr th"><span>시도</span><span>자치구</span><span>담당 업무</span><span>직통번호</span><span>공식 페이지</span><span>메모</span></div>
@@ -378,6 +408,7 @@ export default function Home() {
     </section>
     {adminDialogOpen && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={authenticateAdmin}><h2>관리자 인증</h2><p>관리자 키를 입력한 뒤 Enter를 누르거나 인증 버튼을 선택하세요.</p><label htmlFor="admin-key">관리자 키</label><input id="admin-key" type="password" autoFocus value={adminKeyDraft} onChange={(event) => setAdminKeyDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); void authenticateAdmin(); } }} /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setAdminDialogOpen(false); setAdminKeyDraft(""); }}>취소</button><button type="submit">인증</button></div></form></div>}
     {editingContact && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={(event) => { event.preventDefault(); void saveContactPhone(); }}><h2>담당자 연락처 수정</h2><p>담당 구역이 바뀐 경우 자치구와 담당 업무를 함께 수정하세요.</p><label htmlFor="contact-local">자치구·담당 지역</label><input id="contact-local" autoFocus required value={contactLocalDraft} onChange={(event) => setContactLocalDraft(event.target.value)} placeholder="예: 시흥시" /><label htmlFor="contact-scope">담당 업무·구역</label><textarea id="contact-scope" required value={contactScopeDraft} onChange={(event) => setContactScopeDraft(event.target.value)} placeholder="예: 지방소득세(종합소득분) · 정왕동, 배곧동" /><label htmlFor="contact-phone">직통번호</label><input id="contact-phone" type="tel" required value={contactPhoneDraft} onChange={(event) => setContactPhoneDraft(event.target.value)} placeholder="예: 02-0000-0000" /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => setEditingContact(null)}>취소</button><button type="submit">저장</button></div></form></div>}
+    {addingContact && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={(event) => { event.preventDefault(); void addContact(); }}><h2>담당자 연락처 추가</h2><p>종합소득세 관련 담당 주무관의 지역·업무·직통번호를 입력하세요.</p><label htmlFor="new-contact-sido">시·도</label><input id="new-contact-sido" autoFocus required value={newContactSidoDraft} onChange={(event) => setNewContactSidoDraft(event.target.value)} placeholder="예: 경기도" /><label htmlFor="new-contact-local">시·군·구</label><input id="new-contact-local" required value={newContactLocalDraft} onChange={(event) => setNewContactLocalDraft(event.target.value)} placeholder="예: 안양시 동안구" /><label htmlFor="new-contact-scope">담당 업무·구역</label><textarea id="new-contact-scope" required value={newContactScopeDraft} onChange={(event) => setNewContactScopeDraft(event.target.value)} placeholder="예: 지방소득세(종합소득·평촌동)" /><label htmlFor="new-contact-phone">직통번호</label><input id="new-contact-phone" type="tel" required value={newContactPhoneDraft} onChange={(event) => setNewContactPhoneDraft(event.target.value)} placeholder="예: 031-0000-0000" /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => setAddingContact(false)}>취소</button><button type="submit">추가</button></div></form></div>}
     {sourceDialogOpen && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={(event) => { event.preventDefault(); void addSource(); }}><h2>{editingSourceId !== null ? "공식 주소 수정" : "공식 페이지 추가 등록"}</h2><p>조직도 정비 중인 경우에는 주소 없이 확인 메모만 저장할 수 있습니다.</p><label htmlFor="source-url">공식 직원검색·조직도 주소 <small>(선택)</small></label><input id="source-url" type="url" autoFocus value={sourceUrlDraft} onChange={(event) => setSourceUrlDraft(event.target.value)} placeholder="https://" /><label htmlFor="source-sido">시·도</label><input id="source-sido" required value={sourceSidoDraft} onChange={(event) => setSourceSidoDraft(event.target.value)} placeholder="예: 경기도" /><label htmlFor="source-local">시·군·구</label><input id="source-local" required value={sourceLocalDraft} onChange={(event) => setSourceLocalDraft(event.target.value)} placeholder="예: 성남시" /><label htmlFor="source-note">확인 경로 메모 <small>(선택)</small></label><textarea id="source-note" value={sourceNoteDraft} onChange={(event) => setSourceNoteDraft(event.target.value)} placeholder="예: 세무2과 선택 후 지방소득세(종합소득) 담당자 확인" /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setSourceDialogOpen(false); setEditingSourceId(null); }}>취소</button><button type="submit">{editingSourceId !== null ? "저장" : "등록"}</button></div></form></div>}
     {editingOfficeNote && <div className="dialogBackdrop" role="presentation">
       <form className="dialog noteEditDialog" onSubmit={(event) => { event.preventDefault(); void saveOfficeNote(); }}>
@@ -392,5 +423,4 @@ export default function Home() {
     </div>
   </main>;
 }
-
 
