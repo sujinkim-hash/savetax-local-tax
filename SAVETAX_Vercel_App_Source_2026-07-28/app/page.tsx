@@ -29,6 +29,8 @@ export default function Home() {
   const [editingSourceId, setEditingSourceId] = useState<number | null>(null);
   const [sourceNoteDraft, setSourceNoteDraft] = useState("");
   const [viewingSourceNote, setViewingSourceNote] = useState<Source | null>(null);
+  const [editingOfficeNote, setEditingOfficeNote] = useState<OfficeNote | null>(null);
+  const [officeNoteDraft, setOfficeNoteDraft] = useState("");
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
   const [contactPhoneDraft, setContactPhoneDraft] = useState("");
   const [contactLocalDraft, setContactLocalDraft] = useState("");
@@ -191,6 +193,39 @@ export default function Home() {
     setNotice("공식 주소를 삭제했습니다.");
   }
 
+  function openOfficeNoteEdit(note: OfficeNote) {
+    setEditingOfficeNote(note);
+    setOfficeNoteDraft(note.navigation_note);
+  }
+
+  async function saveOfficeNote() {
+    if (!adminKey || !editingOfficeNote || !officeNoteDraft.trim()) return;
+    const response = await fetch("/api/admin/sources", {
+      method: "PATCH",
+      headers: { "content-type": "application/json", "x-admin-key": adminKey },
+      body: JSON.stringify({ sido: editingOfficeNote.sido, local: editingOfficeNote.local, navigationNote: officeNoteDraft.trim() }),
+    });
+    const data = (await response.json()) as { error?: string };
+    if (!response.ok) { setNotice(data.error ?? "메모 수정에 실패했습니다."); return; }
+    setOfficeNotes((current) => current.map((note) => note.sido === editingOfficeNote.sido && note.local === editingOfficeNote.local ? { ...note, navigation_note: officeNoteDraft.trim() } : note));
+    setEditingOfficeNote(null);
+    setOfficeNoteDraft("");
+    setNotice("확인 메모를 수정했습니다.");
+  }
+
+  async function deleteOfficeNote(note: OfficeNote) {
+    if (!window.confirm(note.sido + " " + note.local + "의 확인 메모를 삭제할까요?")) return;
+    const response = await fetch("/api/admin/sources", {
+      method: "DELETE",
+      headers: { "content-type": "application/json", "x-admin-key": adminKey },
+      body: JSON.stringify({ noteOnly: true, sido: note.sido, local: note.local }),
+    });
+    const data = (await response.json()) as { error?: string };
+    if (!response.ok) { setNotice(data.error ?? "메모 삭제에 실패했습니다."); return; }
+    setOfficeNotes((current) => current.filter((item) => item.sido !== note.sido || item.local !== note.local));
+    setViewingSourceNote((current) => current?.source_url ? current : null);
+    setNotice("확인 메모를 삭제했습니다.");
+  }
   function openContactEdit(contact: Contact) {
     if (!contact.id) { setNotice("저장된 연락처만 수정할 수 있습니다. 먼저 연락처 DB 시작하기를 실행하세요."); return; }
     setEditingContact(contact);
@@ -300,7 +335,18 @@ export default function Home() {
               {isAdmin && <><button type="button" className="contactEdit" onClick={() => openContactEdit(item)}>수정</button><button type="button" className="contactDelete" onClick={() => void deleteContact(item)}>삭제</button></>}
             </span>
             <span className="sourceCell">{officialSources.length > 0 ? <span className="sourceLinks">{officialSources.map((source, sourceIndex) => <a key={source.id} href={source.source_url} target="_blank" rel="noreferrer">열기{officialSources.length > 1 ? " " + (sourceIndex + 1) : ""}</a>)}</span> : isAdmin ? <button type="button" onClick={() => openSourceRegistration(item)}>등록</button> : <em>미등록</em>}</span>
-            <span className="memoCell">{officialSources.some((source) => source.navigation_note?.trim()) ? <span className="sourceLinks">{officialSources.filter((source) => source.navigation_note?.trim()).map((source, noteIndex) => <button type="button" key={source.id} className="sourceMemoButton" onClick={() => setViewingSourceNote(source)}>메모{officialSources.filter((item) => item.navigation_note?.trim()).length > 1 ? " " + (noteIndex + 1) : ""}</button>)}</span> : officeNote ? <button type="button" className="sourceMemoButton" onClick={() => setViewingSourceNote({ id: 0, sido: item.sido, local: item.local, source_url: "", navigation_note: officeNote, created_at: "" })}>메모</button> : <em>-</em>}</span>
+            <span className="memoCell">
+              {officialSources.some((source) => source.navigation_note?.trim()) ?
+                <span className="sourceLinks">{officialSources.filter((source) => source.navigation_note?.trim()).map((source, noteIndex) =>
+                  <button type="button" key={source.id} className="sourceMemoButton" onClick={() => setViewingSourceNote(source)}>메모{officialSources.filter((item) => item.navigation_note?.trim()).length > 1 ? " " + (noteIndex + 1) : ""}</button>
+                )}</span>
+              : officeNote ?
+                <span className="sourceLinks">
+                  <button type="button" className="sourceMemoButton" onClick={() => setViewingSourceNote({ id: 0, sido: item.sido, local: item.local, source_url: "", navigation_note: officeNote, created_at: "" })}>메모</button>
+                  {isAdmin && <><button type="button" className="memoManage" onClick={() => openOfficeNoteEdit({ sido: item.sido, local: item.local, navigation_note: officeNote })}>수정</button><button type="button" className="memoDelete" onClick={() => void deleteOfficeNote({ sido: item.sido, local: item.local, navigation_note: officeNote })}>삭제</button></>}
+                </span>
+              : <em>-</em>}
+            </span>
           </div>;
         })}
       </div>
@@ -317,6 +363,15 @@ export default function Home() {
     {adminDialogOpen && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={authenticateAdmin}><h2>관리자 인증</h2><p>관리자 키를 입력한 뒤 Enter를 누르거나 인증 버튼을 선택하세요.</p><label htmlFor="admin-key">관리자 키</label><input id="admin-key" type="password" autoFocus value={adminKeyDraft} onChange={(event) => setAdminKeyDraft(event.target.value)} onKeyDown={(event) => { if (event.key === "Enter") { event.preventDefault(); void authenticateAdmin(); } }} /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setAdminDialogOpen(false); setAdminKeyDraft(""); }}>취소</button><button type="submit">인증</button></div></form></div>}
     {editingContact && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={(event) => { event.preventDefault(); void saveContactPhone(); }}><h2>담당자 연락처 수정</h2><p>담당 구역이 바뀐 경우 자치구와 담당 업무를 함께 수정하세요.</p><label htmlFor="contact-local">자치구·담당 지역</label><input id="contact-local" autoFocus required value={contactLocalDraft} onChange={(event) => setContactLocalDraft(event.target.value)} placeholder="예: 시흥시" /><label htmlFor="contact-scope">담당 업무·구역</label><textarea id="contact-scope" required value={contactScopeDraft} onChange={(event) => setContactScopeDraft(event.target.value)} placeholder="예: 지방소득세(종합소득분) · 정왕동, 배곧동" /><label htmlFor="contact-phone">직통번호</label><input id="contact-phone" type="tel" required value={contactPhoneDraft} onChange={(event) => setContactPhoneDraft(event.target.value)} placeholder="예: 02-0000-0000" /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => setEditingContact(null)}>취소</button><button type="submit">저장</button></div></form></div>}
     {sourceDialogOpen && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={(event) => { event.preventDefault(); void addSource(); }}><h2>{editingSourceId !== null ? "공식 주소 수정" : "공식 페이지 추가 등록"}</h2><p>조직도 정비 중인 경우에는 주소 없이 확인 메모만 저장할 수 있습니다.</p><label htmlFor="source-url">공식 직원검색·조직도 주소 <small>(선택)</small></label><input id="source-url" type="url" autoFocus value={sourceUrlDraft} onChange={(event) => setSourceUrlDraft(event.target.value)} placeholder="https://" /><label htmlFor="source-sido">시·도</label><input id="source-sido" required value={sourceSidoDraft} onChange={(event) => setSourceSidoDraft(event.target.value)} placeholder="예: 경기도" /><label htmlFor="source-local">시·군·구</label><input id="source-local" required value={sourceLocalDraft} onChange={(event) => setSourceLocalDraft(event.target.value)} placeholder="예: 성남시" /><label htmlFor="source-note">확인 경로 메모 <small>(선택)</small></label><textarea id="source-note" value={sourceNoteDraft} onChange={(event) => setSourceNoteDraft(event.target.value)} placeholder="예: 세무2과 선택 후 지방소득세(종합소득) 담당자 확인" /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setSourceDialogOpen(false); setEditingSourceId(null); }}>취소</button><button type="submit">{editingSourceId !== null ? "저장" : "등록"}</button></div></form></div>}
+    {editingOfficeNote && <div className="dialogBackdrop" role="presentation">
+      <form className="dialog noteEditDialog" onSubmit={(event) => { event.preventDefault(); void saveOfficeNote(); }}>
+        <h2>확인 메모 수정</h2>
+        <p>{editingOfficeNote.sido} {editingOfficeNote.local}에 표시되는 안내 메모입니다.</p>
+        <label htmlFor="office-note">메모 내용</label>
+        <textarea id="office-note" autoFocus required value={officeNoteDraft} onChange={(event) => setOfficeNoteDraft(event.target.value)} />
+        <div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setEditingOfficeNote(null); setOfficeNoteDraft(""); }}>취소</button><button type="submit">저장</button></div>
+      </form>
+    </div>}
     {viewingSourceNote && <div className="dialogBackdrop" role="presentation"><div className="dialog sourceNoteDialog" role="dialog" aria-modal="true" aria-labelledby="source-note-title"><p className="eyebrow">CONFIRMATION NOTE</p><h2 id="source-note-title">{viewingSourceNote.sido} {viewingSourceNote.local} 확인 경로</h2><div className="sourceNoteCard"><p className="sourceNoteLabel">메모</p><p className="sourceNoteText">{viewingSourceNote.navigation_note}</p></div><div className="sourceNoteActions">{viewingSourceNote.source_url && <a className="sourceNoteOpen" href={viewingSourceNote.source_url} target="_blank" rel="noreferrer">공식 페이지 열기 ↗</a>}<button type="button" className="dialogCancel" onClick={() => setViewingSourceNote(null)}>닫기</button></div></div></div>}
     </div>
   </main>;
