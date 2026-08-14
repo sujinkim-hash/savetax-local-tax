@@ -1429,3 +1429,96 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
     text-overflow: ellipsis;
   }
 }
+
+
+/* 공식 페이지 열: 버튼 폭에 맞춘 열 크기와 단일·복수 버튼 중앙 정렬 */
+@media (min-width: 1201px) {
+  .appContent .tr { grid-template-columns: 130px 150px minmax(390px, 1fr) 300px 118px 96px; }
+  .appContent .tr.th > :nth-child(5),
+  .appContent .tr .sourceCell {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    justify-self: stretch;
+    display: flex !important;
+    align-items: center;
+    justify-content: center !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+  .appContent .tr .sourceCell > button { margin-left: auto; margin-right: auto; }
+  .appContent .tr .sourceCell .sourceLinks {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    align-items: center;
+    width: 100% !important;
+    min-width: 0;
+    flex: 1 1 auto;
+    gap: 8px;
+  }
+  .appContent .tr .sourceCell .sourceLinks > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    padding-left: 5px;
+    padding-right: 5px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .appContent .tr .sourceCell .sourceLinks > a:only-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: auto;
+    min-width: 48px;
+    padding-left: 9px;
+    padding-right: 9px;
+  }
+}
+@media (min-width: 1601px) {
+  .appContent .tr { grid-template-columns: 140px 160px minmax(450px, 1fr) 320px 124px 100px; }
+}
+@media (min-width: 761px) and (max-width: 1200px) {
+  .appContent .tr { grid-template-columns: 108px 135px minmax(230px, 1fr) 250px 118px 86px; }
+  .appContent .tr.th > :nth-child(5),
+  .appContent .tr .sourceCell {
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    justify-self: stretch;
+    display: flex !important;
+    align-items: center;
+    justify-content: center !important;
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+  }
+  .appContent .tr .sourceCell > button { margin-left: auto; margin-right: auto; }
+  .appContent .tr .sourceCell .sourceLinks {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100% !important;
+    min-width: 0;
+    flex: 1 1 auto;
+    gap: 6px;
+  }
+  .appContent .tr .sourceCell .sourceLinks > a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-width: 0;
+    padding-left: 4px;
+    padding-right: 4px;
+    text-align: center;
+    white-space: nowrap;
+  }
+  .appContent .tr .sourceCell .sourceLinks > a:only-child {
+    grid-column: 1 / -1;
+    justify-self: center;
+    width: auto;
+    min-width: 46px;
+    padding-left: 8px;
+    padding-right: 8px;
+  }
+}
