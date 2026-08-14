@@ -383,10 +383,13 @@ export default function Home() {
             </span>
             <span className="sourceCell">{officialSources.length > 0 ? <span className="sourceLinks">{officialSources.map((source, sourceIndex) => <a key={source.id} href={source.source_url} target="_blank" rel="noreferrer">열기{officialSources.length > 1 ? " " + (sourceIndex + 1) : ""}</a>)}</span> : isAdmin ? <button type="button" onClick={() => openSourceRegistration(item)}>등록</button> : <em>미등록</em>}</span>
             <span className="memoCell">
-              {officialSources.some((source) => source.navigation_note?.trim()) ?
-                <span className="sourceLinks">{officialSources.filter((source) => source.navigation_note?.trim()).map((source, noteIndex) =>
-                  <button type="button" key={source.id} className="sourceMemoButton memoCheckButton" onClick={() => setViewingSourceNote(source)}>확인{officialSources.filter((item) => item.navigation_note?.trim()).length > 1 ? " " + (noteIndex + 1) : ""}</button>
-                )}</span>
+              {officialSources.length > 0 ?
+                <span className="sourceLinks">{officialSources.map((source, sourceIndex) => {
+                  const pageSuffix = officialSources.length > 1 ? " " + (sourceIndex + 1) : "";
+                  return source.navigation_note?.trim()
+                    ? <button type="button" key={source.id} className="sourceMemoButton memoCheckButton" onClick={() => setViewingSourceNote(source)}>확인{pageSuffix}</button>
+                    : <button type="button" key={source.id} className="sourceMemoButton memoAddButton" onClick={() => openOfficeNoteEdit({ sido: source.sido, local: source.local, navigation_note: "", sourceId: source.id })}>추가{pageSuffix}</button>;
+                })}</span>
               : officeNote ?
                 <span className="sourceLinks">
                   <button type="button" className="sourceMemoButton memoCheckButton" onClick={() => setViewingSourceNote({ id: 0, sido: item.sido, local: item.local, source_url: "", navigation_note: officeNote, created_at: "" })}>확인</button>
