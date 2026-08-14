@@ -51,6 +51,7 @@ export default function ReviewPage() {
   const [editingSource, setEditingSource] = useState<Source | null>(null);
   const [reviewingOffice, setReviewingOffice] = useState<{ sido: string; local: string } | null>(null);
   const [editingContact, setEditingContact] = useState<Contact | null>(null);
+  const [contactEditorReturnOffice, setContactEditorReturnOffice] = useState<{ sido: string; local: string } | null>(null);
   const [contactLocalDraft, setContactLocalDraft] = useState("");
   const [contactScopeDraft, setContactScopeDraft] = useState("");
   const [contactPhoneDraft, setContactPhoneDraft] = useState("");
@@ -140,7 +141,9 @@ if (savedKey) void verifyAdminKey(savedKey, true);
       setNotice("저장된 연락처만 수정할 수 있습니다. 먼저 연락처 DB 시작하기를 실행하세요.");
       return;
     }
+    const officeToReturn = reviewingOffice;
     setReviewingOffice(null);
+    setContactEditorReturnOffice(officeToReturn);
     setEditingContact(contact);
     setContactLocalDraft(contact.local);
     setContactScopeDraft(contact.scope);
@@ -181,7 +184,10 @@ if (savedKey) void verifyAdminKey(savedKey, true);
         ? { ...item, local: nextLocal, scope: nextScope, phone: nextPhone, checked: new Date().toISOString().slice(0, 10), status: "확인" }
         : item,
     ));
+    const officeToReturn = contactEditorReturnOffice;
     setEditingContact(null);
+    setContactEditorReturnOffice(null);
+    if (officeToReturn) setReviewingOffice(officeToReturn);
     setNotice("담당 지역·업무·직통번호를 수정했습니다.");
   }
 
@@ -318,7 +324,7 @@ if (savedKey) void verifyAdminKey(savedKey, true);
       <section className="dialog officeContactReviewDialog" role="dialog" aria-modal="true" aria-label="담당자 연락처 확인 및 수정">
         <div className="officeContactReviewHead">
           <div><p className="eyebrow">CONTACT REVIEW</p><h2>{reviewingOffice.sido} {reviewingOffice.local} 담당자 연락처</h2><p>공식 페이지를 확인한 뒤 담당 지역·업무·직통번호를 바로 수정할 수 있습니다.</p></div>
-          <button type="button" className="dialogCancel" onClick={() => setReviewingOffice(null)}>닫기</button>
+          
         </div>
         {reviewingContacts.length > 0 ? <div className="officeContactRows">
           {reviewingContacts.map((contact) => <article key={contact.id ?? contact.sido + contact.local + contact.phone} className="officeContactRow">
@@ -329,7 +335,7 @@ if (savedKey) void verifyAdminKey(savedKey, true);
         <div className="dialogActions officeContactReviewActions"><button type="button" className="dialogCancel" onClick={() => openOfficeContactAdd(reviewingOffice)}>+ 연락처 추가</button><button type="button" onClick={() => setReviewingOffice(null)}>닫기</button></div>
       </section>
     </div>}
-    {editingContact && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={(event) => { event.preventDefault(); void saveContactPhone(); }}><h2>담당자 연락처 수정</h2><p>담당 구역이 바뀐 경우 자치구와 담당 업무를 함께 수정하세요.</p><label htmlFor="review-contact-local">자치구·담당 지역</label><input id="review-contact-local" autoFocus required value={contactLocalDraft} onChange={(event) => setContactLocalDraft(event.target.value)} placeholder="예: 시흥시" /><label htmlFor="review-contact-scope">담당 업무·구역</label><textarea id="review-contact-scope" required value={contactScopeDraft} onChange={(event) => setContactScopeDraft(event.target.value)} placeholder="예: 지방소득세(종합소득분) · 정왕동, 배곧동" /><label htmlFor="review-contact-phone">직통번호</label><input id="review-contact-phone" type="tel" required value={contactPhoneDraft} onChange={(event) => setContactPhoneDraft(event.target.value)} placeholder="예: 02-0000-0000" /><div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => setEditingContact(null)}>취소</button><button type="submit">저장</button></div></form></div>}
+    {editingContact && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={(event) => { event.preventDefault(); void saveContactPhone(); }}><h2>담당자 연락처 수정</h2><p>담당 구역이 바뀐 경우 자치구와 담당 업무를 함께 수정하세요.</p><label htmlFor="review-contact-local">자치구·담당 지역</label><input id="review-contact-local" autoFocus required value={contactLocalDraft} onChange={(event) => setContactLocalDraft(event.target.value)} placeholder="예: 시흥시" /><label htmlFor="review-contact-scope">담당 업무·구역</label><textarea id="review-contact-scope" required value={contactScopeDraft} onChange={(event) => setContactScopeDraft(event.target.value)} placeholder="예: 지방소득세(종합소득분) · 정왕동, 배곧동" /><label htmlFor="review-contact-phone">직통번호</label><input id="review-contact-phone" type="tel" required value={contactPhoneDraft} onChange={(event) => setContactPhoneDraft(event.target.value)} placeholder="예: 02-0000-0000" /><div className="dialogActions">{contactEditorReturnOffice && <button type="button" className="dialogCancel" onClick={() => { setEditingContact(null); setReviewingOffice(contactEditorReturnOffice); setContactEditorReturnOffice(null); }}>뒤로가기</button>}<button type="button" className="dialogCancel" onClick={() => { setEditingContact(null); setContactEditorReturnOffice(null); }}>취소</button><button type="submit">저장</button></div></form></div>}
         {editingSource && <div className="dialogBackdrop" role="presentation"><form className="dialog" onSubmit={saveSource}><h2>{editingSource.id ? "공식 주소 수정" : "공식 주소 등록"}</h2><p>{editingSource.id ? "지역 이름과 직원검색·조직도 주소를 함께 수정할 수 있습니다." : "조직도 정비 중이면 주소 없이 확인 메모만 저장할 수 있습니다."}</p><label htmlFor="source-edit-sido">시·도</label><input id="source-edit-sido" required readOnly={editingSource.id === 0} value={sourceSidoDraft} onChange={(event) => setSourceSidoDraft(event.target.value)} placeholder="예: 경기도" /><label htmlFor="source-edit-local">시·군·구</label><input id="source-edit-local" required readOnly={editingSource.id === 0} value={sourceLocalDraft} onChange={(event) => setSourceLocalDraft(event.target.value)} placeholder="예: 성남시" /><label htmlFor="source-edit-url">공식 직원검색·조직도 주소 <small>(선택)</small></label><input id="source-edit-url" type="url" autoFocus value={sourceUrlDraft} onChange={(event) => setSourceUrlDraft(event.target.value)} placeholder="https://" /><label htmlFor="source-edit-note">확인 경로 메모 <small>(선택)</small></label><textarea id="source-edit-note" value={sourceNoteDraft} onChange={(event) => setSourceNoteDraft(event.target.value)} placeholder="예: 세무2과 선택 후 지방소득세(종합소득) 담당자 확인" />{!editingSource.id && (!showExtraSource ? <button type="button" className="addSourceButton" onClick={() => setShowExtraSource(true)}>+ 추가 공식 주소</button> : <div className="additionalSourceFields"><div className="additionalSourceHead"><strong>추가 공식 주소</strong><button type="button" onClick={() => { setShowExtraSource(false); setSourceExtraUrlDraft(""); setSourceExtraNoteDraft(""); }}>삭제</button></div><label htmlFor="source-edit-extra-url">공식 직원검색·조직도 주소 <small>(두 번째)</small></label><input id="source-edit-extra-url" type="url" value={sourceExtraUrlDraft} onChange={(event) => setSourceExtraUrlDraft(event.target.value)} placeholder="https://" /><label htmlFor="source-edit-extra-note">확인 경로 메모 <small>(선택)</small></label><textarea id="source-edit-extra-note" value={sourceExtraNoteDraft} onChange={(event) => setSourceExtraNoteDraft(event.target.value)} placeholder="두 번째 주소의 확인 경로를 적어주세요" /></div>)}<div className="dialogActions"><button type="button" className="dialogCancel" onClick={() => { setEditingSource(null); setSourceUrlDraft(""); setSourceSidoDraft(""); setSourceLocalDraft(""); setSourceNoteDraft(""); setSourceExtraUrlDraft(""); setSourceExtraNoteDraft(""); setShowExtraSource(false); }}>취소</button><button type="submit">{editingSource.id ? "저장" : "등록"}</button></div></form></div>}
       </div>
     </div>
