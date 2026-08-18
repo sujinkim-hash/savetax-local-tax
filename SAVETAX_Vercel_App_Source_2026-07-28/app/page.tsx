@@ -383,7 +383,7 @@ export default function Home() {
             </span>
             <span className="sourceCell">{officialSources.length > 0 ? <span className="sourceLinks">{officialSources.map((source, sourceIndex) => {
               const pageSuffix = officialSources.length > 1 ? " " + (sourceIndex + 1) : "";
-              return <span className="sourceActionGroup" key={source.id}>
+              return <span className={"sourceActionGroup" + (isAdmin ? "" : " singleSourceAction")} key={source.id}>
                 <a href={source.source_url} target="_blank" rel="noreferrer">열기{pageSuffix}</a>
                 {isAdmin && <button type="button" className="sourceEditButton" onClick={() => editSource(source)}>수정{pageSuffix}</button>}
               </span>;

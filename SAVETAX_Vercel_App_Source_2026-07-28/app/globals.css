@@ -1591,6 +1591,14 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   padding-left: 4px;
   padding-right: 4px;
 }
+.appContent .tr .sourceCell .sourceActionGroup.singleSourceAction {
+  grid-template-columns: 1fr;
+  justify-items: center;
+}
+.appContent .tr .sourceCell .sourceActionGroup.singleSourceAction > a {
+  width: auto;
+  min-width: 48px;
+}
 .appContent .tr .sourceCell .sourceActionGroup:only-child > a,
 .appContent .tr .sourceCell .sourceActionGroup:only-child > button:only-child {
   grid-column: auto;
