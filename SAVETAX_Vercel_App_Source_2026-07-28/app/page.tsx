@@ -381,7 +381,13 @@ export default function Home() {
               <button type="button" className="copyPhone" onClick={() => void copyPhone(item.phone)} aria-label={item.phone + " 복사"}>{copiedPhone === item.phone ? "복사됨" : "복사"}</button>
               {isAdmin && <><button type="button" className="contactEdit" onClick={() => openContactEdit(item)}>수정</button><button type="button" className="contactDelete" onClick={() => void deleteContact(item)}>삭제</button></>}
             </span>
-            <span className="sourceCell">{officialSources.length > 0 ? <span className="sourceLinks">{officialSources.map((source, sourceIndex) => <a key={source.id} href={source.source_url} target="_blank" rel="noreferrer">열기{officialSources.length > 1 ? " " + (sourceIndex + 1) : ""}</a>)}</span> : isAdmin ? <button type="button" onClick={() => openSourceRegistration(item)}>등록</button> : <em>미등록</em>}</span>
+            <span className="sourceCell">{officialSources.length > 0 ? <span className="sourceLinks">{officialSources.map((source, sourceIndex) => {
+              const pageSuffix = officialSources.length > 1 ? " " + (sourceIndex + 1) : "";
+              return <span className="sourceActionGroup" key={source.id}>
+                <a href={source.source_url} target="_blank" rel="noreferrer">열기{pageSuffix}</a>
+                {isAdmin && <button type="button" className="sourceEditButton" onClick={() => editSource(source)}>수정{pageSuffix}</button>}
+              </span>;
+            })}</span> : isAdmin ? <button type="button" onClick={() => openSourceRegistration(item)}>등록</button> : <em>미등록</em>}</span>
             <span className="memoCell">
               {officialSources.length > 0 ?
                 <span className="sourceLinks">{officialSources.map((source, sourceIndex) => {

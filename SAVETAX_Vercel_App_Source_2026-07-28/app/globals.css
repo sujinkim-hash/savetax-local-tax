@@ -1568,6 +1568,34 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   }
 }
 
+/* 등록된 공식 주소는 열기·수정을 한 묶음으로 중앙에 배치 */
+.appContent .tr .sourceCell .sourceLinks {
+  display: flex !important;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100% !important;
+}
+.appContent .tr .sourceCell .sourceActionGroup {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+}
+.appContent .tr .sourceCell .sourceActionGroup > a,
+.appContent .tr .sourceCell .sourceActionGroup > button {
+  width: 100%;
+  min-width: 0;
+  padding-left: 4px;
+  padding-right: 4px;
+}
+.appContent .tr .sourceCell .sourceActionGroup:only-child > a,
+.appContent .tr .sourceCell .sourceActionGroup:only-child > button:only-child {
+  grid-column: auto;
+}
+
 
 /* 등록 지역에서 바로 연락처를 검토·수정하는 창 */
 .reviewContent .changeReviewActions .reviewContactAction {
