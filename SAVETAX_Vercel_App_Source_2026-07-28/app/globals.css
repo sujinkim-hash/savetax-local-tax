@@ -1709,3 +1709,14 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
 
 /* 연락처 불러오는 중 표시 */
 .contactsLoading { margin:0; padding:28px 16px; color:#5f6b7a; font-size:14px; text-align:center; }
+
+/* 담당 업무: 화면 너비와 상관없이 말줄임 없이 줄바꿈해서 전부 표시 (앞쪽 반응형 규칙보다 우선) */
+.tr .scopeCell,
+.appContent .tr .scopeCell {
+  white-space: pre-line !important;
+  overflow: visible !important;
+  text-overflow: clip !important;
+  overflow-wrap: anywhere;
+  word-break: keep-all;
+  line-height: 1.55;
+}
