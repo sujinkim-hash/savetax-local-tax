@@ -14,7 +14,8 @@ type OfficeNote = { sido: string; local: string; navigation_note: string; source
 const fallbackContacts = [...(contactData as Contact[]), ...(missingContactData as Contact[])];
 
 export default function Home() {
-  const [contacts, setContacts] = useState<Contact[]>(fallbackContacts);
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [contactsLoaded, setContactsLoaded] = useState(false);
   const [reviews, setReviews] = useState<Review[]>([]);
   const [sources, setSources] = useState<Source[]>([]);
   const [officeNotes, setOfficeNotes] = useState<OfficeNote[]>([]);
@@ -48,10 +49,16 @@ export default function Home() {
   const pageSize = 50;
 
   async function loadFromDatabase() {
-    const response = await fetch("/api/contacts", { cache: "no-store" });
-    if (!response.ok) return;
-    const data = (await response.json()) as { contacts?: Contact[] };
-    if (data.contacts?.length) setContacts(data.contacts);
+    // DB 목록을 받기 전에는 예전 기본 목록(443건)을 보여주지 않습니다. 불러오기에 실패했을 때만 기본 목록을 씁니다.
+    try {
+      const response = await fetch("/api/contacts", { cache: "no-store" });
+      const data = response.ok ? (await response.json()) as { contacts?: Contact[] } : { contacts: [] };
+      setContacts(data.contacts?.length ? data.contacts : fallbackContacts);
+    } catch {
+      setContacts(fallbackContacts);
+    } finally {
+      setContactsLoaded(true);
+    }
   }
   useEffect(() => { setPage(1); }, [query, region]);
   useEffect(() => { void loadFromDatabase(); void loadPublicSources(); }, []);
@@ -359,17 +366,18 @@ export default function Home() {
     <aside className="sideRail" aria-label="주요 메뉴"><div className="railBrand"><span>LOCAL TAX</span><strong>지방소득세<br />담당자 조회</strong></div><nav><a className="active" href="#directory">연락처 조회</a><Link href="/review">검토 현황</Link><Link href="/review">관리자·검토</Link></nav><p>종합소득세 관련<br />담당 주무관 연락처</p></aside>
     <div className="appContent">
       <header className="topBanner"><div><p className="eyebrow">LOCAL INCOME TAX DIRECTORY</p><h1>전국 지방소득세 담당자 연락처</h1><p className="lead">종합소득세와 관련된 담당 주무관 기준으로 전국 시·군·구 연락처를 한 곳에서 확인합니다.</p></div><div className="headerActions"><Link className="reviewLink" href="/review">검토 현황</Link><button type="button" className="admin" onClick={toggleAdminAccess}>{isAdmin ? "관리자 인증됨" : "관리자 인증"}</button></div></header>
-    <section className="stats"><article><span>등록 연락처</span><b>{contacts.length}</b></article><article><span>시도</span><b>{new Set(contacts.map((item) => item.sido)).size}</b></article><article><span>시·군·구 지자체</span><b>256</b></article></section>
+    <section className="stats"><article><span>등록 연락처</span><b>{contactsLoaded ? contacts.length : "–"}</b></article><article><span>시도</span><b>{contactsLoaded ? new Set(contacts.map((item) => item.sido)).size : "–"}</b></article><article><span>시·군·구 지자체</span><b>256</b></article></section>
     <section className="toolbar"><select aria-label="지역 선택" value={region} onChange={(event) => setRegion(event.target.value)}>{regions.map((item) => <option key={item}>{item}</option>)}</select><input aria-label="검색" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="시도, 시·군·구, 담당 업무 또는 번호 검색" /><button className="download" onClick={downloadCsv}>자료 내려받기</button></section>
     {notice && <p className="notice" role="status">{notice}</p>}
     <section className="panel" id="directory">
       <div className="panelHead">
         <div><p className="eyebrow">DIRECT CONTACT DIRECTORY</p><h2>담당자 연락처</h2></div>
-        <div className="panelHeadActions"><p>{rows.length}건 표시 · {page}/{totalPages}페이지</p>{isAdmin && <button type="button" className="addContactButton" onClick={openContactAdd}>+ 연락처 추가</button>}</div>
+        <div className="panelHeadActions"><p>{contactsLoaded ? `${rows.length}건 표시 · ${page}/${totalPages}페이지` : "연락처를 불러오는 중…"}</p>{isAdmin && <button type="button" className="addContactButton" onClick={openContactAdd}>+ 연락처 추가</button>}</div>
       </div>
       <div className="table">
         <div className="tr th"><span>시도</span><span>자치구</span><span>담당 업무</span><span>직통번호</span><span>공식 페이지</span><span>메모</span></div>
-        {pagedRows.map((item, index) => {
+        {!contactsLoaded && <p className="contactsLoading" role="status">연락처를 불러오는 중입니다…</p>}
+        {contactsLoaded && pagedRows.map((item, index) => {
           const officialSources = sourcesByOffice.get(item.sido + "::" + item.local) ?? [];
           const officeNote = officeNoteByOffice.get(item.sido + "::" + item.local);
           return <div className="tr" key={item.sido + "-" + item.local + "-" + item.phone + "-" + index}>

@@ -1706,3 +1706,6 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
     justify-self: stretch;
   }
 }
+
+/* 연락처 불러오는 중 표시 */
+.contactsLoading { margin:0; padding:28px 16px; color:#5f6b7a; font-size:14px; text-align:center; }

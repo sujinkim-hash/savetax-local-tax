@@ -40,7 +40,8 @@ function findOfficialHomepage(candidates: Source[], office: { sido: string; loca
 
 
 export default function ReviewPage() {
-  const [contacts, setContacts] = useState<Contact[]>(fallbackContacts);
+  const [contacts, setContacts] = useState<Contact[]>([]);
+  const [contactsLoaded, setContactsLoaded] = useState(false);
   const [sources, setSources] = useState<Source[]>([]);
   const [homepageCandidates, setHomepageCandidates] = useState<Source[]>(fallbackOfficialHomepages);
   const [sourcesLoaded, setSourcesLoaded] = useState(false);
@@ -76,8 +77,9 @@ export default function ReviewPage() {
   useEffect(() => {
     void fetch("/api/contacts", { cache: "no-store" })
       .then(async (response) => response.ok ? (await response.json()) as { contacts?: Contact[] } : { contacts: [] })
-      .then((data) => { if (data.contacts?.length) setContacts(data.contacts); })
-      .catch(() => undefined);
+      .then((data) => setContacts(data.contacts?.length ? data.contacts : fallbackContacts))
+      .catch(() => setContacts(fallbackContacts))
+      .finally(() => setContactsLoaded(true));
   }, []);
 
   useEffect(() => {
@@ -318,7 +320,7 @@ if (savedKey) void verifyAdminKey(savedKey, true);
         <div className="reviewHeaderActions"><Link className="reviewLink" href="/">연락처 조회</Link><button type="button" className="headerAdminButton" onClick={() => isAdmin ? (setIsAdmin(false), setAdminKey(""), window.localStorage.removeItem("savetax_admin_key"), setNotice("관리자 모드를 종료했습니다.")) : setAdminDialogOpen(true)}>{isAdmin ? "관리자 종료" : "관리자 인증"}</button></div>
       </header>
       <div className="reviewWorkspace">
-    <section className="reviewOverview"><article><b>{contacts.length}</b><span>등록 연락처</span></article><article><b>{areas.length}</b><span>검토 지역</span></article><article><b>{summary.reduce((total, item) => total + item.pending, 0)}</b><span>재검토 대상</span></article><article><b>{sourcesLoaded ? sources.length : "-"}</b><span>등록 공식 주소</span></article></section>
+    <section className="reviewOverview"><article><b>{contactsLoaded ? contacts.length : "–"}</b><span>등록 연락처</span></article><article><b>{contactsLoaded ? areas.length : "–"}</b><span>검토 지역</span></article><article><b>{summary.reduce((total, item) => total + item.pending, 0)}</b><span>재검토 대상</span></article><article><b>{sourcesLoaded ? sources.length : "-"}</b><span>등록 공식 주소</span></article></section>
     <details className="reviewPanel sectionAccordion" onToggle={(event) => { if (event.currentTarget.open) window.setTimeout(() => event.currentTarget.scrollIntoView({ behavior: "smooth", block: "start" }), 0); }}><summary className="panelHead"><div><p className="eyebrow">REGIONAL REVIEW</p><h2>시·도별 확인 상태</h2></div><p>지역을 선택하면 연락처 목록으로 돌아갈 수 있습니다.</p><i aria-hidden="true" /></summary><div className="regionalTable" role="table" aria-label="시도별 확인 상태"><div className="regionalTableHead" role="row"><span role="columnheader">시도</span><span role="columnheader">시·군·구</span><span role="columnheader">연락처</span><span role="columnheader">확인일</span><span role="columnheader">상태</span></div>{summary.map((item) => <Link href={"/?region=" + encodeURIComponent(item.sido)} className="regionalTableRow" key={item.sido} role="row"><b role="cell">{item.sido}</b><span role="cell">{item.locals}개</span><span role="cell">{item.count}건</span><span role="cell">{item.checked}</span><i role="cell" className={item.pending ? "pending" : "confirmed"}>{item.pending ? "재검토 " + item.pending + "건" : "확인 완료"}</i></Link>)}</div></details>
     <details className="reviewPanel sectionAccordion" onToggle={(event) => { if (event.currentTarget.open) window.setTimeout(() => event.currentTarget.scrollIntoView({ behavior: "smooth", block: "start" }), 0); }}>
       <summary className="panelHead"><div><p className="eyebrow">CHANGE REVIEW</p><h2>수정 내용 검토</h2></div><p>공식 주소와 담당 연락처의 변경 사항을 검토합니다.</p><i aria-hidden="true" /></summary>
