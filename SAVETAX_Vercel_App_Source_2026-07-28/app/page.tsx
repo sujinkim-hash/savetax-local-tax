@@ -13,9 +13,9 @@ type OfficeNote = { sido: string; local: string; navigation_note: string; source
 
 const fallbackContacts = [...(contactData as Contact[]), ...(missingContactData as Contact[])];
 
-// "• A • B", "○ A ○ B"처럼 한 줄로 이어진 항목을 줄마다 나눠 보여줍니다.
+// "• A • B", "○ A ○ B"처럼 한 줄로 이어진 항목을 줄마다 나눠 보여주고, 글머리 기호(•, ○ 등)는 지웁니다.
 function formatScope(scope: string) {
-  return scope.replace(/\s*([•○◦▪])\s*/g, "\n$1 ").replace(/\s+-\s(?=\S)/g, "\n- ").trim();
+  return scope.replace(/\s*[•○◦▪]\s*/g, "\n").replace(/\s+-\s(?=\S)/g, "\n- ").replace(/\n{2,}/g, "\n").trim();
 }
 
 export default function Home() {
