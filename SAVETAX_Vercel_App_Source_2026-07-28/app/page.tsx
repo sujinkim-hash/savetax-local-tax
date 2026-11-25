@@ -13,6 +13,11 @@ type OfficeNote = { sido: string; local: string; navigation_note: string; source
 
 const fallbackContacts = [...(contactData as Contact[]), ...(missingContactData as Contact[])];
 
+// "• A • B", "○ A ○ B"처럼 한 줄로 이어진 항목을 줄마다 나눠 보여줍니다.
+function formatScope(scope: string) {
+  return scope.replace(/\s*([•○◦▪])\s*/g, "\n$1 ").replace(/\s+-\s(?=\S)/g, "\n- ").trim();
+}
+
 export default function Home() {
   const [contacts, setContacts] = useState<Contact[]>([]);
   const [contactsLoaded, setContactsLoaded] = useState(false);
@@ -383,7 +388,7 @@ export default function Home() {
           return <div className="tr" key={item.sido + "-" + item.local + "-" + item.phone + "-" + index}>
             <span>{item.sido}</span>
             <strong>{item.local}</strong>
-            <span className="scopeCell" title={item.scope}>{item.scope}</span>
+            <span className="scopeCell">{formatScope(item.scope)}</span>
             <span className="phoneCell">
               <a href={"tel:" + item.phone}>{item.phone}</a>
               <button type="button" className="copyPhone" onClick={() => void copyPhone(item.phone)} aria-label={item.phone + " 복사"}>{copiedPhone === item.phone ? "복사됨" : "복사"}</button>

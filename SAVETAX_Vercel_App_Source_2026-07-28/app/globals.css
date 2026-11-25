@@ -562,8 +562,8 @@ h3 { margin:0; font-size:20px; line-height:1.4; }
   .reviewContent .regionalTableRow b { grid-column: 1 / -1; }
 }
 
-/* 담당 업무 컬럼 말줄임 처리 + 페이지네이션 (추가 반영) */
-.scopeCell { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; cursor:help; }
+/* 담당 업무 컬럼: 긴 내용도 잘리지 않고 줄바꿈해서 모두 표시 + 페이지네이션 */
+.scopeCell { white-space:pre-line; overflow-wrap:anywhere; word-break:keep-all; line-height:1.55; }
 
 .pager {
   display: flex;
